@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صفحة الدعاء</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0099cc;
-            --bg-color: #f2f5f8;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --primary-blue: #00a0d1;
+            --bg-color: #ffffff;
+            --card-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
 
         * {
@@ -20,119 +20,176 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
-            padding: 0;
         }
 
         .app-container {
             width: 100%;
             max-width: 450px;
-            background-color: white;
+            background-color: var(--bg-color);
             min-height: 100vh;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Header */
+        /* Header: grid icon left, title centered */
         header {
             background-color: var(--primary-blue);
             color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
         }
-
-        .back-btn {
-            position: absolute;
-            left: 15px;
-            font-size: 1.5rem;
+        .grid-toggle {
+            background: none;
+            border: none;
             cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .grid-toggle img {
+            width: 30px;
+            height: 30px;
+            filter: invert(1);
+            opacity: 0.95;
+        }
+        .grid-toggle:hover img {
+            opacity: 1;
+        }
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        /* invisible spacer to keep layout balanced */
+        .header-left {
+            visibility: hidden;
+            width: 38px;
         }
 
-        /* Message of the Day Card */
+        /* --- ENVELOPE CARD (FIXED FLAP) --- */
         .message-container {
-            padding: 20px;
+            padding: 25px 20px;
             perspective: 1000px;
         }
 
         .message-card {
             background: white;
-            border-radius: 25px;
-            padding: 30px 20px;
+            border-radius: 35px;
+            padding: 65px 20px 35px 20px;
             text-align: center;
             box-shadow: var(--card-shadow);
-            border: 1px solid #eee;
+            border: 1px solid #f0f0f0;
             position: relative;
             cursor: pointer;
-            /* The Swinging Animation */
-            animation: swing 4s ease-in-out infinite;
+            overflow: hidden;
+            animation: mailSwing 1.2s ease-out forwards;
             transform-origin: top center;
         }
 
-        @keyframes swing {
+        .message-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background-color: #f9fbfc;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1;
+        }
+
+        .message-card h2,
+        .message-card .sub-title,
+        .message-card p,
+        .message-card .open-link {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes mailSwing {
             0% { transform: rotate(0deg); }
-            25% { transform: rotate(2deg); }
-            50% { transform: rotate(-2deg); }
+            15% { transform: rotate(12deg); }
+            30% { transform: rotate(-10deg); }
+            45% { transform: rotate(8deg); }
+            60% { transform: rotate(-5deg); }
+            75% { transform: rotate(3deg); }
+            90% { transform: rotate(-1deg); }
             100% { transform: rotate(0deg); }
         }
 
         .message-card h2 {
-            font-size: 1.4rem;
-            margin-bottom: 5px;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
             color: #000;
+            font-weight: 800;
+        }
+
+        .message-card .sub-title {
+            color: #b0b0b0;
+            font-size: 1rem;
+            margin-bottom: 15px;
         }
 
         .message-card p {
-            color: #888;
+            color: #777;
             font-size: 0.9rem;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            margin-bottom: 25px;
+            line-height: 1.6;
         }
 
         .message-card .open-link {
             color: var(--primary-blue);
-            font-weight: bold;
-            text-decoration: underline;
-            font-size: 0.9rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-decoration: none;
         }
 
-        /* Icons Grid */
+        /* --- GRID (2 columns default, toggle to 3) --- */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            padding: 0 20px 30px 20px;
+            padding: 10px 20px 40px 20px;
+            transition: all 0.2s;
+        }
+        .grid-container.grid-3cols {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
         .grid-item {
             background: white;
-            border-radius: 20px;
-            padding: 25px 10px;
+            border-radius: 25px;
+            padding: 30px 10px;
             text-align: center;
             box-shadow: var(--card-shadow);
             cursor: pointer;
-            transition: transform 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            border: 1px solid #f5f7f9;
+            position: relative;
+            transition: 0.2s;
         }
 
-        .grid-item:active {
-            transform: scale(0.95);
-        }
+        .grid-item:active { transform: scale(0.96); }
 
         .grid-item img {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             margin-bottom: 12px;
             object-fit: contain;
         }
@@ -143,22 +200,34 @@
             color: #000;
         }
 
-        /* Notification Dot */
-        .grid-item { position: relative; }
-        .bookmark-icon {
+        /* Top-Left Red Ribbon */
+        .ribbon {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #ff4d4d;
-            font-size: 1.2rem;
+            top: 0;
+            left: 18px;
+            width: 14px;
+            height: 22px;
+            background: #ff5c75;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
         }
 
-        /* Modal styling */
+        /* Responsive: force 2 cols on small screens */
+        @media (max-width: 480px) {
+            .grid-container.grid-3cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-item span {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Modal */
         #duaModal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -167,82 +236,84 @@
 
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 25px;
+            padding: 40px 25px;
+            border-radius: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             text-align: center;
-            position: relative;
         }
 
         .dua-text {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             line-height: 1.8;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .close-modal {
             background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 12px 35px;
             border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
         }
-
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <header>
-        <span class="back-btn">❯</span>
-        الدعاء
+        <div class="grid-toggle" id="gridToggleBtn">
+            <img src="https://cdn-icons-png.flaticon.com/128/18728/18728011.png" alt="تبديل الشبكة">
+        </div>
+        <div class="header-title">الدعاء</div>
+        <div class="header-left"></div> <!-- spacer for centering -->
     </header>
 
-    <!-- Message of the day -->
     <div class="message-container">
         <div class="message-card" onclick="showDailyDua()">
             <h2>رسالتك اليوم</h2>
+            <div class="sub-title">رسالتك اليوم</div>
             <p>قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
             <div class="open-link">اضغط هنا لتفتحها</div>
         </div>
     </div>
 
-    <!-- Grid -->
-    <div class="grid-container">
+    <!-- Grid reordered: Sunnah placed right next to Quranic -->
+    <div class="grid-container" id="gridContainer">
         <div class="grid-item">
             <img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya">
             <span>الرقية الشرعية</span>
         </div>
         <div class="grid-item">
+            <div class="ribbon"></div>
             <img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird">
             <span>ورد الدعاء</span>
         </div>
         <div class="grid-item">
-            <span class="bookmark-icon">🔖</span>
+            <div class="ribbon"></div>
             <img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran">
             <span>دعاء من القرآن</span>
         </div>
         <div class="grid-item">
-            <img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="community">
-            <span>مجتمع الدعاء</span>
+            <div class="ribbon"></div>
+            <img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah">
+            <span>دعاء من السنة</span>
+        </div>
+        <div class="grid-item">
+            <img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal">
+            <span>أدعيتي</span>
         </div>
         <div class="grid-item">
             <img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites">
             <span>المفضلة</span>
         </div>
-        <div class="grid-item">
-            <span class="bookmark-icon">🔖</span>
-            <img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah">
-            <span>دعاء من السنة</span>
-        </div>
     </div>
 </div>
 
-<!-- Modal to show the Dua -->
+<!-- Modal -->
 <div id="duaModal">
     <div class="modal-content">
         <div class="dua-text" id="duaOutput"></div>
@@ -253,25 +324,17 @@
 <script>
     const duas = [
         "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً.",
-        "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت.",
         "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين.",
         "اللهم إنك عفو تحب العفو فاعف عني.",
         "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
-        "اللهم صل وسلم على نبينا محمد وعلى آله وصحبه أجمعين."
+        "لا إله إلا أنت سبحانك إني كنت من الظالمين."
     ];
 
     function showDailyDua() {
         const modal = document.getElementById('duaModal');
         const output = document.getElementById('duaOutput');
-        
-        // Logical choice: Change based on the current hour of the day
-        // This ensures every user sees the same dua for that hour
         const now = new Date();
         const hourIndex = now.getHours() % duas.length;
-        
-        // Alternatively, use random: 
-        // const randomIndex = Math.floor(Math.random() * duas.length);
-        
         output.innerText = duas[hourIndex];
         modal.style.display = 'flex';
     }
@@ -280,13 +343,23 @@
         document.getElementById('duaModal').style.display = 'none';
     }
 
-    // Close modal if clicking outside the box
     window.onclick = function(event) {
-        let modal = document.getElementById('duaModal');
-        if (event.target == modal) {
-            closeModal();
-        }
+        if (event.target == document.getElementById('duaModal')) closeModal();
     }
+
+    // Grid toggle (2 ↔ 3 columns)
+    const gridContainer = document.getElementById('gridContainer');
+    const toggleBtn = document.getElementById('gridToggleBtn');
+    let is3Cols = false;
+
+    toggleBtn.addEventListener('click', () => {
+        if (is3Cols) {
+            gridContainer.classList.remove('grid-3cols');
+        } else {
+            gridContainer.classList.add('grid-3cols');
+        }
+        is3Cols = !is3Cols;
+    });
 </script>
 
 </body>
