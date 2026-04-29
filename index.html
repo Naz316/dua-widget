@@ -55,9 +55,6 @@
         body.text-rtl .message-card,
         body.text-rtl .grid-item,
         body.text-rtl .modal-content,
-        body.text-rtl .menu-popover .menu-section-title,
-        body.text-rtl .menu-popover .setting-label,
-        body.text-rtl .menu-popover .setting-row,
         body.text-rtl .share-popup {
             direction: rtl;
             text-align: right;
@@ -65,12 +62,23 @@
         body.text-ltr .message-card,
         body.text-ltr .grid-item,
         body.text-ltr .modal-content,
-        body.text-ltr .menu-popover .menu-section-title,
-        body.text-ltr .menu-popover .setting-label,
-        body.text-ltr .menu-popover .setting-row,
         body.text-ltr .share-popup {
             direction: ltr;
             text-align: left;
+        }
+        /* Menu text RTL: only the text content, NOT the layout */
+        body.text-rtl .menu-popover .menu-section-title {
+            direction: rtl;
+            text-align: right;
+        }
+        body.text-ltr .menu-popover .menu-section-title {
+            direction: ltr;
+            text-align: left;
+        }
+        /* Setting labels: text direction only, layout stays LTR */
+        body.text-rtl .menu-popover .setting-label span:last-child {
+            direction: rtl;
+            unicode-bidi: plaintext;
         }
         /* Grid items always centered */
         .grid-item {
@@ -306,8 +314,8 @@
         /* --- MENU POPOVER --- */
         .menu-popover {
             position: fixed;
-            top: 70px;
-            right: 18px;
+            top: 58px;
+            right: 10px;
             background: var(--popup-bg);
             padding: 18px;
             border-radius: 20px;
@@ -318,12 +326,20 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             border: 1px solid var(--popup-border);
             width: 290px;
-            /* Layout fixed to LTR so positions don't shift, but text follows page dir */
             direction: ltr;
         }
-        .menu-popover {
-            right: 18px !important;
-            left: auto !important;
+        /* Force all settings rows inside menu to stay LTR layout */
+        .menu-popover .setting-row {
+            direction: ltr !important;
+        }
+        .menu-popover .setting-row .setting-label {
+            direction: ltr !important;
+        }
+        .menu-popover .setting-row .switch {
+            order: 2 !important;
+        }
+        .menu-popover .setting-row .font-slider {
+            order: 2 !important;
         }
         .menu-popover.show {
             visibility: visible;
