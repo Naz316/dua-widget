@@ -1,124 +1,211 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة الدعاء</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>الدعاء · الرقية الشرعية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-blue: #00a0d1;
-            --bg-color: #ffffff;
-            --card-shadow: 0 8px 20px rgba(0,0,0,0.06);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
+        }
+
+        /* ----- CSS Variables (fully themable) ----- */
+        :root {
+            --accent: #cc0000;
+            --accent-dark: #990000;
+            --widget-bg: #ffffff;
+            --header-bg: #cc0000;
+            --text: #1a1a1a;
+            --text-dim: #666666;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --popup-bg: #ffffff;
+            --popup-border: #ddd;
+            --shadow: 0 8px 20px rgba(0,0,0,0.05);
+            --dua-font-size: 22px;
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            --widget-bg: #1e1e2f;
+            --header-bg: #2d2d44;
+            --text: #f0f0f0;
+            --text-dim: #aaaaaa;
+            --card-bg: #2a2a3a;
+            --border-color: #3a3a4a;
+            --popup-bg: #2a2a3a;
+            --popup-border: #444;
+            --shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
+            transition: background-color 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+        }
+        body.dark-mode {
+            background-color: #12121a;
+        }
+        /* Text direction classes - layout stays LTR always */
+        body.text-rtl .message-card,
+        body.text-rtl .grid-item,
+        body.text-rtl .modal-content,
+        body.text-rtl .menu-popover .menu-section-title,
+        body.text-rtl .menu-popover .setting-label,
+        body.text-rtl .menu-popover .setting-row,
+        body.text-rtl .share-popup {
+            direction: rtl;
+            text-align: right;
+        }
+        body.text-ltr .message-card,
+        body.text-ltr .grid-item,
+        body.text-ltr .modal-content,
+        body.text-ltr .menu-popover .menu-section-title,
+        body.text-ltr .menu-popover .setting-label,
+        body.text-ltr .menu-popover .setting-row,
+        body.text-ltr .share-popup {
+            direction: ltr;
+            text-align: left;
+        }
+        /* Grid items always centered */
+        .grid-item {
+            text-align: center !important;
+        }
+        /* Message card always centered */
+        .message-card {
+            text-align: center !important;
         }
 
         .app-container {
             width: 100%;
             max-width: 450px;
-            background-color: var(--bg-color);
+            background-color: var(--widget-bg);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
 
-        /* Header: grid icon left, title centered */
+        /* --- HEADER: icons always on the physical right side, no movement --- */
         header {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 12px 18px;
+            background-color: var(--header-bg);
+            padding: 14px 18px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            transition: background-color 0.2s;
+            /* PIN to physical right regardless of text direction */
+            direction: ltr !important;
         }
-        .grid-toggle {
-            background: none;
+        .header-icons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            /* FIXED: Always stay on the physical right, never move */
+            margin-left: auto;
+            flex-direction: row;
+            direction: ltr !important;
+        }
+        .icon-btn {
+            background: rgba(255,255,255,0.15);
             border: none;
             cursor: pointer;
-            padding: 4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
-        .grid-toggle img {
-            width: 30px;
-            height: 30px;
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        /* FORCE: Header icons always pinned to physical right */
+        header {
+            justify-content: flex-end;
+            direction: ltr;
+        }
+        .header-icons {
+            margin-left: auto;
+            margin-right: 0;
+            flex-direction: row;
+            direction: ltr;
+        }
+        .icon-btn img {
+            width: 22px;
+            height: 22px;
             filter: invert(1);
-            opacity: 0.95;
         }
-        .grid-toggle:hover img {
-            opacity: 1;
+        .lang-btn img {
+            width: 28px;
+            height: 28px;
         }
-        .header-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        /* invisible spacer to keep layout balanced */
-        .header-left {
-            visibility: hidden;
-            width: 38px;
+        .menu-icon span {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            line-height: 1;
         }
 
-        /* --- ENVELOPE CARD (FIXED FLAP) --- */
+        /* --- ENVELOPE CARD with restored V-shape (visible in both themes) --- */
         .message-container {
             padding: 25px 20px;
             perspective: 1000px;
         }
-
         .message-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 35px;
-            padding: 65px 20px 35px 20px;
+            padding: 75px 20px 35px 20px;
             text-align: center;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #f0f0f0;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
             position: relative;
             cursor: pointer;
             overflow: hidden;
             animation: mailSwing 1.2s ease-out forwards;
             transform-origin: top center;
+            transition: background 0.2s;
         }
-
+        /* Realistic email envelope V-flap */
         .message-card::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 40px;
-            background-color: #f9fbfc;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            border-bottom: 1px solid #e2e8f0;
+            height: 55px;
+            background: linear-gradient(135deg, var(--border-color) 0%, var(--card-bg) 100%);
+            clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 2px, 50% 57px, 0 2px);
             z-index: 1;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .message-card h2,
-        .message-card .sub-title,
-        .message-card p,
-        .message-card .open-link {
-            position: relative;
+        .message-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 70px solid transparent;
+            border-right: 70px solid transparent;
+            border-top: 45px solid var(--border-color);
             z-index: 2;
+            opacity: 0.4;
         }
-
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
             15% { transform: rotate(12deg); }
@@ -129,238 +216,825 @@
             90% { transform: rotate(-1deg); }
             100% { transform: rotate(0deg); }
         }
-
         .message-card h2 {
             font-size: 1.6rem;
             margin-bottom: 4px;
-            color: #000;
+            color: var(--text);
             font-weight: 800;
         }
-
         .message-card .sub-title {
-            color: #b0b0b0;
+            color: var(--text-dim);
             font-size: 1rem;
             margin-bottom: 15px;
         }
-
         .message-card p {
-            color: #777;
+            color: var(--text-dim);
             font-size: 0.9rem;
             margin-bottom: 25px;
             line-height: 1.6;
         }
-
         .message-card .open-link {
-            color: var(--primary-blue);
+            color: var(--accent);
             font-weight: 800;
             font-size: 1.1rem;
             text-decoration: none;
         }
 
-        /* --- GRID (2 columns default, toggle to 3) --- */
+        /* --- GRID (2 columns, toggle to 3) --- */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             padding: 10px 20px 40px 20px;
             transition: all 0.2s;
+            /* FIXED: Grid layout never flips with RTL */
+            direction: ltr;
         }
         .grid-container.grid-3cols {
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
-
+        /* Grid items text follows page direction, layout stays LTR */
         .grid-item {
-            background: white;
+            direction: inherit;
+        }
+        .grid-item {
+            background: var(--card-bg);
             border-radius: 25px;
-            padding: 30px 10px;
+            padding: 24px 10px;
             text-align: center;
-            box-shadow: var(--card-shadow);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 1px solid #f5f7f9;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+            color: var(--text);
             position: relative;
-            transition: 0.2s;
+            /* Text follows page direction */
+            direction: inherit;
         }
-
-        .grid-item:active { transform: scale(0.96); }
-
+        .grid-item:active {
+            transform: scale(0.96);
+        }
+        /* HIGHLIGHTED BLOCK - solid accent, icons unchanged */
+        .grid-item.active {
+            background: var(--accent) !important;
+            border: none;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+            transform: scale(1.02);
+        }
+        .grid-item.active span {
+            color: white;
+        }
+        .grid-item.active img {
+            filter: none !important;
+        }
         .grid-item img {
             width: 70px;
             height: 70px;
             margin-bottom: 12px;
             object-fit: contain;
         }
-
         .grid-item span {
             font-weight: 700;
             font-size: 1rem;
-            color: #000;
+            color: var(--text);
         }
 
-        /* Top-Left Red Ribbon */
-        .ribbon {
+        /* --- MENU POPOVER --- */
+        .menu-popover {
+            position: fixed;
+            top: 70px;
+            right: 18px;
+            background: var(--popup-bg);
+            padding: 18px;
+            border-radius: 20px;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.15s;
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 1px solid var(--popup-border);
+            width: 290px;
+            /* Layout fixed to LTR so positions don't shift, but text follows page dir */
+            direction: ltr;
+        }
+        .menu-popover {
+            right: 18px !important;
+            left: auto !important;
+        }
+        .menu-popover.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .menu-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            direction: ltr;
+        }
+        .menu-header-row .menu-section-title {
+            direction: inherit;
+            unicode-bidi: plaintext;
+        }
+        .menu-section-title {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            direction: ltr !important;
+        }
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(128,128,128,0.15);
+            border-radius: 30px;
+            padding: 4px;
+        }
+        .theme-toggle-icon {
+            font-size: 18px;
+            width: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            opacity: 0.6;
+            color: var(--text);
+        }
+        .theme-toggle-icon.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 2px var(--accent));
+        }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .theme-slider {
             position: absolute;
+            cursor: pointer;
             top: 0;
-            left: 18px;
-            width: 14px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.2s;
+            border-radius: 26px;
+        }
+        .theme-slider:before {
+            position: absolute;
+            content: "";
             height: 22px;
-            background: #ff5c75;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+            width: 22px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+        input:checked + .theme-slider {
+            background-color: var(--accent);
+        }
+        input:checked + .theme-slider:before {
+            transform: translateX(26px);
+        }
+        .menu-divider {
+            height: 1px;
+            background: var(--text-dim);
+            margin: 12px 0;
+            border: none;
+            width: 100%;
+            opacity: 0.3;
+        }
+        .color-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            direction: ltr;
+        }
+        .color-dot {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .color-dot.active {
+            border-color: var(--text);
+            transform: scale(1.08);
+        }
+        .color-dot.active::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0 0 2px black;
+        }
+        .settings-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            /* Layout fixed LTR, text follows page */
+            direction: ltr;
+        }
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            direction: ltr;
+        }
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            /* Text direction follows page, layout stays LTR */
+            direction: inherit;
+            unicode-bidi: plaintext;
+        }
+        /* Switches always stay on the right side physically */
+        .setting-row .switch {
+            order: 2;
+            flex-shrink: 0;
+        }
+        .setting-row .setting-label {
+            order: 1;
+        }
+        .font-slider {
+            width: 100px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--text-dim);
+            direction: ltr;
+        }
+        .action-btn {
+            flex: 1;
+            height: 42px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            position: relative;
+        }
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+        .action-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+        .action-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 50px;
+            background: #333;
+            color: white;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.15s;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .action-btn:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .15s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #ddd;
+            transition: .15s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: white;
         }
 
-        /* Responsive: force 2 cols on small screens */
-        @media (max-width: 480px) {
-            .grid-container.grid-3cols {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .grid-item span {
-                font-size: 0.9rem;
-            }
+        /* SHARE POPUP */
+        .share-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: var(--popup-bg);
+            border-radius: 28px;
+            padding: 20px;
+            width: 280px;
+            z-index: 1100;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+            border: 1px solid var(--accent);
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.15s ease;
+            transform: scale(0.95);
+        }
+        html[dir="rtl"] .share-popup {
+            right: 20px !important;
+            left: auto !important;
+        }
+        .share-popup.show {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .share-popup-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: var(--accent);
+        }
+        .share-grid {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .share-icon {
+            background: rgba(128,128,128,0.2);
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.1s;
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .share-icon:hover {
+            background: var(--accent);
+            color: white;
         }
 
-        /* Modal */
+        /* MODAL */
         #duaModal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-
         .modal-content {
-            background: white;
+            direction: inherit;
+        }
+        .modal-content {
+            background: var(--card-bg);
             padding: 40px 25px;
             border-radius: 30px;
             width: 100%;
             max-width: 380px;
             text-align: center;
+            color: var(--text);
         }
-
         .dua-text {
-            font-size: 1.3rem;
+            font-size: var(--dua-font-size, 22px);
             line-height: 1.8;
-            color: #333;
             margin-bottom: 30px;
+            font-family: 'Amiri', serif;
+            transition: font-size 0.1s ease;
         }
-
         .close-modal {
-            background: var(--primary-blue);
+            background: var(--accent);
             color: white;
             border: none;
             padding: 12px 35px;
-            border-radius: 15px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
         }
+
+        @media (max-width: 480px) {
+            .grid-container.grid-3cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-item span {
+                font-size: 0.85rem;
+            }
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
-
 <div class="app-container">
     <header>
-        <div class="grid-toggle" id="gridToggleBtn">
-            <img src="https://cdn-icons-png.flaticon.com/128/18728/18728011.png" alt="تبديل الشبكة">
+        <div class="header-icons">
+            <button class="icon-btn lang-btn" id="langToggleBtn">
+                <img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language">
+            </button>
+            <button class="icon-btn" id="gridToggleBtn">
+                <img src="https://cdn-icons-png.flaticon.com/128/8022/8022304.png" alt="grid layout">
+            </button>
+            <button class="icon-btn menu-icon" id="menuToggleBtn">
+                <span>☰</span>
+            </button>
         </div>
-        <div class="header-title">الدعاء</div>
-        <div class="header-left"></div> <!-- spacer for centering -->
     </header>
 
     <div class="message-container">
-        <div class="message-card" onclick="showDailyDua()">
-            <h2>رسالتك اليوم</h2>
-            <div class="sub-title">رسالتك اليوم</div>
-            <p>قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
-            <div class="open-link">اضغط هنا لتفتحها</div>
+        <div class="message-card" id="dailyMessageCard">
+            <h2 id="msgTitle">رسالتك اليوم</h2>
+            <div class="sub-title" id="msgSub">رسالتك اليوم</div>
+            <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
+            <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
         </div>
     </div>
 
-    <!-- Grid reordered: Sunnah placed right next to Quranic -->
     <div class="grid-container" id="gridContainer">
-        <div class="grid-item">
+        <div class="grid-item" data-category="ruqya">
             <img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya">
-            <span>الرقية الشرعية</span>
+            <span id="labelRuqya">الرقية الشرعية</span>
         </div>
-        <div class="grid-item">
-            <div class="ribbon"></div>
+        <div class="grid-item" data-category="wird">
             <img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird">
-            <span>ورد الدعاء</span>
+            <span id="labelWird">ورد الدعاء</span>
         </div>
-        <div class="grid-item">
-            <div class="ribbon"></div>
+        <div class="grid-item" data-category="quranic">
             <img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran">
-            <span>دعاء من القرآن</span>
+            <span id="labelQuranic">دعاء من القرآن</span>
         </div>
-        <div class="grid-item">
-            <div class="ribbon"></div>
-            <img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah">
-            <span>دعاء من السنة</span>
-        </div>
-        <div class="grid-item">
+        <div class="grid-item" data-category="personal">
             <img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal">
-            <span>أدعيتي</span>
+            <span id="labelPersonal">أدعيتي</span>
         </div>
-        <div class="grid-item">
+        <div class="grid-item" data-category="favorites">
             <img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites">
-            <span>المفضلة</span>
+            <span id="labelFavorites">المفضلة</span>
+        </div>
+        <div class="grid-item" data-category="sunnah">
+            <img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah">
+            <span id="labelSunnah">دعاء من السنة</span>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
+<div class="menu-popover" id="unifiedMenu">
+    <div class="menu-header-row">
+        <div class="menu-section-title"><span>🎨</span><span id="menuTitleColors">Colors</span></div>
+        <div class="theme-toggle">
+            <span class="theme-toggle-icon sun" id="sunIcon">☀️</span>
+            <label class="theme-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="theme-slider"></span>
+            </label>
+            <span class="theme-toggle-icon moon" id="moonIcon">🌙</span>
+        </div>
+    </div>
+    <hr class="menu-divider">
+    <div class="color-menu" id="colorMenu"></div>
+    <div class="menu-section-title"><span>⚙️</span><span id="menuTitleSettings">Settings</span></div>
+    <hr class="menu-divider">
+    <div class="settings-rows">
+        <div class="setting-row"><div class="setting-label"><span>🔊</span><span id="set1">Click Sound</span></div><label class="switch"><input type="checkbox" id="chkClick" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>📳</span><span id="set2">Vibration</span></div><label class="switch"><input type="checkbox" id="chkVibrate" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>🔄</span><span id="set3">Auto Transfer</span></div><label class="switch"><input type="checkbox" id="chkAuto" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">Font Size (Dua only)</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
+        <div class="action-btns">
+            <button class="action-btn" id="btnCopy" data-tooltip="نسخ النص"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
+            <button class="action-btn" id="btnShare" data-tooltip="مشاركة"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+            <button class="action-btn" id="btnFav" data-tooltip="أضف إلى المفضلة"><svg viewBox="0 0 24 24" width="20" height="20" id="favSvgIcon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/></svg></button>
+            <button class="action-btn" id="btnRefresh" data-tooltip="تحديث"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+        </div>
+    </div>
+</div>
+
+<div id="sharePopup" class="share-popup">
+    <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
+    <div class="share-grid" id="shareGrid"></div>
+</div>
+
 <div id="duaModal">
     <div class="modal-content">
         <div class="dua-text" id="duaOutput"></div>
-        <button class="close-modal" onclick="closeModal()">إغلاق</button>
+        <button class="close-modal" id="closeModalBtn">إغلاق</button>
     </div>
 </div>
 
 <script>
-    const duas = [
-        "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً.",
-        "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين.",
-        "اللهم إنك عفو تحب العفو فاعف عني.",
-        "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
-        "لا إله إلا أنت سبحانك إني كنت من الظالمين."
-    ];
-
-    function showDailyDua() {
-        const modal = document.getElementById('duaModal');
-        const output = document.getElementById('duaOutput');
-        const now = new Date();
-        const hourIndex = now.getHours() % duas.length;
-        output.innerText = duas[hourIndex];
-        modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('duaModal').style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('duaModal')) closeModal();
-    }
-
-    // Grid toggle (2 ↔ 3 columns)
-    const gridContainer = document.getElementById('gridContainer');
-    const toggleBtn = document.getElementById('gridToggleBtn');
-    let is3Cols = false;
-
-    toggleBtn.addEventListener('click', () => {
-        if (is3Cols) {
-            gridContainer.classList.remove('grid-3cols');
-        } else {
-            gridContainer.classList.add('grid-3cols');
+    // Translations
+    const translations = {
+        ar: {
+            msgTitle: "رسالتك اليوم", msgSub: "رسالتك اليوم", msgText: "قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink: "اضغط هنا لتفتحها",
+            ruqya: "الرقية الشرعية", wird: "ورد الدعاء", quranic: "دعاء من القرآن", personal: "أدعيتي", favorites: "المفضلة", sunnah: "دعاء من السنة",
+            menuColors: "الألوان", menuSettings: "الإعدادات", set1: "صوت النقرة", set2: "اهتزاز", set3: "تحويل تلقائي", set4: "حجم الخط",
+            copyTooltip: "نسخ النص", shareTooltip: "مشاركة", favTooltipAdd: "أضف إلى المفضلة", favTooltipRemove: "إزالة من المفضلة", refreshTooltip: "تحديث", shareTitle: "مشاركة الدعاء", closeModal: "إغلاق",
+            whatsapp: "واتساب", twitter: "تويتر", facebook: "فيسبوك"
+        },
+        en: {
+            msgTitle: "Your Message Today", msgSub: "Your message today", msgText: "Behind this supplication there may be a message written for you, and today you need it most.", msgLink: "Click here to open it",
+            ruqya: "Spiritual Ruqya", wird: "Daily Wird", quranic: "Quranic Duas", personal: "My Duas", favorites: "Favorites", sunnah: "Sunnah Duas",
+            menuColors: "Colors", menuSettings: "Settings", set1: "Click Sound", set2: "Vibration", set3: "Auto Transfer", set4: "Font Size",
+            copyTooltip: "Copy Text", shareTooltip: "Share", favTooltipAdd: "Add to Favorites", favTooltipRemove: "Remove from Favorites", refreshTooltip: "Refresh", shareTitle: "Share Dua", closeModal: "Close",
+            whatsapp: "WhatsApp", twitter: "Twitter", facebook: "Facebook"
         }
-        is3Cols = !is3Cols;
-    });
-</script>
+    };
 
+    let currentLang = 'ar';
+    let isDarkMode = false;
+    let currentAccent = '#cc0000';
+    let isFavorite = false;
+    let audioCtx = null;
+
+    function playClickSound() {
+        const chk = document.getElementById('chkClick');
+        if (!chk || !chk.checked) return;
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 800;
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.12);
+            osc.start();
+            osc.stop(now + 0.1);
+        } catch(e) {}
+    }
+    function playVibration() {
+        const chk = document.getElementById('chkVibrate');
+        if (chk && chk.checked && navigator.vibrate) navigator.vibrate(60);
+    }
+
+    function applyLanguage() {
+        const t = translations[currentLang];
+        document.getElementById('msgTitle').innerText = t.msgTitle;
+        document.getElementById('msgSub').innerText = t.msgSub;
+        document.getElementById('msgText').innerText = t.msgText;
+        document.getElementById('msgLink').innerText = t.msgLink;
+        document.getElementById('labelRuqya').innerText = t.ruqya;
+        document.getElementById('labelWird').innerText = t.wird;
+        document.getElementById('labelQuranic').innerText = t.quranic;
+        document.getElementById('labelPersonal').innerText = t.personal;
+        document.getElementById('labelFavorites').innerText = t.favorites;
+        document.getElementById('labelSunnah').innerText = t.sunnah;
+        document.getElementById('menuTitleColors').innerText = t.menuColors;
+        document.getElementById('menuTitleSettings').innerText = t.menuSettings;
+        document.getElementById('set1').innerText = t.set1;
+        document.getElementById('set2').innerText = t.set2;
+        document.getElementById('set3').innerText = t.set3;
+        document.getElementById('set4').innerText = t.set4;
+        document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip);
+        document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip);
+        document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
+        document.getElementById('shareTitle').innerText = t.shareTitle;
+        document.getElementById('closeModalBtn').innerText = t.closeModal;
+        updateFavTooltip();
+    }
+    function updateFavTooltip() {
+        const btn = document.getElementById('btnFav');
+        btn.setAttribute('data-tooltip', isFavorite ? translations[currentLang].favTooltipRemove : translations[currentLang].favTooltipAdd);
+    }
+
+    // Favorite heart logic: fill red when active, empty when not
+    function setFavoriteHeart(active) {
+        const svgPath = document.querySelector('#favSvgIcon path');
+        if (active) {
+            svgPath.setAttribute('fill', '#ff4444');
+            svgPath.setAttribute('stroke', '#ff4444');
+            svgPath.setAttribute('stroke-width', '0');
+        } else {
+            svgPath.setAttribute('fill', 'none');
+            svgPath.setAttribute('stroke', 'white');
+            svgPath.setAttribute('stroke-width', '1.5');
+        }
+        isFavorite = active;
+        updateFavTooltip();
+    }
+
+    // Daily duas
+    const duasList = ["اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً.", "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله.", "اللهم إنك عفو تحب العفو فاعف عني.", "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.", "اللهم صل وسلم على نبينا محمد."];
+    function showDailyDua() {
+        const hour = new Date().getHours();
+        document.getElementById('duaOutput').innerText = duasList[hour % duasList.length];
+        document.getElementById('duaModal').style.display = 'flex';
+        playClickSound();
+        playVibration();
+    }
+    document.getElementById('dailyMessageCard').addEventListener('click', showDailyDua);
+    document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('duaModal').style.display = 'none');
+
+    // Grid toggle
+    const gridContainer = document.getElementById('gridContainer');
+    let is3Cols = false;
+    document.getElementById('gridToggleBtn').addEventListener('click', () => {
+        is3Cols = !is3Cols;
+        gridContainer.classList.toggle('grid-3cols', is3Cols);
+        playClickSound();
+    });
+
+    // Language toggle – icons stay FIXED on the physical right
+    document.getElementById('langToggleBtn').addEventListener('click', () => {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        document.documentElement.setAttribute('lang', currentLang);
+        // Keep html dir="ltr" ALWAYS to prevent layout shifts
+        document.documentElement.dir = 'ltr';
+        // Apply RTL only to text elements via class
+        if (currentLang === 'ar') {
+            document.body.classList.add('text-rtl');
+            document.body.classList.remove('text-ltr');
+        } else {
+            document.body.classList.add('text-ltr');
+            document.body.classList.remove('text-rtl');
+        }
+        applyLanguage();
+        playClickSound();
+    });
+
+    // Menu popover
+    const menuToggle = document.getElementById('menuToggleBtn');
+    const unifiedMenu = document.getElementById('unifiedMenu');
+    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); });
+    document.addEventListener('click', (e) => { if (!menuToggle.contains(e.target) && !unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); });
+
+    // Theme & accent
+    function updateFullTheme() {
+        const root = document.documentElement;
+        root.style.setProperty('--accent', currentAccent);
+        root.style.setProperty('--header-bg', currentAccent);
+        if (isDarkMode) document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+        const sun = document.getElementById('sunIcon');
+        const moon = document.getElementById('moonIcon');
+        if (isDarkMode) { sun.classList.remove('active'); moon.classList.add('active'); }
+        else { sun.classList.add('active'); moon.classList.remove('active'); }
+        localStorage.setItem('dua_accent', currentAccent);
+        localStorage.setItem('dua_darkMode', isDarkMode);
+    }
+    function setAccent(color, element) {
+        currentAccent = color;
+        updateFullTheme();
+        document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+        if (element) element.classList.add('active');
+    }
+    function toggleDarkMode() { isDarkMode = !isDarkMode; updateFullTheme(); document.getElementById('themeToggle').checked = isDarkMode; }
+    document.getElementById('themeToggle').addEventListener('change', toggleDarkMode);
+
+    // Color menu
+    const colors = ['#cc0000','#800080','#0066cc','#8B4513','#ffcc00','#228b22','#ff8c00','#008080'];
+    const colorMenu = document.getElementById('colorMenu');
+    colors.forEach(c => {
+        const dot = document.createElement('div');
+        dot.className = 'color-dot';
+        dot.style.backgroundColor = c;
+        dot.onclick = () => { setAccent(c, dot); playClickSound(); };
+        colorMenu.appendChild(dot);
+    });
+
+    // Load saved settings
+    const savedAccent = localStorage.getItem('dua_accent');
+    const savedDark = localStorage.getItem('dua_darkMode');
+    if (savedAccent) currentAccent = savedAccent;
+    if (savedDark !== null) isDarkMode = savedDark === 'true';
+    updateFullTheme();
+    document.querySelectorAll('.color-dot').forEach(dot => { if (dot.style.backgroundColor === currentAccent) dot.classList.add('active'); });
+    document.getElementById('themeToggle').checked = isDarkMode;
+
+    // Grid item clicks with sound + activation
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(item => {
+        item.addEventListener('click', () => {
+            gridItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            playClickSound();
+            playVibration();
+        });
+    });
+    if (gridItems.length) gridItems[0].classList.add('active');
+
+    // Copy, Share, Fav, Refresh
+    document.getElementById('btnCopy').addEventListener('click', () => {
+        const activeDua = duasList[0];
+        navigator.clipboard.writeText(activeDua);
+        alert(translations[currentLang].copyTooltip);
+        playClickSound();
+    });
+    const sharePopup = document.getElementById('sharePopup');
+    document.getElementById('btnShare').addEventListener('click', () => {
+        sharePopup.classList.toggle('show');
+        if (sharePopup.classList.contains('show')) {
+            const t = translations[currentLang];
+            const shareGrid = document.getElementById('shareGrid');
+            shareGrid.innerHTML = '';
+            const platforms = [
+                { name: t.whatsapp, url: `https://wa.me/?text=${encodeURIComponent('اللهم بارك لنا في هذا الدعاء')}` },
+                { name: t.twitter, url: `https://twitter.com/intent/tweet?text=${encodeURIComponent('دعاء مبارك')}` },
+                { name: t.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}` }
+            ];
+            platforms.forEach(p => {
+                const btn = document.createElement('div');
+                btn.className = 'share-icon';
+                btn.innerHTML = `<span>${p.name}</span>`;
+                btn.onclick = () => { window.open(p.url, '_blank'); sharePopup.classList.remove('show'); playClickSound(); };
+                shareGrid.appendChild(btn);
+            });
+            document.addEventListener('click', function closeShare(e) {
+                if (!sharePopup.contains(e.target) && e.target !== document.getElementById('btnShare')) {
+                    sharePopup.classList.remove('show');
+                    document.removeEventListener('click', closeShare);
+                }
+            });
+        }
+        playClickSound();
+    });
+    document.getElementById('btnRefresh').addEventListener('click', () => location.reload());
+    document.getElementById('btnFav').addEventListener('click', () => {
+        setFavoriteHeart(!isFavorite);
+        playClickSound();
+    });
+
+    // Font slider: only dua text
+    const fontSlider = document.getElementById('fontSlider');
+    function setDuaFontSize(val) {
+        document.documentElement.style.setProperty('--dua-font-size', val + 'px');
+        localStorage.setItem('dua_font_size', val);
+    }
+    fontSlider.addEventListener('input', (e) => setDuaFontSize(e.target.value));
+    const savedFont = localStorage.getItem('dua_font_size');
+    if (savedFont) setDuaFontSize(parseInt(savedFont));
+    else setDuaFontSize(22);
+    fontSlider.value = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size')) || 22;
+
+    // Set initial text direction class
+    if (currentLang === 'ar') {
+        document.body.classList.add('text-rtl');
+    } else {
+        document.body.classList.add('text-ltr');
+    }
+    applyLanguage();
+    setFavoriteHeart(false); // initial empty heart
+</script>
 </body>
 </html>
