@@ -187,32 +187,20 @@
             transform-origin: top center;
             transition: background 0.2s;
         }
-        /* Realistic email envelope V-flap */
+        /* Clean triangle envelope flap */
         .message-card::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 55px;
-            background: linear-gradient(135deg, var(--border-color) 0%, var(--card-bg) 100%);
-            clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 2px, 50% 57px, 0 2px);
+            height: 50px;
+            background: linear-gradient(to bottom, #e8f4f8 0%, #f5fafc 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
             z-index: 1;
-            border-bottom: 1px solid var(--border-color);
         }
-        .message-card::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 70px solid transparent;
-            border-right: 70px solid transparent;
-            border-top: 45px solid var(--border-color);
-            z-index: 2;
-            opacity: 0.4;
+        body.dark-mode .message-card::before {
+            background: linear-gradient(to bottom, #2a3a4a 0%, #1e2a3a 100%);
         }
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
@@ -314,8 +302,8 @@
         /* --- MENU POPOVER --- */
         .menu-popover {
             position: fixed;
-            top: 58px;
-            right: 10px;
+            top: 66px;
+            right: 8px;
             background: var(--popup-bg);
             padding: 18px;
             border-radius: 20px;
