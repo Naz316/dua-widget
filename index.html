@@ -187,7 +187,7 @@
             transform-origin: top center;
             transition: background 0.2s;
         }
-        /* Clean triangle envelope flap */
+        /* Clean grey triangle envelope flap */
         .message-card::before {
             content: "";
             position: absolute;
@@ -195,12 +195,12 @@
             left: 0;
             right: 0;
             height: 50px;
-            background: linear-gradient(to bottom, #e8f4f8 0%, #f5fafc 100%);
+            background: #d0d0d0;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             z-index: 1;
         }
         body.dark-mode .message-card::before {
-            background: linear-gradient(to bottom, #2a3a4a 0%, #1e2a3a 100%);
+            background: #555555;
         }
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
@@ -314,6 +314,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             border: 1px solid var(--popup-border);
             width: 290px;
+            height: auto;
             direction: ltr;
         }
         /* Force all settings rows inside menu to stay LTR layout */
