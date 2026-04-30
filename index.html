@@ -46,6 +46,14 @@
             transition: background-color 0.3s ease;
             font-family: 'Tajawal', 'Inter', sans-serif;
         }
+        /* English text uses Inter font */
+        .dua-translation, .message-card p, .message-card .sub-title, .grid-item span, .menu-section-title span:last-child, .setting-label span:last-child, .setting-row, .share-popup-title, .empty-fav {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Arabic text uses Tajawal/Amiri */
+        .dua-arabic, .dua-transliteration, .message-card h2, .message-card .open-link, .dua-number, .subcategory-btn, .back-button, .tab span, .tab label {
+            font-family: 'Amiri', 'Tajawal', serif;
+        }
         body.dark-mode { background-color: #12121a; }
 
         /* Text direction classes */
@@ -640,10 +648,9 @@
 <body class="text-rtl">
 <div class="app-container">
     <header>
-        <div class="header-icons">
-            <button class="icon-btn lang-btn" id="langToggleBtn"><img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language"></button>
-            <button class="icon-btn" id="gridToggleBtn"><img src="https://cdn-icons-png.flaticon.com/128/8022/8022304.png" alt="grid layout"></button>
-            <button class="icon-btn menu-icon" id="menuToggleBtn"><span>☰</span></button>
+        <div class="header-icons" style="width:100%; justify-content:space-between;">
+            <button class="icon-btn lang-btn" id="langToggleBtn" style="margin-right:auto;"><img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language"></button>
+            <button class="icon-btn menu-icon" id="menuToggleBtn" style="margin-left:auto;"><span>☰</span></button>
         </div>
     </header>
 
@@ -720,6 +727,9 @@
             </button>
             <button class="action-btn" id="btnShare" data-tooltip="مشاركة">
                 <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+            <button class="action-btn" id="btnGrid" data-tooltip="تخطيط الشبكة">
+                <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm0 10h8v8H3zm10-10h8v8h-8zm0 10h8v8h-8z" fill="white"/></svg>
             </button>
             <button class="action-btn" id="btnFav" data-tooltip="أضف إلى المفضلة">
                 <svg viewBox="0 0 24 24" width="20" height="20" id="favSvgIcon">
@@ -814,6 +824,7 @@ const translations = {
         telegram:"تليجرام",
         messenger:"ماسنجر",
         copyLink:"نسخ الرابط",
+        gridTooltip:"تخطيط الشبكة",
         selfBtn:"ارق نفسك", 
         otherBtn:"ارق غيرك", 
         back:"رجوع",
@@ -850,6 +861,7 @@ const translations = {
         telegram:"Telegram",
         messenger:"Messenger",
         copyLink:"Copy Link",
+        gridTooltip:"Grid Layout",
         selfBtn:"Heal Yourself", 
         otherBtn:"Heal Others", 
         back:"Back",
@@ -1181,6 +1193,11 @@ document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.
 
 let is3Cols=false; 
 document.getElementById('gridToggleBtn')?.addEventListener('click',()=>{ 
+    is3Cols=!is3Cols; 
+    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
+    playClickSound(); 
+});
+document.getElementById('btnGrid')?.addEventListener('click',()=>{ 
     is3Cols=!is3Cols; 
     document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
     playClickSound(); 
