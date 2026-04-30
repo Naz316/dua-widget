@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>الدعاء · الرقية الشرعية</title>
+    <title>الدعاء · الرقية الشرعية · الأذكار</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ----- CSS Variables (fully themable) ----- */
         :root {
             --accent: #cc0000;
-            --accent-dark: #990000;
+            --accent-soft: rgba(204,0,0,0.15);
             --widget-bg: #ffffff;
             --header-bg: #cc0000;
             --text: #1a1a1a;
@@ -28,1018 +23,603 @@
             --dua-font-size: 22px;
         }
 
-        /* Dark mode */
         body.dark-mode {
-            --widget-bg: #1e1e2f;
-            --header-bg: #2d2d44;
-            --text: #f0f0f0;
+            --widget-bg: #1a1a1a;
+            --header-bg: #2a2a2a;
+            --text: #e0e0e0;
             --text-dim: #aaaaaa;
-            --card-bg: #2a2a3a;
-            --border-color: #3a3a4a;
-            --popup-bg: #2a2a3a;
+            --card-bg: #222222;
+            --border-color: #333333;
+            --popup-bg: #222222;
             --popup-border: #444;
             --shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         body {
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-            font-family: 'Tajawal', sans-serif;
-        }
-        body.dark-mode {
-            background-color: #12121a;
-        }
-        /* Text direction classes - layout stays LTR always */
-        body.text-rtl .message-card,
-        body.text-rtl .grid-item,
-        body.text-rtl .modal-content,
-        body.text-rtl .share-popup {
-            direction: rtl;
-            text-align: right;
-        }
-        body.text-ltr .message-card,
-        body.text-ltr .grid-item,
-        body.text-ltr .modal-content,
-        body.text-ltr .share-popup {
-            direction: ltr;
-            text-align: left;
-        }
-        /* Menu text RTL: only the text content, NOT the layout */
-        body.text-rtl .menu-popover .menu-section-title {
-            direction: rtl;
-            text-align: right;
-        }
-        body.text-ltr .menu-popover .menu-section-title {
-            direction: ltr;
-            text-align: left;
-        }
-        /* Setting labels: text direction only, layout stays LTR */
-        body.text-rtl .menu-popover .setting-label span:last-child {
-            direction: rtl;
-            unicode-bidi: plaintext;
-        }
-        /* Grid items always centered */
-        .grid-item {
-            text-align: center !important;
-        }
-        /* Message card always centered */
-        .message-card {
-            text-align: center !important;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
             background-color: var(--widget-bg);
-            min-height: 100vh;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background 0.3s;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
-        }
-
-        /* --- HEADER: icons always on the physical right side, no movement --- */
-        header {
-            background-color: var(--header-bg);
-            padding: 14px 18px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            transition: background-color 0.2s;
-            /* PIN to physical right regardless of text direction */
-            direction: ltr !important;
-        }
-        .header-icons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            /* FIXED: Always stay on the physical right, never move */
-            margin-left: auto;
-            flex-direction: row;
-            direction: ltr !important;
-        }
-        .icon-btn {
-            background: rgba(255,255,255,0.15);
-            border: none;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-        .icon-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-        /* FORCE: Header icons always pinned to physical right */
-        header {
-            justify-content: flex-end;
-            direction: ltr;
-        }
-        .header-icons {
-            margin-left: auto;
-            margin-right: 0;
-            flex-direction: row;
-            direction: ltr;
-        }
-        .icon-btn img {
-            width: 22px;
-            height: 22px;
-            filter: invert(1);
-        }
-        .lang-btn img {
-            width: 28px;
-            height: 28px;
-        }
-        .menu-icon span {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            line-height: 1;
-        }
-
-        /* --- ENVELOPE CARD with restored V-shape (visible in both themes) --- */
-        .message-container {
-            padding: 25px 20px;
-            perspective: 1000px;
-        }
-        .message-card {
-            background: var(--card-bg);
-            border-radius: 35px;
-            padding: 75px 20px 35px 20px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            position: relative;
-            cursor: pointer;
             overflow: hidden;
-            animation: mailSwing 1.2s ease-out forwards;
-            transform-origin: top center;
-            transition: background 0.2s;
-        }
-        /* Clean grey triangle envelope flap */
-        .message-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: #d0d0d0;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            z-index: 1;
-        }
-        body.dark-mode .message-card::before {
-            background: #555555;
-        }
-        @keyframes mailSwing {
-            0% { transform: rotate(0deg); }
-            15% { transform: rotate(12deg); }
-            30% { transform: rotate(-10deg); }
-            45% { transform: rotate(8deg); }
-            60% { transform: rotate(-5deg); }
-            75% { transform: rotate(3deg); }
-            90% { transform: rotate(-1deg); }
-            100% { transform: rotate(0deg); }
-        }
-        .message-card h2 {
-            font-size: 1.6rem;
-            margin-bottom: 4px;
-            color: var(--text);
-            font-weight: 800;
-        }
-        .message-card .sub-title {
-            color: var(--text-dim);
-            font-size: 1rem;
-            margin-bottom: 15px;
-        }
-        .message-card p {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        .message-card .open-link {
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-decoration: none;
         }
 
-        /* --- GRID (2 columns, toggle to 3) --- */
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .header h1 { font-size: 1.2rem; font-weight: 700; }
+        .header-controls { display: flex; gap: 12px; }
+        
+        .icon-btn {
+            background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            padding: 8px; border-radius: 50%; transition: background 0.2s;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.1); }
+        .header .icon-btn svg { stroke: white; }
+
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 10px;
+        }
+        .tab-btn {
+            flex: 1; padding: 12px 0; border: none; background: none; font-family: inherit; font-size: 1rem;
+            color: var(--text-dim); font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .content-area {
+            flex: 1; display: flex; overflow: hidden;
+        }
+
         .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 10px 20px 40px 20px;
-            transition: all 0.2s;
-            /* FIXED: Grid layout never flips with RTL */
-            direction: ltr;
-        }
-        .grid-container.grid-3cols {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        /* Grid items text follows page direction, layout stays LTR */
-        .grid-item {
-            direction: inherit;
-        }
-        .grid-item {
-            background: var(--card-bg);
-            border-radius: 25px;
-            padding: 24px 10px;
-            text-align: center;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s;
-            box-shadow: var(--shadow);
-            color: var(--text);
-            position: relative;
-            /* Text follows page direction */
-            direction: inherit;
-        }
-        .grid-item:active {
-            transform: scale(0.96);
-        }
-        /* HIGHLIGHTED BLOCK - solid accent, icons unchanged */
-        .grid-item.active {
-            background: var(--accent) !important;
-            border: none;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-            transform: scale(1.02);
-        }
-        .grid-item.active span {
-            color: white;
-        }
-        .grid-item.active img {
-            filter: none !important;
-        }
-        .grid-item img {
-            width: 70px;
-            height: 70px;
-            margin-bottom: 12px;
-            object-fit: contain;
-        }
-        .grid-item span {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text);
+            width: 100%; display: grid; grid-template-columns: 1fr; height: 100%; transition: all 0.3s ease;
         }
 
-        /* --- MENU POPOVER --- */
-        .menu-popover {
-            position: fixed;
-            top: 66px;
-            right: 8px;
-            background: var(--popup-bg);
-            padding: 18px;
-            border-radius: 20px;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.15s;
-            z-index: 1000;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            border: 1px solid var(--popup-border);
-            width: 290px;
-            height: auto;
-            direction: ltr;
+        @media (min-width: 768px) {
+            .grid-container.split-view { grid-template-columns: 350px 1fr; }
         }
-        /* Force all settings rows inside menu to stay LTR layout */
-        .menu-popover .setting-row {
-            direction: ltr !important;
+
+        .list-section {
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto; padding: 15px; background: var(--widget-bg);
         }
-        .menu-popover .setting-row .setting-label {
-            direction: ltr !important;
+        .text-ltr .list-section { border-left: none; border-right: 1px solid var(--border-color); }
+
+        .list-item {
+            cursor: pointer; padding: 15px; border-radius: 8px; margin-bottom: 10px;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.2s ease;
         }
-        .menu-popover .setting-row .switch {
-            order: 2 !important;
+        .list-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        
+        /* Active highlight styles */
+        .list-item.active-dua { background: var(--accent-soft); }
+        .text-rtl .list-item.active-dua { border-right: 4px solid var(--accent); border-left: 1px solid var(--border-color); }
+        .text-ltr .list-item.active-dua { border-left: 4px solid var(--accent); border-right: 1px solid var(--border-color); }
+
+        .list-item-content { flex: 1; display: flex; gap: 15px; align-items: center; }
+        .list-number {
+            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+            background: var(--accent-soft); color: var(--accent); border-radius: 50%; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
         }
-        .menu-popover .setting-row .font-slider {
-            order: 2 !important;
+        .list-preview { font-size: 0.95rem; line-height: 1.4; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .message-section { padding: 20px; overflow-y: auto; background: var(--widget-bg); display: none; }
+        @media (min-width: 768px) { .message-section { display: block; } }
+        .message-section.active-mobile { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; }
+
+        .back-btn { display: none; margin-bottom: 15px; color: var(--accent); font-weight: bold; cursor: pointer; align-items: center; gap: 8px; }
+        @media (max-width: 767px) { .back-btn.show { display: flex; } }
+
+        /* V-Shape CSS Envelope */
+        .css-envelope-container {
+            position: relative; width: 160px; height: 110px; background: var(--accent);
+            border-radius: 0 0 8px 8px; margin: 0 auto 15px auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: transform 0.5s ease;
         }
-        .menu-popover.show {
-            visibility: visible;
-            opacity: 1;
+        .css-flap {
+            position: absolute; top: 0; left: 0;
+            border-left: 80px solid transparent; border-right: 80px solid transparent;
+            border-top: 65px solid rgba(0,0,0,0.2);
+            transform-origin: top; z-index: 3; transition: transform 0.4s ease;
         }
-        .menu-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            direction: ltr;
+        .css-pocket {
+            position: absolute; bottom: 0; left: 0;
+            border-left: 80px solid rgba(255,255,255,0.1); border-right: 80px solid rgba(255,255,255,0.1);
+            border-bottom: 55px solid rgba(255,255,255,0.2); z-index: 3;
         }
-        .menu-header-row .menu-section-title {
-            direction: inherit;
-            unicode-bidi: plaintext;
+        .envelope-wrapper {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            cursor: pointer; z-index: 10; display: flex; flex-direction: column; align-items: center;
         }
-        .menu-section-title {
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            direction: ltr !important;
+        .envelope-wrapper.open .css-envelope-container { transform: scale(1.1) rotateX(180deg); opacity: 0; }
+        .envelope-wrapper:hover .css-flap { transform: rotateX(180deg); }
+        .envelope-text { margin-top: 20px; font-weight: bold; font-size: 1.1rem; color: var(--text-dim); transition: opacity 0.3s; }
+        .envelope-wrapper.open .envelope-text { opacity: 0; }
+
+        .message-card {
+            background: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: var(--shadow);
+            border: 1px solid var(--border-color); max-width: 800px; margin: 0 auto;
         }
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(128,128,128,0.15);
-            border-radius: 30px;
-            padding: 4px;
-        }
-        .theme-toggle-icon {
-            font-size: 18px;
-            width: 28px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            opacity: 0.6;
-            color: var(--text);
-        }
-        .theme-toggle-icon.active {
-            opacity: 1;
-            filter: drop-shadow(0 0 2px var(--accent));
-        }
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;
-            height: 26px;
-        }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .theme-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.2s;
-            border-radius: 26px;
-        }
-        .theme-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: 0.2s;
-            border-radius: 50%;
-        }
-        input:checked + .theme-slider {
-            background-color: var(--accent);
-        }
-        input:checked + .theme-slider:before {
-            transform: translateX(26px);
-        }
-        .menu-divider {
-            height: 1px;
-            background: var(--text-dim);
-            margin: 12px 0;
-            border: none;
-            width: 100%;
-            opacity: 0.3;
-        }
-        .color-menu {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            direction: ltr;
-        }
-        .color-dot {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .color-dot.active {
-            border-color: var(--text);
-            transform: scale(1.08);
-        }
-        .color-dot.active::after {
-            content: '✓';
-            color: white;
-            font-size: 14px;
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        
+        .dua-text { margin-bottom: 18px; line-height: 1.8; text-align: justify; }
+        
+        /* Text Priorities and Colors */
+        .text-primary {
             font-weight: bold;
-            text-shadow: 0 0 2px black;
+            font-size: var(--dua-font-size);
+            color: var(--text); /* Black in Light Mode */
         }
-        .settings-rows {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            /* Layout fixed LTR, text follows page */
-            direction: ltr;
-        }
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text);
-            font-size: 13px;
-            font-weight: 600;
-            direction: ltr;
-        }
-        .setting-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            /* Text direction follows page, layout stays LTR */
-            direction: inherit;
-            unicode-bidi: plaintext;
-        }
-        /* Switches always stay on the right side physically */
-        .setting-row .switch {
-            order: 2;
-            flex-shrink: 0;
-        }
-        .setting-row .setting-label {
-            order: 1;
-        }
-        .font-slider {
-            width: 100px;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
-        .action-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--text-dim);
-            direction: ltr;
-        }
-        .action-btn {
-            flex: 1;
-            height: 42px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            background: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            position: relative;
-        }
-        .action-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-        .action-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.02);
-        }
-        .action-btn::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 50px;
-            background: #333;
-            color: white;
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.15s;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-        .action-btn:hover::after {
-            visibility: visible;
-            opacity: 1;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #555;
-            transition: .15s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: #ddd;
-            transition: .15s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--accent);
-        }
-        input:checked + .slider:before {
-            transform: translateX(20px);
-            background-color: white;
+        body.dark-mode .text-primary {
+            color: var(--accent) !important; /* Accent in Dark Mode */
         }
 
-        /* SHARE POPUP */
+        .text-secondary {
+            font-size: calc(var(--dua-font-size) * 0.85);
+            color: var(--text-dim) !important; /* Grey always */
+        }
+
+        .translit-text {
+            font-style: italic;
+            font-size: calc(var(--dua-font-size) * 0.75);
+            color: var(--text-dim) !important; /* Grey always */
+        }
+
+        .ar-text { font-family: 'Amiri', serif; }
+        .en-text { font-family: 'Tajawal', sans-serif; }
+
+        .settings-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center; z-index: 100;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .settings-overlay.show { opacity: 1; pointer-events: all; }
+        .settings-popup {
+            background: var(--popup-bg); border-radius: 12px; width: 90%; max-width: 400px;
+            padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: translateY(20px); transition: transform 0.3s;
+        }
+        .settings-overlay.show .settings-popup { transform: translateY(0); }
+        
+        /* Forced LTR for Settings Header so Settings word is Left, X is Right */
+        .settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        
+        .setting-group { margin-bottom: 20px; }
+        .setting-group label { display: block; margin-bottom: 10px; font-weight: 500; color: var(--text); }
+        .setting-controls { display: flex; gap: 10px; }
+        .setting-btn {
+            flex: 1; padding: 10px; border: 1px solid var(--border-color); background: var(--card-bg);
+            color: var(--text); border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .setting-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .slider-container { display: flex; align-items: center; gap: 15px; }
+        .slider { flex: 1; height: 6px; border-radius: 3px; background: var(--border-color); outline: none; -webkit-appearance: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; }
+        
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider-toggle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
+        .slider-toggle:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider-toggle { background-color: var(--accent); }
+        input:checked + .slider-toggle:before { transform: translateX(24px); }
+
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Share Popup - Azkar Style */
         .share-popup {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            background: var(--popup-bg);
-            border-radius: 28px;
-            padding: 20px;
-            width: 280px;
-            z-index: 1100;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
-            border: 1px solid var(--accent);
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.15s ease;
-            transform: scale(0.95);
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+            background: var(--popup-bg); padding: 25px; border-radius: 12px; z-index: 1000;
+            width: 90%; max-width: 350px; border: 1px solid var(--popup-border); box-shadow: var(--shadow);
+            opacity: 0; pointer-events: none; transition: all 0.3s ease; color: var(--text);
         }
-        html[dir="rtl"] .share-popup {
-            right: 20px !important;
-            left: auto !important;
+        .share-popup.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+        .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .share-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);
+            cursor: pointer; transition: background 0.2s; color: var(--text);
         }
-        .share-popup.show {
-            visibility: visible;
-            opacity: 1;
-            transform: scale(1);
-        }
-        .share-popup-title {
-            text-align: center;
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 18px;
-            color: var(--accent);
-        }
-        .share-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .share-icon {
-            background: rgba(128,128,128,0.2);
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: 0.1s;
-            color: var(--accent);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .share-icon:hover {
-            background: var(--accent);
-            color: white;
-        }
+        .share-btn:hover { background: var(--accent-soft); }
+        .share-btn svg { width: 24px; height: 24px; margin-bottom: 8px; stroke: var(--accent); }
+        .close-share { width: 100%; padding: 12px; background: var(--card-bg); color: var(--text); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; }
 
-        /* MODAL */
-        #duaModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-content {
-            direction: inherit;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            padding: 40px 25px;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            color: var(--text);
-        }
-        .dua-text {
-            font-size: var(--dua-font-size, 22px);
-            line-height: 1.8;
-            margin-bottom: 30px;
-            font-family: 'Amiri', serif;
-            transition: font-size 0.1s ease;
-        }
-        .close-modal {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 35px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        @media (max-width: 480px) {
-            .grid-container.grid-3cols {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .grid-item span {
-                font-size: 0.85rem;
-            }
-        }
     </style>
-<base target="_blank">
 </head>
-<body>
-<div class="app-container">
-    <header>
-        <div class="header-icons">
-            <button class="icon-btn lang-btn" id="langToggleBtn">
-                <img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language">
+<body class="dark-mode">
+
+    <header class="header">
+        <h1 id="mainTitle">الرقية الشرعية</h1>
+        <div class="header-controls">
+            <button class="icon-btn" id="btnShare" aria-label="مشاركة">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
             </button>
-            <button class="icon-btn" id="gridToggleBtn">
-                <img src="https://cdn-icons-png.flaticon.com/128/8022/8022304.png" alt="grid layout">
+            <button class="icon-btn" id="btnFav" aria-label="المفضلة">
+                <svg id="favSvgIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </button>
-            <button class="icon-btn menu-icon" id="menuToggleBtn">
-                <span>☰</span>
+            <button class="icon-btn" id="btnRefresh" aria-label="تحديث">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+            </button>
+            <button class="icon-btn" id="btnMenu" aria-label="إعدادات">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
         </div>
     </header>
 
-    <div class="message-container">
-        <div class="message-card" id="dailyMessageCard">
-            <h2 id="msgTitle">رسالتك اليوم</h2>
-            <div class="sub-title" id="msgSub">رسالتك اليوم</div>
-            <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
-            <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
+    <div class="tabs">
+        <button class="tab-btn active" id="tabRuqyah">الرقية الشرعية</button>
+        <button class="tab-btn" id="tabFavorites">المفضلة</button>
+    </div>
+
+    <div class="content-area">
+        <div class="grid-container split-view" id="gridContainer">
+            
+            <div class="list-section" id="listSection">
+                <div id="listContainer"></div>
+            </div>
+
+            <div class="message-section" id="messageSection">
+                <div class="back-btn" id="btnBack">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    <span id="backText">رجوع</span>
+                </div>
+                
+                <div id="messageContainer">
+                    <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+                        <div class="css-envelope-container">
+                            <div class="css-flap"></div>
+                            <div class="css-pocket"></div>
+                        </div>
+                        <div class="envelope-text" id="envText">اضغط لفتح الدعاء</div>
+                    </div>
+                    <div id="openMessageContent" style="display: none;"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="grid-container" id="gridContainer">
-        <div class="grid-item" data-category="ruqya">
-            <img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya">
-            <span id="labelRuqya">الرقية الشرعية</span>
-        </div>
-        <div class="grid-item" data-category="wird">
-            <img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird">
-            <span id="labelWird">ورد الدعاء</span>
-        </div>
-        <div class="grid-item" data-category="quranic">
-            <img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran">
-            <span id="labelQuranic">دعاء من القرآن</span>
-        </div>
-        <div class="grid-item" data-category="personal">
-            <img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal">
-            <span id="labelPersonal">أدعيتي</span>
-        </div>
-        <div class="grid-item" data-category="favorites">
-            <img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites">
-            <span id="labelFavorites">المفضلة</span>
-        </div>
-        <div class="grid-item" data-category="sunnah">
-            <img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah">
-            <span id="labelSunnah">دعاء من السنة</span>
-        </div>
-    </div>
-</div>
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-popup">
+            <div class="settings-header" dir="ltr">
+                <h3 id="settingsTitle">Settings</h3>
+                <button class="icon-btn" id="closeSettings" style="color:var(--text);">&times;</button>
+            </div>
+            
+            <div class="setting-group">
+                <label id="lblTheme">Theme</label>
+                <div class="setting-controls">
+                    <button class="setting-btn" id="btnLight">Light</button>
+                    <button class="setting-btn active" id="btnDark">Dark</button>
+                </div>
+            </div>
 
-<div class="menu-popover" id="unifiedMenu">
-    <div class="menu-header-row">
-        <div class="menu-section-title"><span>🎨</span><span id="menuTitleColors">Colors</span></div>
-        <div class="theme-toggle">
-            <span class="theme-toggle-icon sun" id="sunIcon">☀️</span>
-            <label class="theme-switch">
-                <input type="checkbox" id="themeToggle">
-                <span class="theme-slider"></span>
-            </label>
-            <span class="theme-toggle-icon moon" id="moonIcon">🌙</span>
+            <div class="setting-group">
+                <label id="lblLang">Language</label>
+                <div class="setting-controls">
+                    <button class="setting-btn active" id="btnAr">العربية</button>
+                    <button class="setting-btn" id="btnEn">English</button>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label id="lblFontSize">Font Size: <span id="fontSizeVal">22</span>px</label>
+                <div class="slider-container">
+                    <span style="font-size: 14px;">A</span>
+                    <input type="range" id="fontSlider" class="slider" min="16" max="40" value="22">
+                    <span style="font-size: 24px;">A</span>
+                </div>
+            </div>
+
+            <div class="setting-group" style="display: flex; justify-content: space-between; align-items: center;">
+                <label id="lblTranslit" style="margin-bottom: 0;">Show Transliteration</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="chkTranslit" checked>
+                    <span class="slider-toggle"></span>
+                </label>
+            </div>
         </div>
     </div>
-    <hr class="menu-divider">
-    <div class="color-menu" id="colorMenu"></div>
-    <div class="menu-section-title"><span>⚙️</span><span id="menuTitleSettings">Settings</span></div>
-    <hr class="menu-divider">
-    <div class="settings-rows">
-        <div class="setting-row"><div class="setting-label"><span>🔊</span><span id="set1">Click Sound</span></div><label class="switch"><input type="checkbox" id="chkClick" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>📳</span><span id="set2">Vibration</span></div><label class="switch"><input type="checkbox" id="chkVibrate" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>🔄</span><span id="set3">Auto Transfer</span></div><label class="switch"><input type="checkbox" id="chkAuto" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">Font Size (Dua only)</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
-        <div class="action-btns">
-            <button class="action-btn" id="btnCopy" data-tooltip="نسخ النص"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
-            <button class="action-btn" id="btnShare" data-tooltip="مشاركة"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg></button>
-            <button class="action-btn" id="btnFav" data-tooltip="أضف إلى المفضلة"><svg viewBox="0 0 24 24" width="20" height="20" id="favSvgIcon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/></svg></button>
-            <button class="action-btn" id="btnRefresh" data-tooltip="تحديث"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
-        </div>
-    </div>
-</div>
 
-<div id="sharePopup" class="share-popup">
-    <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
-    <div class="share-grid" id="shareGrid"></div>
-</div>
-
-<div id="duaModal">
-    <div class="modal-content">
-        <div class="dua-text" id="duaOutput"></div>
-        <button class="close-modal" id="closeModalBtn">إغلاق</button>
+    <div class="share-popup" id="sharePopup">
+        <h3 id="shareTitle" style="margin-top:0; text-align:center;">مشاركة</h3>
+        <div class="share-grid" id="shareGrid"></div>
+        <button class="close-share" onclick="document.getElementById('sharePopup').classList.remove('show')" id="closeShareText">إغلاق</button>
     </div>
-</div>
+
+    <audio id="clickSound" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA" preload="auto"></audio>
 
 <script>
-    // Translations
-    const translations = {
-        ar: {
-            msgTitle: "رسالتك اليوم", msgSub: "رسالتك اليوم", msgText: "قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink: "اضغط هنا لتفتحها",
-            ruqya: "الرقية الشرعية", wird: "ورد الدعاء", quranic: "دعاء من القرآن", personal: "أدعيتي", favorites: "المفضلة", sunnah: "دعاء من السنة",
-            menuColors: "الألوان", menuSettings: "الإعدادات", set1: "صوت النقرة", set2: "اهتزاز", set3: "تحويل تلقائي", set4: "حجم الخط",
-            copyTooltip: "نسخ النص", shareTooltip: "مشاركة", favTooltipAdd: "أضف إلى المفضلة", favTooltipRemove: "إزالة من المفضلة", refreshTooltip: "تحديث", shareTitle: "مشاركة الدعاء", closeModal: "إغلاق",
-            whatsapp: "واتساب", twitter: "تويتر", facebook: "فيسبوك"
-        },
-        en: {
-            msgTitle: "Your Message Today", msgSub: "Your message today", msgText: "Behind this supplication there may be a message written for you, and today you need it most.", msgLink: "Click here to open it",
-            ruqya: "Spiritual Ruqya", wird: "Daily Wird", quranic: "Quranic Duas", personal: "My Duas", favorites: "Favorites", sunnah: "Sunnah Duas",
-            menuColors: "Colors", menuSettings: "Settings", set1: "Click Sound", set2: "Vibration", set3: "Auto Transfer", set4: "Font Size",
-            copyTooltip: "Copy Text", shareTooltip: "Share", favTooltipAdd: "Add to Favorites", favTooltipRemove: "Remove from Favorites", refreshTooltip: "Refresh", shareTitle: "Share Dua", closeModal: "Close",
-            whatsapp: "WhatsApp", twitter: "Twitter", facebook: "Facebook"
+const translations = {
+    ar: {
+        titleRuqyah: 'الرقية الشرعية', titleFav: 'المفضلة', settings: 'الإعدادات', back: 'رجوع', theme: 'المظهر', light: 'فاتح', dark: 'داكن', lang: 'اللغة', fontSize: 'حجم الخط', translit: 'إظهار النطق (Transliteration)', tapToOpen: 'اضغط لفتح الدعاء', copyTooltip: 'تم نسخ النص!', shareTitle: 'مشاركة التطبيق', closeShare: 'إغلاق'
+    },
+    en: {
+        titleRuqyah: 'Ruqyah', titleFav: 'Favorites', settings: 'Settings', back: 'Back', theme: 'Theme', light: 'Light', dark: 'Dark', lang: 'Language', fontSize: 'Font Size', translit: 'Show Transliteration', tapToOpen: 'Tap to open', copyTooltip: 'Text copied!', shareTitle: 'Share App', closeShare: 'Close'
+    }
+};
+
+let ruqyahList = [];
+let currentLang = localStorage.getItem('dua_lang') || 'ar';
+let isDarkMode = localStorage.getItem('dua_theme') ? localStorage.getItem('dua_theme') === 'dark' : true;
+let currentTab = 'ruqyah';
+let currentMessageId = null;
+let showTranslit = true;
+
+const listContainer = document.getElementById('listContainer');
+const messageSection = document.getElementById('messageSection');
+const listSection = document.getElementById('listSection');
+const fontSlider = document.getElementById('fontSlider');
+
+function playClickSound() { document.getElementById('clickSound').play().catch(()=>{}); }
+
+function parseRuqyahText(text) {
+    const lines = text.split('\n');
+    const duas = [];
+    let currentDua = null;
+
+    lines.forEach(line => {
+        line = line.trim();
+        if (line.match(/^\d+\.\s*الدعاء/)) {
+            if (currentDua && currentDua.ar && currentDua.en) duas.push(currentDua);
+            const idMatch = line.match(/^\d+/);
+            currentDua = { id: idMatch ? parseInt(idMatch[0]) : duas.length + 1, ar: '', en: '', tr: '', isFav: false };
+        } else if (currentDua) {
+            if (line.startsWith('العربية:')) currentDua.ar = line.replace('العربية:', '').trim();
+            else if (line.startsWith('English Translation:')) currentDua.en = line.replace('English Translation:', '').trim();
+            else if (line.startsWith('Transliteration:')) currentDua.tr = line.replace('Transliteration:', '').trim();
         }
-    };
-
-    let currentLang = 'ar';
-    let isDarkMode = false;
-    let currentAccent = '#cc0000';
-    let isFavorite = false;
-    let audioCtx = null;
-
-    function playClickSound() {
-        const chk = document.getElementById('chkClick');
-        if (!chk || !chk.checked) return;
-        try {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = 800;
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.12);
-            osc.start();
-            osc.stop(now + 0.1);
-        } catch(e) {}
-    }
-    function playVibration() {
-        const chk = document.getElementById('chkVibrate');
-        if (chk && chk.checked && navigator.vibrate) navigator.vibrate(60);
-    }
-
-    function applyLanguage() {
-        const t = translations[currentLang];
-        document.getElementById('msgTitle').innerText = t.msgTitle;
-        document.getElementById('msgSub').innerText = t.msgSub;
-        document.getElementById('msgText').innerText = t.msgText;
-        document.getElementById('msgLink').innerText = t.msgLink;
-        document.getElementById('labelRuqya').innerText = t.ruqya;
-        document.getElementById('labelWird').innerText = t.wird;
-        document.getElementById('labelQuranic').innerText = t.quranic;
-        document.getElementById('labelPersonal').innerText = t.personal;
-        document.getElementById('labelFavorites').innerText = t.favorites;
-        document.getElementById('labelSunnah').innerText = t.sunnah;
-        document.getElementById('menuTitleColors').innerText = t.menuColors;
-        document.getElementById('menuTitleSettings').innerText = t.menuSettings;
-        document.getElementById('set1').innerText = t.set1;
-        document.getElementById('set2').innerText = t.set2;
-        document.getElementById('set3').innerText = t.set3;
-        document.getElementById('set4').innerText = t.set4;
-        document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip);
-        document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip);
-        document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
-        document.getElementById('shareTitle').innerText = t.shareTitle;
-        document.getElementById('closeModalBtn').innerText = t.closeModal;
-        updateFavTooltip();
-    }
-    function updateFavTooltip() {
-        const btn = document.getElementById('btnFav');
-        btn.setAttribute('data-tooltip', isFavorite ? translations[currentLang].favTooltipRemove : translations[currentLang].favTooltipAdd);
-    }
-
-    // Favorite heart logic: fill red when active, empty when not
-    function setFavoriteHeart(active) {
-        const svgPath = document.querySelector('#favSvgIcon path');
-        if (active) {
-            svgPath.setAttribute('fill', '#ff4444');
-            svgPath.setAttribute('stroke', '#ff4444');
-            svgPath.setAttribute('stroke-width', '0');
-        } else {
-            svgPath.setAttribute('fill', 'none');
-            svgPath.setAttribute('stroke', 'white');
-            svgPath.setAttribute('stroke-width', '1.5');
-        }
-        isFavorite = active;
-        updateFavTooltip();
-    }
-
-    // Daily duas
-    const duasList = ["اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً.", "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله.", "اللهم إنك عفو تحب العفو فاعف عني.", "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.", "اللهم صل وسلم على نبينا محمد."];
-    function showDailyDua() {
-        const hour = new Date().getHours();
-        document.getElementById('duaOutput').innerText = duasList[hour % duasList.length];
-        document.getElementById('duaModal').style.display = 'flex';
-        playClickSound();
-        playVibration();
-    }
-    document.getElementById('dailyMessageCard').addEventListener('click', showDailyDua);
-    document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('duaModal').style.display = 'none');
-
-    // Grid toggle
-    const gridContainer = document.getElementById('gridContainer');
-    let is3Cols = false;
-    document.getElementById('gridToggleBtn').addEventListener('click', () => {
-        is3Cols = !is3Cols;
-        gridContainer.classList.toggle('grid-3cols', is3Cols);
-        playClickSound();
     });
+    if (currentDua && currentDua.ar && currentDua.en) duas.push(currentDua);
+    return duas;
+}
 
-    // Language toggle – icons stay FIXED on the physical right
-    document.getElementById('langToggleBtn').addEventListener('click', () => {
-        currentLang = currentLang === 'ar' ? 'en' : 'ar';
-        document.documentElement.setAttribute('lang', currentLang);
-        // Keep html dir="ltr" ALWAYS to prevent layout shifts
-        document.documentElement.dir = 'ltr';
-        // Apply RTL only to text elements via class
-        if (currentLang === 'ar') {
-            document.body.classList.add('text-rtl');
-            document.body.classList.remove('text-ltr');
-        } else {
-            document.body.classList.add('text-ltr');
-            document.body.classList.remove('text-rtl');
-        }
-        applyLanguage();
-        playClickSound();
-    });
+function loadData() {
+    const hardcodedText = `
+1. الدعاء رقم 1:
+العربية: أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ.
+English Translation: I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing.
+Transliteration: A'udhu billahi as-samee'il 'aleemi min ash-shaytani ar-rajeemi min hamzihi, wa nafkhihi, wa nafthihi.
 
-    // Menu popover
-    const menuToggle = document.getElementById('menuToggleBtn');
-    const unifiedMenu = document.getElementById('unifiedMenu');
-    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); });
-    document.addEventListener('click', (e) => { if (!menuToggle.contains(e.target) && !unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); });
+2. الدعاء رقم 2:
+العربية: بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ
+English Translation: In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds...
+Transliteration: Bismillahi ar-rahmani ar-raheem. Alhamdu lillahi rabbil 'alameen...
+`;
+    ruqyahList = parseRuqyahText(hardcodedText);
+    const savedFavs = JSON.parse(localStorage.getItem('dua_favs') || '[]');
+    ruqyahList.forEach(d => { if(savedFavs.includes(d.id)) d.isFav = true; });
+    renderList();
+}
 
-    // Theme & accent
-    function updateFullTheme() {
-        const root = document.documentElement;
-        root.style.setProperty('--accent', currentAccent);
-        root.style.setProperty('--header-bg', currentAccent);
-        if (isDarkMode) document.body.classList.add('dark-mode');
-        else document.body.classList.remove('dark-mode');
-        const sun = document.getElementById('sunIcon');
-        const moon = document.getElementById('moonIcon');
-        if (isDarkMode) { sun.classList.remove('active'); moon.classList.add('active'); }
-        else { sun.classList.add('active'); moon.classList.remove('active'); }
-        localStorage.setItem('dua_accent', currentAccent);
-        localStorage.setItem('dua_darkMode', isDarkMode);
+function renderList() {
+    listContainer.innerHTML = '';
+    const listToRender = (currentTab === 'ruqyah') ? ruqyahList : ruqyahList.filter(d => d.isFav);
+    
+    if (listToRender.length === 0) {
+        listContainer.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-dim);">${currentLang==='ar'?'لا توجد أدعية مفضلة':'No favorites yet'}</div>`;
+        return;
     }
-    function setAccent(color, element) {
-        currentAccent = color;
-        updateFullTheme();
-        document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-        if (element) element.classList.add('active');
-    }
-    function toggleDarkMode() { isDarkMode = !isDarkMode; updateFullTheme(); document.getElementById('themeToggle').checked = isDarkMode; }
-    document.getElementById('themeToggle').addEventListener('change', toggleDarkMode);
 
-    // Color menu
-    const colors = ['#cc0000','#800080','#0066cc','#8B4513','#ffcc00','#228b22','#ff8c00','#008080'];
-    const colorMenu = document.getElementById('colorMenu');
-    colors.forEach(c => {
-        const dot = document.createElement('div');
-        dot.className = 'color-dot';
-        dot.style.backgroundColor = c;
-        dot.onclick = () => { setAccent(c, dot); playClickSound(); };
-        colorMenu.appendChild(dot);
+    listToRender.forEach((dua) => {
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        if (dua.id === currentMessageId) item.classList.add('active-dua');
+        
+        item.onclick = () => {
+            currentMessageId = dua.id;
+            renderMessageContent(dua);
+            if (window.innerWidth < 768) {
+                messageSection.classList.add('active-mobile');
+                document.getElementById('btnBack').classList.add('show');
+            }
+            renderList();
+        };
+
+        const previewText = currentLang === 'ar' ? dua.ar : dua.en;
+        const favIconFill = dua.isFav ? 'var(--accent)' : 'none';
+        const favIconStroke = dua.isFav ? 'var(--accent)' : 'var(--text-dim)';
+
+        item.innerHTML = `
+            <div class="list-item-content">
+                <span class="list-number">${dua.id}</span>
+                <span class="list-preview">${previewText}</span>
+            </div>
+            <button class="icon-btn" onclick="toggleFav(${dua.id}, event)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="${favIconFill}" stroke="${favIconStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </button>
+        `;
+        listContainer.appendChild(item);
     });
+}
 
-    // Load saved settings
-    const savedAccent = localStorage.getItem('dua_accent');
-    const savedDark = localStorage.getItem('dua_darkMode');
-    if (savedAccent) currentAccent = savedAccent;
-    if (savedDark !== null) isDarkMode = savedDark === 'true';
-    updateFullTheme();
-    document.querySelectorAll('.color-dot').forEach(dot => { if (dot.style.backgroundColor === currentAccent) dot.classList.add('active'); });
-    document.getElementById('themeToggle').checked = isDarkMode;
+function renderMessageContent(dua) {
+    const container = document.getElementById('openMessageContent');
+    let favIconColor = dua.isFav ? 'var(--accent)' : 'var(--text-dim)';
+    let favFill = dua.isFav ? 'var(--accent)' : 'none';
+    
+    let primaryText = '';
+    let secondaryText = '';
+    let translitText = (showTranslit && dua.tr) ? `<div class="dua-text translit-text" dir="ltr">${dua.tr}</div>` : '';
 
-    // Grid item clicks with sound + activation
-    const gridItems = document.querySelectorAll('.grid-item');
-    gridItems.forEach(item => {
-        item.addEventListener('click', () => {
-            gridItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            playClickSound();
-            playVibration();
-        });
-    });
-    if (gridItems.length) gridItems[0].classList.add('active');
-
-    // Copy, Share, Fav, Refresh
-    document.getElementById('btnCopy').addEventListener('click', () => {
-        const activeDua = duasList[0];
-        navigator.clipboard.writeText(activeDua);
-        alert(translations[currentLang].copyTooltip);
-        playClickSound();
-    });
-    const sharePopup = document.getElementById('sharePopup');
-    document.getElementById('btnShare').addEventListener('click', () => {
-        sharePopup.classList.toggle('show');
-        if (sharePopup.classList.contains('show')) {
-            const t = translations[currentLang];
-            const shareGrid = document.getElementById('shareGrid');
-            shareGrid.innerHTML = '';
-            const platforms = [
-                { name: t.whatsapp, url: `https://wa.me/?text=${encodeURIComponent('اللهم بارك لنا في هذا الدعاء')}` },
-                { name: t.twitter, url: `https://twitter.com/intent/tweet?text=${encodeURIComponent('دعاء مبارك')}` },
-                { name: t.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}` }
-            ];
-            platforms.forEach(p => {
-                const btn = document.createElement('div');
-                btn.className = 'share-icon';
-                btn.innerHTML = `<span>${p.name}</span>`;
-                btn.onclick = () => { window.open(p.url, '_blank'); sharePopup.classList.remove('show'); playClickSound(); };
-                shareGrid.appendChild(btn);
-            });
-            document.addEventListener('click', function closeShare(e) {
-                if (!sharePopup.contains(e.target) && e.target !== document.getElementById('btnShare')) {
-                    sharePopup.classList.remove('show');
-                    document.removeEventListener('click', closeShare);
-                }
-            });
-        }
-        playClickSound();
-    });
-    document.getElementById('btnRefresh').addEventListener('click', () => location.reload());
-    document.getElementById('btnFav').addEventListener('click', () => {
-        setFavoriteHeart(!isFavorite);
-        playClickSound();
-    });
-
-    // Font slider: only dua text
-    const fontSlider = document.getElementById('fontSlider');
-    function setDuaFontSize(val) {
-        document.documentElement.style.setProperty('--dua-font-size', val + 'px');
-        localStorage.setItem('dua_font_size', val);
-    }
-    fontSlider.addEventListener('input', (e) => setDuaFontSize(e.target.value));
-    const savedFont = localStorage.getItem('dua_font_size');
-    if (savedFont) setDuaFontSize(parseInt(savedFont));
-    else setDuaFontSize(22);
-    fontSlider.value = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size')) || 22;
-
-    // Set initial text direction class
     if (currentLang === 'ar') {
-        document.body.classList.add('text-rtl');
+        primaryText = `<div class="dua-text ar-text text-primary" dir="rtl">${dua.ar}</div>`;
+        secondaryText = `<div class="dua-text en-text text-secondary" dir="ltr">${dua.en}</div>`;
     } else {
-        document.body.classList.add('text-ltr');
+        primaryText = `<div class="dua-text en-text text-primary" dir="ltr">${dua.en}</div>`;
+        secondaryText = `<div class="dua-text ar-text text-secondary" dir="rtl">${dua.ar}</div>`;
     }
-    applyLanguage();
-    setFavoriteHeart(false); // initial empty heart
+    
+    let html = `
+        <div class="message-card fade-in">
+            <div class="card-header">
+                <span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">${dua.id}</span>
+                <button class="icon-btn fav-btn" onclick="toggleFav(${dua.id}, event)" style="padding: 5px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="${favFill}" stroke="${favIconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="card-content">
+                ${primaryText}
+                ${secondaryText}
+                ${translitText}
+            </div>
+        </div>
+    `;
+    container.innerHTML = html;
+    
+    document.getElementById('envelopeWrapper').style.display = 'flex';
+    document.getElementById('envelopeWrapper').classList.remove('open');
+    document.getElementById('openMessageContent').style.display = 'none';
+}
+
+function openEnvelope() {
+    const env = document.getElementById('envelopeWrapper');
+    env.classList.add('open');
+    playClickSound();
+    setTimeout(() => {
+        env.style.display = 'none';
+        const msgContent = document.getElementById('openMessageContent');
+        msgContent.style.display = 'block';
+    }, 500);
+}
+
+function toggleFav(id, event) {
+    if(event) event.stopPropagation();
+    playClickSound();
+    const dua = ruqyahList.find(d => d.id === id);
+    if (dua) {
+        dua.isFav = !dua.isFav;
+        const favs = ruqyahList.filter(d => d.isFav).map(d => d.id);
+        localStorage.setItem('dua_favs', JSON.stringify(favs));
+        if (currentMessageId === id) renderMessageContent(dua);
+        renderList();
+    }
+}
+
+function initShare() {
+    const grid = document.getElementById('shareGrid');
+    grid.innerHTML = '';
+    const platforms = [
+        { id:'copy', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>', nAr:'نسخ الرابط', nEn:'Copy Link', action: () => { navigator.clipboard.writeText(window.location.href); alert(translations[currentLang].copyTooltip); } },
+        { id:'whatsapp', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>', nAr:'واتساب', nEn:'WhatsApp', url:`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}` },
+        { id:'twitter', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>', nAr:'اكس', nEn:'X', url:`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}` },
+        { id:'telegram', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>', nAr:'تيليجرام', nEn:'Telegram', url:`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}` }
+    ];
+    
+    platforms.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'share-btn';
+        div.innerHTML = `${p.icon} <span style="font-size:0.9rem;">${currentLang === 'ar' ? p.nAr : p.nEn}</span>`;
+        div.onclick = () => {
+            if (p.url) window.open(p.url, '_blank', 'noopener,noreferrer');
+            else if (p.action) p.action();
+            document.getElementById('sharePopup').classList.remove('show');
+        };
+        grid.appendChild(div);
+    });
+}
+
+function applyTheme() {
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('btnDark').classList.add('active');
+        document.getElementById('btnLight').classList.remove('active');
+    } else {
+        document.body.classList.remove('dark-mode');
+        document.getElementById('btnLight').classList.add('active');
+        document.getElementById('btnDark').classList.remove('active');
+    }
+    localStorage.setItem('dua_theme', isDarkMode ? 'dark' : 'light');
+}
+
+function applyLanguage() {
+    const t = translations[currentLang];
+    document.getElementById('mainTitle').textContent = t.titleRuqyah;
+    document.getElementById('tabRuqyah').textContent = t.titleRuqyah;
+    document.getElementById('tabFavorites').textContent = t.titleFav;
+    document.getElementById('settingsTitle').textContent = t.settings;
+    document.getElementById('backText').textContent = t.back;
+    document.getElementById('lblTheme').textContent = t.theme;
+    document.getElementById('btnLight').textContent = t.light;
+    document.getElementById('btnDark').textContent = t.dark;
+    document.getElementById('lblLang').textContent = t.lang;
+    document.getElementById('lblFontSize').innerHTML = `${t.fontSize}: <span id="fontSizeVal">${fontSlider.value}</span>px`;
+    document.getElementById('lblTranslit').textContent = t.translit;
+    document.getElementById('envText').textContent = t.tapToOpen;
+    document.getElementById('shareTitle').textContent = t.shareTitle;
+    document.getElementById('closeShareText').textContent = t.closeShare;
+
+    document.documentElement.dir = (currentLang === 'ar') ? 'rtl' : 'ltr';
+    document.body.className = (currentLang === 'ar') ? 'text-rtl ' + (isDarkMode ? 'dark-mode' : '') : 'text-ltr ' + (isDarkMode ? 'dark-mode' : '');
+    
+    if (currentLang === 'ar') {
+        document.getElementById('btnAr').classList.add('active');
+        document.getElementById('btnEn').classList.remove('active');
+    } else {
+        document.getElementById('btnEn').classList.add('active');
+        document.getElementById('btnAr').classList.remove('active');
+    }
+    
+    localStorage.setItem('dua_lang', currentLang);
+    renderList();
+    if(currentMessageId) {
+        const dua = ruqyahList.find(d => d.id === currentMessageId);
+        if(dua) renderMessageContent(dua);
+    }
+    initShare();
+}
+
+function setDuaFontSize(size) {
+    document.documentElement.style.setProperty('--dua-font-size', size + 'px');
+    const valSpan = document.getElementById('fontSizeVal');
+    if(valSpan) valSpan.textContent = size;
+    localStorage.setItem('dua_font_size', size);
+}
+
+// Event Listeners
+document.getElementById('btnMenu').addEventListener('click', () => { document.getElementById('settingsOverlay').classList.add('show'); playClickSound(); });
+document.getElementById('closeSettings').addEventListener('click', () => { document.getElementById('settingsOverlay').classList.remove('show'); playClickSound(); });
+document.getElementById('btnLight').addEventListener('click', () => { isDarkMode = false; applyTheme(); playClickSound(); });
+document.getElementById('btnDark').addEventListener('click', () => { isDarkMode = true; applyTheme(); playClickSound(); });
+document.getElementById('btnAr').addEventListener('click', () => { currentLang = 'ar'; applyLanguage(); playClickSound(); });
+document.getElementById('btnEn').addEventListener('click', () => { currentLang = 'en'; applyLanguage(); playClickSound(); });
+document.getElementById('tabRuqyah').addEventListener('click', (e) => { currentTab = 'ruqyah'; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderList(); playClickSound(); });
+document.getElementById('tabFavorites').addEventListener('click', (e) => { currentTab = 'favorites'; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderList(); playClickSound(); });
+document.getElementById('btnBack').addEventListener('click', () => { messageSection.classList.remove('active-mobile'); document.getElementById('btnBack').classList.remove('show'); playClickSound(); });
+
+fontSlider.addEventListener('input', (e) => setDuaFontSize(e.target.value));
+document.getElementById('chkTranslit').addEventListener('change', (e) => { showTranslit = e.target.checked; if(currentMessageId) { const dua = ruqyahList.find(d => d.id === currentMessageId); if(dua) renderMessageContent(dua); } });
+document.getElementById('btnShare').addEventListener('click', () => { document.getElementById('sharePopup').classList.add('show'); playClickSound(); });
+document.getElementById('btnRefresh').addEventListener('click', () => location.reload());
+document.getElementById('btnFav').addEventListener('click', () => { currentTab = 'favorites'; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById('tabFavorites').classList.add('active'); renderList(); playClickSound(); });
+
+// Initialization
+loadData();
+applyTheme();
+applyLanguage();
+let savedFont = localStorage.getItem('dua_font_size');
+if(savedFont) { setDuaFontSize(parseInt(savedFont)); fontSlider.value = parseInt(savedFont); }
+
 </script>
 </body>
 </html>
