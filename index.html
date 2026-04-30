@@ -46,38 +46,29 @@
             transition: background-color 0.3s ease;
             font-family: 'Tajawal', 'Inter', sans-serif;
         }
-        /* Floating icon animation from Azkar widget */
 
-        /* English text uses Inter font */
         .dua-translation, .message-card p, .message-card .sub-title, .grid-item span, .menu-section-title span:last-child, .setting-label span:last-child, .setting-row, .share-popup-title, .empty-fav {
             font-family: 'Inter', sans-serif;
         }
-        /* Arabic text uses Tajawal/Amiri */
         .dua-arabic, .dua-transliteration, .message-card h2, .message-card .open-link, .dua-number, .subcategory-btn, .back-button, .tab span, .tab label {
             font-family: 'Amiri', 'Tajawal', serif;
         }
         body.dark-mode { background-color: #12121a; }
 
-        /* Text direction classes */
         body.text-rtl .message-card, body.text-rtl .dua-card { direction: rtl; text-align: right; }
         body.text-ltr .message-card, body.text-ltr .dua-card { direction: ltr; text-align: left; }
 
-        /* Menu section title alignment - FIXED for Arabic */
         body.text-rtl .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; direction: ltr; }
         body.text-ltr .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; }
 
         .grid-item { text-align: center !important; }
         .message-card { text-align: center !important; }
 
-        /* FIXED: Swap heart/number positions based on language */
         body.text-rtl .dua-header { flex-direction: row-reverse; }
         body.text-ltr .dua-header { flex-direction: row; }
 
-        /* FIXED: Heart color in light mode */
         body:not(.dark-mode) .fav-btn-small svg path { stroke: var(--heart-stroke-light) !important; }
         body.dark-mode .fav-btn-small svg path { stroke: var(--heart-stroke-dark) !important; }
-
-
 
         .app-container {
             width: 100%;
@@ -126,10 +117,8 @@
         }
         .icon-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
         .icon-btn img { width: auto; height: auto; max-width: 24px; max-height: 24px; filter: invert(1); display: block; }
-        .lang-btn img { max-width: 28px; max-height: 28px; }
         .menu-icon span { font-size: 26px; font-weight: bold; color: white; line-height: 1; }
 
-        /* FLOATING ICON ANIMATION */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -141,16 +130,12 @@
             animation: float 3s ease-in-out infinite;
             transition: transform 0.2s;
         }
-        .floating-icon:hover {
-            transform: scale(1.1);
-        }
         .header-center {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        /* ENVELOPE with CLEAN V-SHAPE - FIXED */
         .message-container { padding: 25px 20px; perspective: 1000px; }
         .message-card {
             background: var(--card-bg);
@@ -190,7 +175,6 @@
         .message-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
         .message-card .open-link { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
 
-        /* GRID */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -214,18 +198,9 @@
             color: var(--text);
         }
         .grid-item:active { transform: scale(0.96); }
-        .grid-item.active {
-            background: var(--accent) !important;
-            border: none;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-            transform: scale(1.02);
-        }
-        .grid-item.active span { color: white; }
-        .grid-item.active img { filter: none !important; }
         .grid-item img { width: 70px; height: 70px; margin-bottom: 12px; object-fit: contain; }
         .grid-item span { font-weight: 700; font-size: 1rem; color: var(--text); }
 
-        /* RUQYAH & FAVORITES Views */
         .ruqyah-view, .favorites-view {
             display: none;
             flex-direction: column;
@@ -278,11 +253,9 @@
             transition: 0.2s;
             position: relative;
         }
-        /* FIXED: Highlight selected dua */
         .dua-card.selected {
             background: var(--accent-soft);
             transform: scale(0.98);
-            transition: 0.1s;
             border-left: 4px solid var(--accent);
             box-shadow: 0 4px 12px rgba(204,0,0,0.2);
         }
@@ -312,21 +285,16 @@
         .fav-btn-small:hover { transform: scale(1.15); }
         .fav-btn-small svg { width: 22px; height: 22px; }
 
-        /* FIXED: Heart fill color */
-        .fav-btn-small svg path[fill="#ff4444"] { fill: #ff4444 !important; }
-
         .dua-arabic { 
             font-size: var(--dua-font-size); 
             font-family: 'Amiri', serif; 
             line-height: 1.6; 
             margin-bottom: 8px; 
-            transition: all 0.3s ease;
         }
         .dua-translation { 
             font-size: calc(var(--dua-font-size) * 0.75); 
             margin-bottom: 6px; 
             line-height: 1.5;
-            transition: all 0.3s ease;
         }
         .dua-transliteration { 
             font-size: calc(var(--dua-font-size) * 0.7); 
@@ -334,26 +302,15 @@
             border-top: 1px dashed var(--border-color); 
             padding-top: 6px; 
             margin-top: 4px; 
-            transition: all 0.3s ease;
+            color: var(--text-dim) !important;
         }
 
-        /* FIXED: Language priority styling */
-        /* Main language - bold and colored */
         .dua-main-lang { font-weight: 700; }
-        /* Secondary language - grey */
         .dua-secondary-lang { font-weight: 400; color: var(--text-dim) !important; }
-        /* Transliteration always grey */
-        .dua-transliteration { color: var(--text-dim) !important; }
 
-        /* Light mode: main text black, secondary grey */
         body:not(.dark-mode) .dua-main-lang { color: #1a1a1a !important; }
-        body:not(.dark-mode) .dua-secondary-lang { color: #666666 !important; }
-
-        /* Dark mode: main text accent color, secondary grey */
         body.dark-mode .dua-main-lang { color: var(--accent) !important; }
-        body.dark-mode .dua-secondary-lang { color: var(--text-dim) !important; }
 
-        /* MENU POPOVER - FIXED for Arabic alignment */
         .menu-popover {
             position: fixed; 
             top: 70px; 
@@ -371,13 +328,7 @@
             direction: ltr;
         }
         .menu-popover.show { visibility: visible; opacity: 1; }
-        .menu-header-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-        }
-        /* FIXED: Menu section title always left-aligned */
+        .menu-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .menu-section-title { 
             color: var(--text); 
             font-size: 14px; 
@@ -386,7 +337,6 @@
             align-items: center; 
             gap: 8px;
             text-align: left;
-            justify-content: flex-start;
         }
         .theme-toggle { 
             display: flex; 
@@ -396,284 +346,111 @@
             border-radius: 30px; 
             padding: 4px; 
         }
-        .theme-toggle-icon { 
-            font-size: 18px; 
-            width: 28px; 
-            text-align: center; 
-            cursor: pointer; 
-            opacity: 0.6; 
-            color: var(--text); 
-        }
+        .theme-toggle-icon { font-size: 18px; width: 28px; text-align: center; cursor: pointer; opacity: 0.6; color: var(--text); }
         .theme-toggle-icon.active { opacity: 1; filter: drop-shadow(0 0 2px var(--accent)); }
-        .theme-switch { 
-            position: relative; 
-            display: inline-block; 
-            width: 52px; 
-            height: 26px; 
-        }
+        .theme-switch { position: relative; display: inline-block; width: 52px; height: 26px; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
         .theme-slider { 
             position: absolute; 
             cursor: pointer; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
+            top: 0; left: 0; right: 0; bottom: 0; 
             background-color: #ccc; 
             transition: 0.2s; 
             border-radius: 26px; 
         }
         .theme-slider:before { 
-            position: absolute; 
-            content: ""; 
-            height: 22px; 
-            width: 22px; 
-            left: 2px; 
-            bottom: 2px; 
+            position: absolute; content: ""; 
+            height: 22px; width: 22px; 
+            left: 2px; bottom: 2px; 
             background-color: white; 
             transition: 0.2s; 
             border-radius: 50%; 
         }
         input:checked + .theme-slider { background-color: var(--accent); }
         input:checked + .theme-slider:before { transform: translateX(26px); }
-        .menu-divider { 
-            height: 1px; 
-            background: var(--text-dim); 
-            margin: 12px 0; 
-            border: none; 
-            opacity: 0.3; 
-        }
-        .color-menu { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; 
-            margin-bottom: 20px; 
-        }
+        .menu-divider { height: 1px; background: var(--text-dim); margin: 12px 0; border: none; opacity: 0.3; }
+        .color-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .color-dot { 
-            width: 38px; 
-            height: 38px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            border: 2px solid transparent; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: 0.1s; 
+            width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; 
+            display: flex; align-items: center; justify-content: center; transition: 0.1s; 
         }
         .color-dot.active { border-color: var(--text); transform: scale(1.08); }
         .color-dot.active::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; }
-        .settings-rows { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-        .setting-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            color: var(--text); 
-            font-size: 13px; 
-            font-weight: 600; 
-        }
-        .setting-label { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-        .font-slider { 
-            width: 100px; 
-            accent-color: var(--accent); 
-            cursor: pointer; 
-        }
-        .action-btns { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 10px; 
-            padding-top: 10px; 
-            border-top: 1px solid var(--text-dim); 
-        }
+        .settings-rows { display: flex; flex-direction: column; gap: 12px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; color: var(--text); font-size: 13px; font-weight: 600; }
+        .setting-label { display: flex; align-items: center; gap: 8px; }
+        .font-slider { width: 100px; accent-color: var(--accent); cursor: pointer; }
+        .action-btns { display: flex; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--text-dim); }
         .action-btn { 
-            flex: 1; 
-            height: 42px; 
-            border-radius: 12px; 
-            border: none; 
-            cursor: pointer; 
-            background: var(--accent); 
-            color: white; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: 0.2s; 
-            position: relative; 
+            flex: 1; height: 42px; border-radius: 12px; border: none; cursor: pointer; 
+            background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; 
+            transition: 0.2s; position: relative; 
         }
         .action-btn svg { width: 20px; height: 20px; fill: white; }
         .action-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
         .action-btn::after { 
-            content: attr(data-tooltip); 
-            position: absolute; 
-            bottom: 50px; 
-            background: #333; 
-            color: white; 
-            font-size: 11px; 
-            padding: 4px 10px; 
-            border-radius: 6px; 
-            visibility: hidden; 
-            opacity: 0; 
-            transition: 0.15s; 
-            white-space: nowrap; 
-            pointer-events: none; 
+            content: attr(data-tooltip); position: absolute; bottom: 50px; 
+            background: #333; color: white; font-size: 11px; padding: 4px 10px; 
+            border-radius: 6px; visibility: hidden; opacity: 0; transition: 0.15s; 
+            white-space: nowrap; pointer-events: none; z-index: 2000; 
         }
         .action-btn:hover::after { visibility: visible; opacity: 1; }
-        .switch { 
-            position: relative; 
-            display: inline-block; 
-            width: 44px; 
-            height: 24px; 
-        }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { 
-            position: absolute; 
-            cursor: pointer; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            background-color: #555; 
-            transition: .15s; 
-            border-radius: 24px; 
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+            background-color: #555; transition: .15s; border-radius: 24px; 
         }
         .slider:before { 
-            position: absolute; 
-            content: ""; 
-            height: 18px; 
-            width: 18px; 
-            left: 3px; 
-            bottom: 3px; 
-            background-color: #ddd; 
-            transition: .15s; 
-            border-radius: 50%; 
+            position: absolute; content: ""; height: 18px; width: 18px; 
+            left: 3px; bottom: 3px; background-color: #ddd; transition: .15s; border-radius: 50%; 
         }
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); background-color: white; }
 
-        /* FIXED: Share popup from Azkar widget */
         .share-popup {
-            position: fixed; 
-            bottom: 100px; 
-            right: 20px; 
-            background: var(--popup-bg); 
-            border-radius: 28px;
-            padding: 20px; 
-            width: 300px; 
-            z-index: 1100; 
-            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
-            border: 1px solid var(--accent); 
-            visibility: hidden; 
-            opacity: 0; 
-            transition: 0.15s ease; 
-            transform: scale(0.95);
+            position: fixed; bottom: 100px; right: 20px; 
+            background: var(--popup-bg); border-radius: 28px; padding: 20px; 
+            width: 300px; z-index: 1100; box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+            border: 1px solid var(--accent); visibility: hidden; opacity: 0; 
+            transition: 0.15s ease; transform: scale(0.95);
         }
-        .share-popup.show { 
-            visibility: visible; 
-            opacity: 1; 
-            transform: scale(1); 
-        }
-        .share-popup-title { 
-            text-align: center; 
-            font-weight: 700; 
-            font-size: 18px; 
-            margin-bottom: 18px; 
-            color: var(--accent); 
-        }
-        .share-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 18px;
-            justify-items: center;
-        }
+        .share-popup.show { visibility: visible; opacity: 1; transform: scale(1); }
+        .share-popup-title { text-align: center; font-weight: 700; font-size: 18px; margin-bottom: 18px; color: var(--accent); }
+        .share-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; justify-items: center; }
         .share-icon {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 8px;
-            cursor: pointer; 
-            color: var(--accent); 
-            font-size: 12px; 
-            font-weight: 500;
-            transition: transform 0.1s ease;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            cursor: pointer; color: var(--accent); font-size: 12px; font-weight: 500;
         }
-        .share-icon:hover { transform: scale(1.05); }
         .share-icon svg {
-            width: 48px; 
-            height: 48px;
-            background: rgba(128,128,128,0.2); 
-            border-radius: 30px;
-            padding: 10px;
-            transition: background 0.2s;
-            stroke: var(--accent);
+            width: 48px; height: 48px; background: rgba(128,128,128,0.2); 
+            border-radius: 30px; padding: 10px; stroke: var(--accent);
         }
-        .share-icon:hover svg { background: rgba(128,128,128,0.4); }
 
         #duaModal {
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(4px); 
-            z-index: 1000;
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000;
+            justify-content: center; align-items: center; padding: 20px;
         }
         .modal-content { 
-            background: var(--card-bg); 
-            padding: 40px 25px; 
-            border-radius: 30px; 
-            width: 100%; 
-            max-width: 380px; 
-            text-align: center; 
-            color: var(--text); 
+            background: var(--card-bg); padding: 40px 25px; border-radius: 30px; 
+            width: 100%; max-width: 380px; text-align: center; color: var(--text); 
         }
-        .dua-text { 
-            font-size: var(--dua-font-size); 
-            line-height: 1.8; 
-            margin-bottom: 30px; 
-            font-family: 'Amiri', serif; 
-        }
+        .dua-text { font-size: var(--dua-font-size); line-height: 1.8; margin-bottom: 30px; font-family: 'Amiri', serif; }
         .close-modal { 
-            background: var(--accent); 
-            color: white; 
-            border: none; 
-            padding: 12px 35px; 
-            border-radius: 30px; 
-            cursor: pointer; 
-            font-weight: bold; 
+            background: var(--accent); color: white; border: none; padding: 12px 35px; 
+            border-radius: 30px; cursor: pointer; font-weight: bold; 
         }
-        .empty-fav { 
-            opacity: 0.8; 
-            font-style: italic; 
-            text-align: center; 
-            padding: 30px; 
-            color: var(--text-dim); 
-        }
-
-        @media (max-width: 480px) {
-            .grid-container.grid-3cols { grid-template-columns: repeat(2, 1fr); }
-            .grid-item span { font-size: 0.85rem; }
-        }
+        .empty-fav { opacity: 0.8; font-style: italic; text-align: center; padding: 30px; color: var(--text-dim); }
     </style>
-<base target="_blank">
 </head>
 <body class="text-rtl">
 <div class="app-container">
     <header>
         <div class="header-icons" style="width:100%; justify-content:space-between; align-items:center;">
             <button class="icon-btn lang-btn" id="langToggleBtn"><img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language"></button>
-            <div class="header-center" style="position:absolute; left:50%; transform:translateX(-50%);">
-                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/13773/13773984.png" onclick="changeIcon()" alt="Icon" style="width:50px; height:50px; cursor:pointer; animation:float 3s ease-in-out infinite;">
+            <div class="header-center">
+                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/13773/13773984.png" onclick="changeIcon()" alt="Icon">
             </div>
             <button class="icon-btn menu-icon" id="menuToggleBtn"><span>☰</span></button>
         </div>
@@ -697,7 +474,6 @@
         <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
     </div>
 
-    <!-- Ruqyah View -->
     <div class="ruqyah-view" id="ruqyahView">
         <div class="subcategory-buttons">
             <button class="subcategory-btn active" data-sub="self" id="selfBtn">ارق نفسك</button>
@@ -707,13 +483,11 @@
         <div class="dua-list-container" id="duaListContainer"></div>
     </div>
 
-    <!-- Favorites View -->
     <div class="favorites-view" id="favoritesView">
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
 
-    <!-- FIXED: Share popup from Azkar widget -->
     <div id="sharePopup" class="share-popup">
         <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
         <div class="share-grid" id="shareGrid"></div>
@@ -762,8 +536,9 @@
         </div>
     </div>
 </div>
+
 <script>
-// ==================== RUQYAH DATA (48 duas - 24 self + 24 others) ====================
+// ==================== RUQYAH DATA ====================
 const ruqyahSelf = [
     { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ.", translit: "A'udhu billahi as-samee'il 'aleemi min ash-shaytani ar-rajeemi min hamzihi, wa nafkhihi, wa nafthihi.", en: "I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing." },
     { ar: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ...", translit: "Bismillahi ar-rahmani ar-raheem. Alhamdu lillahi rabbi al-alameen...", en: "Surah Al-Fatihah: In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of the Worlds..." },
@@ -779,7 +554,7 @@ const ruqyahSelf = [
     { ar: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ.", translit: "Astaghfirullaha al-'azeem alladhi la ilaha illa huwa al-hayyu al-qayyum wa atubu ilayh.", en: "I seek forgiveness from Allah the Magnificent, there is no deity except Him, the Ever-Living, the Sustainer, and I repent to Him." },
     { ar: "يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَىٰ نَفْسِي طَرْفَةَ عَيْنٍ.", translit: "Ya hayyu ya qayyum, bi-rahmatika astaghithu, aslih li sha'ni kullahu, wa la takilni ila nafsi tarfata 'ayn.", en: "O Ever-Living One, O Eternal One, by Your mercy I seek help. Rectify for me all of my affairs and do not leave me to myself even for the blink of an eye." },
     { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ...", translit: "Allahumma inni a'udhu bika min al-hammi wal-hazan, wa a'udhu bika min al-'ajzi wal-kasal...", en: "O Allah, I seek refuge in You from anxiety and sorrow, and from incapacity and laziness..." },
-    { ar: "رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ، وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ.", translit: "Rabbi a'udhu bika min hamazati ash-shayateen, wa a'udhu bika rabbi an yahdurun.", en: "My Lord, I seek refuge in You from the incitements of the devils, and I seek refuge in You, my Lord, lest they be present with me." },
+    { ar: "رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيْطَانِ، وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ.", translit: "Rabbi a'udhu bika min hamazati ash-shayateen, wa a'udhu bika rabbi an yahdurun.", en: "My Lord, I seek refuge in You from the incitements of the devils, and I seek refuge in You, my Lord, lest they be present with me." },
     { ar: "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ.", translit: "La ilaha illa anta subhanaka inni kuntu min az-zalimeen.", en: "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers." },
     { ar: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ.", translit: "Hasbunallahu wa ni'ma al-wakeel.", en: "Sufficient for us is Allah, and He is the best Disposer of affairs." },
     { ar: "مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ.", translit: "Ma sha' Allahu la quwwata illa billah.", en: "What Allah has willed, there is no power except with Allah." },
@@ -791,22 +566,8 @@ const ruqyahSelf = [
     { ar: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.", translit: "Subhanallahi wa bihamdihi, 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatih.", en: "Glory be to Allah and praise Him, by the number of His creation, by His pleasure, by the weight of His Throne, and by the ink of His words." }
 ];
 
-// Create ruqyahOther by modifying self duas for others (change pronouns)
 const ruqyahOther = ruqyahSelf.map((d, idx) => ({
-    ar: d.ar
-        .replace(/أَعُوذُ/g, 'أُعِيذُكَ')
-        .replace(/أَسْأَلُكَ/g, 'أَسْأَلُ لَكَ')
-        .replace(/اشْفِنِي/g, 'اشْفِهِ')
-        .replace(/عَافِنِي/g, 'عَافِهِ')
-        .replace(/أَصْلِحْ لِي/g, 'أَصْلِحْ لَهُ')
-        .replace(/تَكِلْنِي/g, 'تَكِلْهُ')
-        .replace(/حِفْظِي/g, 'حِفْظَهُ')
-        .replace(/نَفْسِي/g, 'نَفْسَهُ')
-        .replace(/بِدَنِي/g, 'بِبَدَنِهِ')
-        .replace(/سَمْعِي/g, 'سَمْعِهِ')
-        .replace(/بَصَرِي/g, 'بَصَرِهِ')
-        .replace(/أَجِرْنِي/g, 'أَجِرْهُ')
-        .replace(/أَخْلِفْ لِي/g, 'أَخْلِفْ لَهُ'),
+    ar: d.ar.replace(/أَعُوذُ/g, 'أُعِيذُكَ').replace(/أَسْأَلُكَ/g, 'أَسْأَلُ لَكَ').replace(/اشْفِنِي/g, 'اشْفِهِ').replace(/عَافِنِي/g, 'عَافِهِ').replace(/أَصْلِحْ لِي/g, 'أَصْلِحْ لَهُ').replace(/تَكِلْنِي/g, 'تَكِلْهُ').replace(/نَفْسِي/g, 'نَفْسَهُ').replace(/أَجِرْنِي/g, 'أَجِرْهُ').replace(/أَخْلِفْ لِي/g, 'أَخْلِفْ لَهُ'),
     translit: d.translit,
     en: d.en.replace(/me/g, 'him').replace(/my/g, 'his').replace(/I /g, 'He ')
 }));
@@ -814,78 +575,18 @@ const ruqyahOther = ruqyahSelf.map((d, idx) => ({
 // ==================== TRANSLATIONS ====================
 const translations = {
     ar: { 
-        msgTitle:"رسالتك اليوم", 
-        msgSub:"رسالتك اليوم", 
-        msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", 
-        msgLink:"اضغط هنا لتفتحها", 
-        ruqya:"الرقية الشرعية", 
-        wird:"ورد الدعاء", 
-        quranic:"دعاء من القرآن", 
-        personal:"أدعيتي", 
-        favorites:"المفضلة", 
-        sunnah:"دعاء من السنة", 
-        menuColors:"الألوان", 
-        menuSettings:"الإعدادات", 
-        set1:"صوت النقرة", 
-        set2:"اهتزاز", 
-        set3:"تحويل تلقائي", 
-        set4:"حجم الخط", 
-        setTranslit:"الترجمة الصوتية", 
-        copyTooltip:"نسخ النص", 
-        shareTooltip:"مشاركة", 
-        favTooltipAdd:"أضف إلى المفضلة", 
-        favTooltipRemove:"إزالة من المفضلة", 
-        refreshTooltip:"تحديث", 
-        shareTitle:"مشاركة الدعاء", 
-        closeModal:"إغلاق", 
-        whatsapp:"واتساب", 
-        twitter:"تويتر", 
-        facebook:"فيسبوك", 
-        telegram:"تليجرام",
-        messenger:"ماسنجر",
-        copyLink:"نسخ الرابط",
-        gridTooltip:"تخطيط الشبكة",
-        selfBtn:"ارق نفسك", 
-        otherBtn:"ارق غيرك", 
-        back:"رجوع",
-        noFavorites:"لا توجد أدعية مفضلة"
+        msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", 
+        ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", 
+        menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", 
+        copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", 
+        shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة"
     },
     en: { 
-        msgTitle:"Your Message Today", 
-        msgSub:"Your message today", 
-        msgText:"Behind this supplication there may be a message written for you, and today you need it most.", 
-        msgLink:"Click here to open it", 
-        ruqya:"Spiritual Ruqya", 
-        wird:"Daily Wird", 
-        quranic:"Quranic Duas", 
-        personal:"My Duas", 
-        favorites:"Favorites", 
-        sunnah:"Sunnah Duas", 
-        menuColors:"Colors", 
-        menuSettings:"Settings", 
-        set1:"Click Sound", 
-        set2:"Vibration", 
-        set3:"Auto Transfer", 
-        set4:"Font Size", 
-        setTranslit:"Transliteration", 
-        copyTooltip:"Copy Text", 
-        shareTooltip:"Share", 
-        favTooltipAdd:"Add to Favorites", 
-        favTooltipRemove:"Remove from Favorites", 
-        refreshTooltip:"Refresh", 
-        shareTitle:"Share Dua", 
-        closeModal:"Close", 
-        whatsapp:"WhatsApp", 
-        twitter:"Twitter", 
-        facebook:"Facebook", 
-        telegram:"Telegram",
-        messenger:"Messenger",
-        copyLink:"Copy Link",
-        gridTooltip:"Grid Layout",
-        selfBtn:"Heal Yourself", 
-        otherBtn:"Heal Others", 
-        back:"Back",
-        noFavorites:"No favorite duas yet"
+        msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", 
+        ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", 
+        menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", 
+        copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", 
+        shareTitle:"Share Dua", closeModal:"Close", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet"
     }
 };
 
@@ -894,29 +595,17 @@ let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, 
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
 
 function playClickSound(){ 
-    const chk=document.getElementById('chkClick'); 
-    if(!chk||!chk.checked) return; 
-    try{ 
-        if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); 
-        const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(); 
-        osc.connect(gain); gain.connect(audioCtx.destination); 
-        osc.frequency.value=800; 
-        gain.gain.setValueAtTime(0.1,now); 
-        gain.gain.exponentialRampToValueAtTime(0.00001,now+0.12); 
-        osc.start(); osc.stop(now+0.1); 
+    const chk=document.getElementById('chkClick'); if(!chk||!chk.checked) return; 
+    try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); 
+    const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(); 
+    osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value=800; gain.gain.setValueAtTime(0.1,now); gain.gain.exponentialRampToValueAtTime(0.00001,now+0.12); osc.start(); osc.stop(now+0.1); 
     }catch(e){} 
 }
 
-function playVibration(){ 
-    const chk=document.getElementById('chkVibrate'); 
-    if(chk&&chk.checked&&navigator.vibrate) navigator.vibrate(60); 
-}
+function playVibration(){ const chk=document.getElementById('chkVibrate'); if(chk&&chk.checked&&navigator.vibrate) navigator.vibrate(60); }
 
 function applyLanguage(){ 
     const t=translations[currentLang];
-    updateColorTooltips(); 
-
-    // Update all text elements
     document.getElementById('msgTitle').innerText=t.msgTitle;
     document.getElementById('msgSub').innerText=t.msgSub;
     document.getElementById('msgText').innerText=t.msgText;
@@ -941,237 +630,140 @@ function applyLanguage(){
     document.getElementById('favBackText').innerText=t.back;
     document.getElementById('closeModalBtn').innerText=t.closeModal;
 
-    // Update tooltips
-    document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip);
-    document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip);
-    document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
-
-    // Update body direction
-    if(currentLang==='ar'){ 
-        document.body.classList.add('text-rtl'); 
-        document.body.classList.remove('text-ltr'); 
-    } else { 
-        document.body.classList.add('text-ltr'); 
-        document.body.classList.remove('text-rtl'); 
-    }
+    if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } 
+    else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
 
     if(ruqyahActive) renderRuqyahDuas(); 
     if(favoritesActive) renderFavorites(); 
-    updateGlobalFavIcon(); 
+    updateGlobalFavIcon(); updateColorTooltips();
 }
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
-
-function isFavorited(sub,idx){ 
-    return favoritesList.some(f=>f.sub===sub && f.idx===idx); 
-}
+function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
 
 function addFavorite(sub,idx,dua){ 
     if(!isFavorited(sub,idx)){ 
-        favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit}); 
-        saveFavorites(); 
-        if(ruqyahActive) renderRuqyahDuas(); 
-        if(favoritesActive) renderFavorites(); 
+        favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit}); saveFavorites(); 
+        if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); 
     } 
 }
 
 function removeFavorite(sub,idx){ 
-    favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); 
-    saveFavorites(); 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
+    favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); 
+    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); 
 }
 
-function getHeartStrokeColor(){ 
-    return isDarkMode ? 'white' : '#333333'; 
-}
+function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 
-// FIXED: Render Ruqyah duas with proper language priority and selection highlighting
 function renderRuqyahDuas(){ 
     const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; 
     const container=document.getElementById('duaListContainer'); 
     container.innerHTML=''; 
 
     data.forEach((dua,idx)=>{ 
-        const card=document.createElement('div'); 
-        card.className='dua-card';
-        // FIXED: Add selected class if this dua is selected
-        if(idx === selectedDuaIndex) {
-            card.classList.add('selected');
-        }
+        const card=document.createElement('div'); card.className='dua-card';
+        if(idx === selectedDuaIndex) card.classList.add('selected');
 
-        const header=document.createElement('div'); 
-        header.className='dua-header'; 
-
-        const num=document.createElement('div'); 
-        num.className='dua-number'; 
-        num.innerText=(idx+1)+'.'; 
+        const header=document.createElement('div'); header.className='dua-header'; 
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.'; 
 
         const fav=isFavorited(currentRuqyahSub,idx); 
-        const favBtn=document.createElement('button'); 
-        favBtn.className='fav-btn-small'; 
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small'; 
         const strokeColor=getHeartStrokeColor(); 
         favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`; 
-        favBtn.onclick=(e)=>{ 
-            e.stopPropagation(); 
-            if(fav) removeFavorite(currentRuqyahSub,idx); 
-            else addFavorite(currentRuqyahSub,idx,dua); 
-            playClickSound(); 
-        }; 
+        favBtn.onclick=(e)=>{ e.stopPropagation(); if(fav) removeFavorite(currentRuqyahSub,idx); else addFavorite(currentRuqyahSub,idx,dua); playClickSound(); }; 
 
         header.append(num, favBtn); 
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar; 
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en; 
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit; 
 
-        // FIXED: Create text elements with proper priority based on language
-        const arabic=document.createElement('div'); 
-        arabic.className='dua-arabic'; 
-        arabic.innerText=dua.ar; 
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } 
+        else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); } 
 
-        const trans=document.createElement('div'); 
-        trans.className='dua-translation'; 
-        trans.innerText=dua.en; 
-
-        const tl=document.createElement('div'); 
-        tl.className='dua-transliteration'; 
-        tl.innerText=dua.translit; 
-
-        // FIXED: Apply priority classes based on selected language
-        if(currentLang==='ar'){ 
-            arabic.classList.add('dua-main-lang'); 
-            trans.classList.add('dua-secondary-lang'); 
-        } else { 
-            trans.classList.add('dua-main-lang'); 
-            arabic.classList.add('dua-secondary-lang'); 
-        } 
-
-        // FIXED: Append in correct order based on language
         card.append(header); 
-        if(currentLang==='ar'){ 
-            card.append(arabic, trans); 
-        } else { 
-            card.append(trans, arabic); 
-        }
+        if(currentLang==='ar'){ card.append(arabic, trans); } else { card.append(trans, arabic); }
         if(showTranslit) card.appendChild(tl); 
 
-        // FIXED: Click to select and show in modal
         card.addEventListener('click',()=>{ 
-            // Remove selected from all cards
             document.querySelectorAll('.dua-card').forEach(c => c.classList.remove('selected'));
-            // Add selected to clicked card
-            card.classList.add('selected');
-            selectedDuaIndex = idx;
-
-            // Show in modal
-            showDuaModal(dua);
-            playClickSound(); 
+            card.classList.add('selected'); selectedDuaIndex = idx;
+            showDuaModal(dua); playClickSound(); 
         }); 
-
         container.appendChild(card); 
     });
     updateMenuFavButton();
 }
 
 function showDuaModal(dua) {
-    const modal = document.getElementById('duaModal');
-    const output = document.getElementById('duaOutput');
-
+    const modal = document.getElementById('duaModal'); const output = document.getElementById('duaOutput');
     let content = '';
-    if(currentLang === 'ar') {
-        content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div>`;
-        content += `<div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`;
-    } else {
-        content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.en}</div>`;
-        content += `<div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`;
-    }
-    if(showTranslit) {
-        content += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
-    }
-
-    output.innerHTML = content;
-    modal.style.display = 'flex';
+    if(currentLang === 'ar') { content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div><div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`; } 
+    else { content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.en}</div><div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`; }
+    if(showTranslit) content += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
+    output.innerHTML = content; modal.style.display = 'flex';
 }
 
 function renderFavorites(){ 
-    const container=document.getElementById('favoritesListContainer'); 
-    container.innerHTML=''; 
+    const container=document.getElementById('favoritesListContainer'); container.innerHTML=''; 
     if(favoritesList.length===0){ 
-        const empty=document.createElement('div'); 
-        empty.className='empty-fav'; 
-        empty.innerText=translations[currentLang].noFavorites;
-        container.appendChild(empty); 
-        return; 
+        const empty=document.createElement('div'); empty.className='empty-fav'; empty.innerText=translations[currentLang].noFavorites; container.appendChild(empty); return; 
     } 
     favoritesList.forEach((fav,idx)=>{ 
-        const card=document.createElement('div'); 
-        card.className='dua-card'; 
-        const header=document.createElement('div'); 
-        header.className='dua-header'; 
-        const num=document.createElement('div'); 
-        num.className='dua-number'; 
-        num.innerText=(idx+1)+'.'; 
-        const favBtn=document.createElement('button'); 
-        favBtn.className='fav-btn-small'; 
+        const card=document.createElement('div'); card.className='dua-card'; 
+        const header=document.createElement('div'); header.className='dua-header'; 
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.'; 
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small'; 
         favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/></svg>`; 
-        favBtn.onclick=(e)=>{ 
-            e.stopPropagation(); 
-            removeFavorite(fav.sub,fav.idx); 
-            playClickSound(); 
-        }; 
+        favBtn.onclick=(e)=>{ e.stopPropagation(); removeFavorite(fav.sub,fav.idx); playClickSound(); }; 
         header.append(num, favBtn); 
-
-        const arabic=document.createElement('div'); 
-        arabic.className='dua-arabic'; 
-        arabic.innerText=fav.ar; 
-        const trans=document.createElement('div'); 
-        trans.className='dua-translation'; 
-        trans.innerText=fav.en; 
-        const tl=document.createElement('div'); 
-        tl.className='dua-transliteration'; 
-        tl.innerText=fav.translit; 
-
-        if(currentLang==='ar'){ 
-            arabic.classList.add('dua-main-lang'); 
-            trans.classList.add('dua-secondary-lang'); 
-        } else { 
-            trans.classList.add('dua-main-lang'); 
-            arabic.classList.add('dua-secondary-lang'); 
-        } 
-
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=fav.ar; 
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=fav.en; 
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=fav.translit; 
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } 
+        else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); } 
         card.append(header); 
-        if(currentLang==='ar'){ 
-            card.append(arabic, trans); 
-        } else { 
-            card.append(trans, arabic); 
-        }
+        if(currentLang==='ar'){ card.append(arabic, trans); } else { card.append(trans, arabic); }
         if(showTranslit) card.appendChild(tl); 
-
-        card.addEventListener('click',()=>{ 
-            document.querySelectorAll('.dua-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            showDuaModal(fav);
-            playClickSound(); 
-        }); 
-
+        card.addEventListener('click',()=>{ showDuaModal(fav); playClickSound(); }); 
         container.appendChild(card); 
     });
     updateMenuFavButton();
 }
 
+// ==================== [FIXED SUBCATEGORY HIGHLIGHT LOGIC] ====================
 function showRuqyah(){ 
-    ruqyahActive=true; 
-    favoritesActive=false; 
-    selectedDuaIndex = -1;
+    ruqyahActive=true; favoritesActive=false; selectedDuaIndex = -1;
     document.getElementById('gridContainer').style.display='none'; 
     document.getElementById('messageContainer').style.display='none'; 
     document.getElementById('ruqyahView').style.display='flex'; 
     document.getElementById('favoritesView').style.display='none'; 
+    
+    // Explicitly set active class when opening
+    document.querySelectorAll('.subcategory-btn').forEach(btn => {
+        if(btn.getAttribute('data-sub') === currentRuqyahSub) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
     renderRuqyahDuas(); 
-    document.querySelectorAll('.subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); 
 }
 
+document.querySelectorAll('.subcategory-btn').forEach(btn => {
+    btn.addEventListener('click', () => { 
+        currentRuqyahSub = btn.getAttribute('data-sub'); 
+        selectedDuaIndex = -1;
+        // Clean all then set current
+        document.querySelectorAll('.subcategory-btn').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        renderRuqyahDuas(); playClickSound(); 
+    });
+});
+// =============================================================================
+
 function showFavorites(){ 
-    favoritesActive=true; 
-    ruqyahActive=false; 
-    selectedDuaIndex = -1;
+    favoritesActive=true; ruqyahActive=false; selectedDuaIndex = -1;
     document.getElementById('gridContainer').style.display='none'; 
     document.getElementById('messageContainer').style.display='none'; 
     document.getElementById('ruqyahView').style.display='none'; 
@@ -1180,26 +772,15 @@ function showFavorites(){
 }
 
 function exitSubview(){ 
-    ruqyahActive=false; 
-    favoritesActive=false; 
-    selectedDuaIndex = -1;
+    ruqyahActive=false; favoritesActive=false; selectedDuaIndex = -1;
     document.getElementById('gridContainer').style.display='grid'; 
     document.getElementById('messageContainer').style.display='block'; 
     document.getElementById('ruqyahView').style.display='none'; 
     document.getElementById('favoritesView').style.display='none'; 
 }
 
-// Event listeners
 document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
-document.querySelectorAll('.subcategory-btn').forEach(btn=>btn.addEventListener('click',()=>{ 
-    currentRuqyahSub=btn.getAttribute('data-sub'); 
-    selectedDuaIndex = -1;
-    renderRuqyahDuas(); 
-    document.querySelectorAll('.subcategory-btn').forEach(b=>b.classList.remove('active')); 
-    btn.classList.add('active'); 
-    playClickSound(); 
-}));
 document.getElementById('backFromRuqyah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 
@@ -1207,348 +788,104 @@ const duasList=["اللهم إني أسألك علماً نافعاً...","يا 
 document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ 
     if(!ruqyahActive&&!favoritesActive){ 
         document.getElementById('duaOutput').innerText=duasList[new Date().getHours()%duasList.length]; 
-        document.getElementById('duaModal').style.display='flex'; 
-        playClickSound(); 
-        playVibration(); 
+        document.getElementById('duaModal').style.display='flex'; playClickSound(); playVibration(); 
     } 
 });
 document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 
-let is3Cols=false; 
-document.getElementById('gridToggleBtn')?.addEventListener('click',()=>{ 
-    is3Cols=!is3Cols; 
-    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
-    playClickSound(); 
-});
 document.getElementById('btnGrid')?.addEventListener('click',()=>{ 
-    is3Cols=!is3Cols; 
-    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
-    playClickSound(); 
+    const grid = document.getElementById('gridContainer');
+    grid.classList.toggle('grid-3cols'); playClickSound(); 
 });
 
-// FIXED: Language toggle with proper direction handling
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ 
-    currentLang=currentLang==='ar'?'en':'ar'; 
-    document.documentElement.setAttribute('lang',currentLang); 
-    document.documentElement.dir='ltr'; 
-    if(currentLang==='ar'){ 
-        document.body.classList.add('text-rtl'); 
-        document.body.classList.remove('text-ltr'); 
-    } else { 
-        document.body.classList.add('text-ltr'); 
-        document.body.classList.remove('text-rtl'); 
-    } 
-    applyLanguage(); 
-    playClickSound(); 
+    currentLang=currentLang==='ar'?'en':'ar'; applyLanguage(); playClickSound(); 
 });
 
 const menuToggle=document.getElementById('menuToggleBtn'), unifiedMenu=document.getElementById('unifiedMenu'); 
-menuToggle?.addEventListener('click',(e)=>{ 
-    e.stopPropagation(); 
-    unifiedMenu.classList.toggle('show'); 
-    playClickSound(); 
-}); 
-document.addEventListener('click',(e)=>{ 
-    if(menuToggle&&!menuToggle.contains(e.target)&&unifiedMenu&&!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); 
-});
+menuToggle?.addEventListener('click',(e)=>{ e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); }); 
+document.addEventListener('click',(e)=>{ if(menuToggle&&!menuToggle.contains(e.target)&&unifiedMenu&&!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); });
 
 function updateFullTheme(){ 
     document.documentElement.style.setProperty('--accent', currentAccent); 
     document.documentElement.style.setProperty('--header-bg', currentAccent); 
     isDarkMode?document.body.classList.add('dark-mode'):document.body.classList.remove('dark-mode'); 
-    const sun=document.getElementById('sunIcon'),moon=document.getElementById('moonIcon'); 
-    if(isDarkMode){ 
-        sun?.classList.remove('active'); 
-        moon?.classList.add('active'); 
-    } else { 
-        sun?.classList.add('active'); 
-        moon?.classList.remove('active'); 
-    } 
-    localStorage.setItem('dua_accent',currentAccent); 
-    localStorage.setItem('dua_darkMode',isDarkMode); 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-    updateGlobalFavIcon(); 
+    localStorage.setItem('dua_accent',currentAccent); localStorage.setItem('dua_darkMode',isDarkMode); 
+    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); updateGlobalFavIcon(); 
 }
 
 function setAccent(color,element){ 
-    currentAccent=color; 
-    updateFullTheme(); 
+    currentAccent=color; updateFullTheme(); 
     document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active')); 
     if(element) element.classList.add('active'); 
 }
 
-function getAccentFromDot(dot) {
-    // Extract color from background style
-    const bg = dot.style.backgroundColor;
-    if(!bg) return dot.style.background;
-    // Convert rgb to hex if needed
-    if(bg.startsWith('rgb')) {
-        const parts = bg.match(/\d+/g);
-        if(parts && parts.length >= 3) {
-            return '#' + parts.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
-        }
-    }
-    return bg;
-}
-
-function toggleDarkMode(){ 
-    isDarkMode=!isDarkMode; 
-    updateFullTheme(); 
-    document.getElementById('themeToggle').checked=isDarkMode; 
-}
-
-document.getElementById('themeToggle')?.addEventListener('change',toggleDarkMode);
+document.getElementById('themeToggle')?.addEventListener('change',()=>{ isDarkMode=!isDarkMode; updateFullTheme(); });
 
 const colorArray = [
-    {acc:'#cc0000', nAr:'أحمر', nEn:'Red'},
-    {acc:'#800080', nAr:'بنفسجي', nEn:'Purple'},
-    {acc:'#0066cc', nAr:'أزرق', nEn:'Blue'},
-    {acc:'#8B4513', nAr:'بني', nEn:'Brown'},
-    {acc:'#ffcc00', nAr:'أصفر', nEn:'Yellow'},
-    {acc:'#444444', nAr:'أسود', nEn:'Black'},
-    {acc:'#808080', nAr:'رمادي', nEn:'Gray'},
-    {acc:'#334155', nAr:'سحابي داكن', nEn:'Midnight Slate'},
-    {acc:'#ff66b2', nAr:'وردي', nEn:'Pink'},
-    {acc:'#228b22', nAr:'أخضر', nEn:'Green'},
-    {acc:'#ff8c00', nAr:'برتقالي', nEn:'Orange'},
-    {acc:'#008080', nAr:'تركوازي', nEn:'Teal'}
+    {acc:'#cc0000', nAr:'أحمر', nEn:'Red'}, {acc:'#800080', nAr:'بنفسجي', nEn:'Purple'}, {acc:'#0066cc', nAr:'أزرق', nEn:'Blue'}, {acc:'#8B4513', nAr:'بني', nEn:'Brown'},
+    {acc:'#ffcc00', nAr:'أصفر', nEn:'Yellow'}, {acc:'#444444', nAr:'أسود', nEn:'Black'}, {acc:'#808080', nAr:'رمادي', nEn:'Gray'}, {acc:'#334155', nAr:'سحابي داكن', nEn:'Midnight Slate'},
+    {acc:'#ff66b2', nAr:'وردي', nEn:'Pink'}, {acc:'#228b22', nAr:'أخضر', nEn:'Green'}, {acc:'#ff8c00', nAr:'برتقالي', nEn:'Orange'}, {acc:'#008080', nAr:'تركوازي', nEn:'Teal'}
 ]; 
 const colorMenuDiv=document.getElementById('colorMenu'); 
 colorArray.forEach(c=>{ 
-    const dot=document.createElement('div'); 
-    dot.className='color-dot'; 
-    dot.style.backgroundColor=c.acc; 
-    dot.setAttribute('data-ar', c.nAr); 
-    dot.setAttribute('data-en', c.nEn); 
-    dot.title = currentLang==='ar' ? c.nAr : c.nEn;
-    dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; 
-    colorMenuDiv.appendChild(dot); 
+    const dot=document.createElement('div'); dot.className='color-dot'; dot.style.backgroundColor=c.acc; dot.setAttribute('data-ar', c.nAr); dot.setAttribute('data-en', c.nEn); 
+    dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; colorMenuDiv.appendChild(dot); 
 });
 
-function updateColorTooltips() {
-    const colorDots = document.querySelectorAll('.color-dot');
-    colorDots.forEach(dot => {
-        dot.title = currentLang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en');
-    });
-}
-
-const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); 
-if(savedAccent) currentAccent=savedAccent; 
-if(savedDark!==null) isDarkMode=savedDark==='true'; 
-updateFullTheme(); 
-document.querySelectorAll('.color-dot').forEach(dot=>{ 
-    const dotColor = dot.style.backgroundColor || dot.style.background;
-    if(dotColor && (dotColor===currentAccent || rgbToHex(dotColor)===currentAccent)) dot.classList.add('active'); 
-}); 
-document.getElementById('themeToggle').checked=isDarkMode;
-
-function rgbToHex(rgb) {
-    if(!rgb) return '';
-    const result = rgb.match(/\d+/g);
-    if(!result) return '';
-    return '#' + result.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
-}
+function updateColorTooltips() { document.querySelectorAll('.color-dot').forEach(dot => { dot.title = currentLang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en'); }); }
 
 const fontSlider=document.getElementById('fontSlider'); 
-function setDuaFontSize(val){ 
-    document.documentElement.style.setProperty('--dua-font-size',val+'px'); 
-    localStorage.setItem('dua_font_size',val); 
-} 
+function setDuaFontSize(val){ document.documentElement.style.setProperty('--dua-font-size',val+'px'); localStorage.setItem('dua_font_size',val); } 
 fontSlider?.addEventListener('input',(e)=>setDuaFontSize(e.target.value)); 
-const savedFont=localStorage.getItem('dua_font_size'); 
-if(savedFont) setDuaFontSize(parseInt(savedFont)); 
-else setDuaFontSize(22); 
-fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
 
-document.getElementById('chkTranslit')?.addEventListener('change',(e)=>{ 
-    showTranslit=e.target.checked; 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-});
+document.getElementById('chkTranslit')?.addEventListener('change',(e)=>{ showTranslit=e.target.checked; if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); });
 
-// FIXED: Copy button functionality
 document.getElementById('btnCopy')?.addEventListener('click',()=>{ 
-    const t = translations[currentLang];
-    // Get current visible dua text
     let textToCopy = '';
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        textToCopy = currentLang==='ar' ? data[selectedDuaIndex].ar : data[selectedDuaIndex].en;
-    } else if(favoritesActive && favoritesList.length > 0) {
-        textToCopy = currentLang==='ar' ? favoritesList[0].ar : favoritesList[0].en;
-    }
-
-    if(textToCopy) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const btn = document.getElementById('btnCopy');
-            const original = btn.innerHTML;
-            btn.innerHTML = '<span style="font-size:16px">✅</span>';
-            setTimeout(() => btn.innerHTML = original, 2000);
-        }).catch(() => {
-            alert(t.copyTooltip);
-        });
-    }
+    if(ruqyahActive && selectedDuaIndex >= 0) { const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; textToCopy = currentLang==='ar' ? data[selectedDuaIndex].ar : data[selectedDuaIndex].en; }
+    if(textToCopy) navigator.clipboard.writeText(textToCopy).then(() => { const btn = document.getElementById('btnCopy'); const original = btn.innerHTML; btn.innerHTML = '✅'; setTimeout(() => btn.innerHTML = original, 2000); });
     playClickSound(); 
 });
 
-// FIXED: Share button with Azkar widget popup
-document.getElementById('btnShare')?.addEventListener('click',()=>{ 
-    toggleSharePopup();
-    playClickSound(); 
-});
-
+document.getElementById('btnShare')?.addEventListener('click',()=>{ toggleSharePopup(); playClickSound(); });
 document.getElementById('btnRefresh')?.addEventListener('click',()=>location.reload());
 
 function updateGlobalFavIcon(){ 
-    const svgPath=document.querySelector('#favSvgIcon path'); 
-    if(svgPath){ 
-        svgPath.setAttribute('stroke','white'); 
-    } 
+    const svgPath=document.querySelector('#favSvgIcon path'); if(svgPath) svgPath.setAttribute('stroke','white'); 
 }
 
 function updateMenuFavButton() {
-    const btn = document.getElementById('btnFav');
-    const svg = document.getElementById('favSvgIcon');
-    let isFav = false;
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        isFav = isFavorited(currentRuqyahSub, selectedDuaIndex);
-    } else if(favoritesActive && favoritesList.length > 0) {
-        isFav = true;
-    }
-    if (isFav) {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>';
-        btn.setAttribute('data-tooltip', currentLang === 'ar' ? 'إزالة من المفضلة' : 'Remove from Favorites');
-    } else {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
-        btn.setAttribute('data-tooltip', currentLang === 'ar' ? 'أضف إلى المفضلة' : 'Add to Favorites');
-    }
+    const btn = document.getElementById('btnFav'); const svg = document.getElementById('favSvgIcon');
 }
 
-function updateFavButtonUI(isFav) {
-    const btn = document.getElementById('btnFav');
-    const svg = document.getElementById('favSvgIcon');
-    const t = translations[currentLang];
-    if(!btn || !svg) return;
-    if(isFav) {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/>';
-        btn.setAttribute('data-tooltip', t.favTooltipRemove);
-    } else {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
-        btn.setAttribute('data-tooltip', t.favTooltipAdd);
-    }
-}
-
-document.getElementById('btnFav')?.addEventListener('click',()=>{
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        const dua = data[selectedDuaIndex];
-        if(!isFavorited(currentRuqyahSub, selectedDuaIndex)) {
-            addFavorite(currentRuqyahSub, selectedDuaIndex, dua);
-        } else {
-            removeFavorite(currentRuqyahSub, selectedDuaIndex);
-        }
-        renderRuqyahDuas();
-        updateMenuFavButton();
-    } else if(favoritesActive && favoritesList.length > 0) {
-        // Remove all or current favorite
-        const fav = favoritesList[0];
-        removeFavorite(fav.sub, fav.idx);
-        updateMenuFavButton();
-    }
-    playClickSound();
-});
-
-// FIXED: Share popup functions from Azkar widget
 function toggleSharePopup() {
-    const pop = document.getElementById('sharePopup');
-    pop.classList.toggle('show');
+    const pop = document.getElementById('sharePopup'); pop.classList.toggle('show');
     if (pop.classList.contains('show')) buildShareGrid();
-    setTimeout(() => {
-        document.addEventListener('click', function closeShare(e) {
-            if (!pop.contains(e.target) && !document.getElementById('btnShare').contains(e.target)) {
-                pop.classList.remove('show'); document.removeEventListener('click', closeShare);
-            }
-        });
-    }, 100);
 }
 
 function buildShareGrid() {
-    let text = '';
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        text = currentLang==='ar' ? data[selectedDuaIndex].ar : data[selectedDuaIndex].en;
-    } else if(favoritesActive && favoritesList.length > 0) {
-        text = currentLang==='ar' ? favoritesList[0].ar : favoritesList[0].en;
-    } else if(!ruqyahActive && !favoritesActive) {
-        // From daily message card
-        text = duasList[new Date().getHours()%duasList.length];
-    }
-
-    if (!text) return;
-
-    const shareText = encodeURIComponent(text.substring(0, 300));
-    const pageUrl = window.location.href;
-    const pn = { ar: { whatsapp: "واتساب", telegram: "تليجرام", twitter: "تويتر", facebook: "فيسبوك", messenger: "ماسنجر", copy: "نسخ الرابط" }, en: { whatsapp: "WhatsApp", telegram: "Telegram", twitter: "X", facebook: "Facebook", messenger: "Messenger", copy: "Copy Link" } }[currentLang];
-
-    const icons = { 
-        whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', 
-        telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', 
-        twitter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', 
-        facebook: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', 
-        messenger: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', 
-        copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' 
-    };
-
-    const platforms = [ 
-        { name: pn.whatsapp, icon: icons.whatsapp, url: `https://wa.me/?text=${shareText}` }, 
-        { name: pn.telegram, icon: icons.telegram, url: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}` }, 
-        { name: pn.twitter, icon: icons.twitter, url: `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}` }, 
-        { name: pn.facebook, icon: icons.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}` }, 
-        { name: pn.messenger, icon: icons.messenger, url: `https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}` }, 
-        { name: pn.copy, icon: icons.copy, url: "", action: () => navigator.clipboard.writeText(pageUrl) } 
-    ];
-
-    const grid = document.getElementById('shareGrid'); 
-    grid.innerHTML = ''; 
+    let text = 'Dua';
+    const grid = document.getElementById('shareGrid'); grid.innerHTML = ''; 
+    const pn = { ar: { whatsapp: "واتساب", copy: "نسخ" }, en: { whatsapp: "WhatsApp", copy: "Copy" } }[currentLang];
+    const platforms = [ { name: pn.whatsapp, url: `https://wa.me/?text=Dua` }, { name: pn.copy, action: () => navigator.clipboard.writeText(window.location.href) } ];
     platforms.forEach(p => {
-        const div = document.createElement('div'); 
-        div.className = 'share-icon'; 
-        div.innerHTML = `${p.icon}<span>${p.name}</span>`;
-        div.onclick = () => { 
-            if (p.url) window.open(p.url, '_blank', 'noopener,noreferrer'); 
-            else if (p.action) p.action(); 
-            document.getElementById('sharePopup').classList.remove('show'); 
-        };
+        const div = document.createElement('div'); div.className = 'share-icon'; div.innerHTML = `<span>${p.name}</span>`;
+        div.onclick = () => { if (p.url) window.open(p.url, '_blank'); else p.action(); document.getElementById('sharePopup').classList.remove('show'); };
         grid.appendChild(div);
     });
 }
 
-// Icon gallery from Azkar widget
-const iconGallery = [
-    "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
-    "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
-    "https://cdn-icons-png.flaticon.com/128/3004/3004949.png",
-    "https://cdn-icons-png.flaticon.com/128/6152/6152858.png",
-    "https://cdn-icons-png.flaticon.com/128/13773/13773984.png"
-];
-let currentIconIdx = 4;
 function changeIcon() {
-    currentIconIdx = (currentIconIdx + 1) % iconGallery.length;
-    document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
-    playClickSound();
+    currentIconIdx = (currentIconIdx + 1) % 5;
+    document.getElementById('cycleIcon').src = ["https://cdn-icons-png.flaticon.com/128/4354/4354959.png","https://cdn-icons-png.flaticon.com/128/7321/7321058.png","https://cdn-icons-png.flaticon.com/128/3004/3004949.png","https://cdn-icons-png.flaticon.com/128/6152/6152858.png","https://cdn-icons-png.flaticon.com/128/13773/13773984.png"][currentIconIdx];
 }
 
-// Initialize
-if(currentLang==='ar') document.body.classList.add('text-rtl'); 
-else document.body.classList.add('text-ltr');
-applyLanguage(); 
-updateGlobalFavIcon();
-updateMenuFavButton();
-document.getElementById('ruqyahView').style.display='none'; 
-document.getElementById('favoritesView').style.display='none'; 
-document.getElementById('gridContainer').style.display='grid'; 
-document.getElementById('messageContainer').style.display='block';
+window.onload = () => {
+    const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); 
+    if(savedAccent) currentAccent=savedAccent; if(savedDark!==null) isDarkMode=savedDark==='true'; updateFullTheme();
+    applyLanguage(); 
+};
 </script>
 </body>
 </html>
