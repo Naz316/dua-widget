@@ -47,17 +47,7 @@
             font-family: 'Tajawal', 'Inter', sans-serif;
         }
         /* Floating icon animation from Azkar widget */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .floating-icon {
-            width: 50px; 
-            height: 50px;
-            cursor: pointer;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
+
         /* English text uses Inter font */
         .dua-translation, .message-card p, .message-card .sub-title, .grid-item span, .menu-section-title span:last-child, .setting-label span:last-child, .setting-row, .share-popup-title, .empty-fav {
             font-family: 'Inter', sans-serif;
@@ -87,8 +77,7 @@
         body:not(.dark-mode) .fav-btn-small svg path { stroke: var(--heart-stroke-light) !important; }
         body.dark-mode .fav-btn-small svg path { stroke: var(--heart-stroke-dark) !important; }
 
-        /* FIXED: Menu bar heart stays white always */
-        #favSvgIcon path { stroke: white !important; }
+
 
         .app-container {
             width: 100%;
@@ -139,6 +128,27 @@
         .icon-btn img { width: auto; height: auto; max-width: 24px; max-height: 24px; filter: invert(1); display: block; }
         .lang-btn img { max-width: 28px; max-height: 28px; }
         .menu-icon span { font-size: 26px; font-weight: bold; color: white; line-height: 1; }
+
+        /* FLOATING ICON ANIMATION */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating-icon {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+        .floating-icon:hover {
+            transform: scale(1.1);
+        }
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
         /* ENVELOPE with CLEAN V-SHAPE - FIXED */
         .message-container { padding: 25px 20px; perspective: 1000px; }
@@ -746,11 +756,6 @@
             <button class="action-btn" id="btnGrid" data-tooltip="تخطيط الشبكة">
                 <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm0 10h8v8H3zm10-10h8v8h-8zm0 10h8v8h-8z" fill="white"/></svg>
             </button>
-            <button class="action-btn" id="btnFav" data-tooltip="أضف إلى المفضلة">
-                <svg viewBox="0 0 24 24" width="20" height="20" id="favSvgIcon">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>
-                </svg>
-            </button>
             <button class="action-btn" id="btnRefresh" data-tooltip="تحديث">
                 <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
             </button>
@@ -908,7 +913,8 @@ function playVibration(){
 }
 
 function applyLanguage(){ 
-    const t=translations[currentLang]; 
+    const t=translations[currentLang];
+    updateColorTooltips(); 
 
     // Update all text elements
     document.getElementById('msgTitle').innerText=t.msgTitle;
@@ -1272,6 +1278,20 @@ function setAccent(color,element){
     if(element) element.classList.add('active'); 
 }
 
+function getAccentFromDot(dot) {
+    // Extract color from background style
+    const bg = dot.style.backgroundColor;
+    if(!bg) return dot.style.background;
+    // Convert rgb to hex if needed
+    if(bg.startsWith('rgb')) {
+        const parts = bg.match(/\d+/g);
+        if(parts && parts.length >= 3) {
+            return '#' + parts.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
+        }
+    }
+    return bg;
+}
+
 function toggleDarkMode(){ 
     isDarkMode=!isDarkMode; 
     updateFullTheme(); 
@@ -1280,24 +1300,55 @@ function toggleDarkMode(){
 
 document.getElementById('themeToggle')?.addEventListener('change',toggleDarkMode);
 
-const colorArray=['#cc0000','#800080','#0066cc','#8B4513','#ffcc00','#228b22','#ff8c00','#008080']; 
+const colorArray = [
+    {acc:'#cc0000', nAr:'أحمر', nEn:'Red'},
+    {acc:'#800080', nAr:'بنفسجي', nEn:'Purple'},
+    {acc:'#0066cc', nAr:'أزرق', nEn:'Blue'},
+    {acc:'#8B4513', nAr:'بني', nEn:'Brown'},
+    {acc:'#ffcc00', nAr:'أصفر', nEn:'Yellow'},
+    {acc:'#444444', nAr:'أسود', nEn:'Black'},
+    {acc:'#808080', nAr:'رمادي', nEn:'Gray'},
+    {acc:'#334155', nAr:'سحابي داكن', nEn:'Midnight Slate'},
+    {acc:'#ff66b2', nAr:'وردي', nEn:'Pink'},
+    {acc:'#228b22', nAr:'أخضر', nEn:'Green'},
+    {acc:'#ff8c00', nAr:'برتقالي', nEn:'Orange'},
+    {acc:'#008080', nAr:'تركوازي', nEn:'Teal'}
+]; 
 const colorMenuDiv=document.getElementById('colorMenu'); 
 colorArray.forEach(c=>{ 
     const dot=document.createElement('div'); 
     dot.className='color-dot'; 
-    dot.style.backgroundColor=c; 
-    dot.onclick=()=>{ setAccent(c,dot); playClickSound(); }; 
+    dot.style.backgroundColor=c.acc; 
+    dot.setAttribute('data-ar', c.nAr); 
+    dot.setAttribute('data-en', c.nEn); 
+    dot.title = currentLang==='ar' ? c.nAr : c.nEn;
+    dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; 
     colorMenuDiv.appendChild(dot); 
 });
+
+function updateColorTooltips() {
+    const colorDots = document.querySelectorAll('.color-dot');
+    colorDots.forEach(dot => {
+        dot.title = currentLang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en');
+    });
+}
 
 const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); 
 if(savedAccent) currentAccent=savedAccent; 
 if(savedDark!==null) isDarkMode=savedDark==='true'; 
 updateFullTheme(); 
 document.querySelectorAll('.color-dot').forEach(dot=>{ 
-    if(dot.style.backgroundColor===currentAccent) dot.classList.add('active'); 
+    const dotColor = dot.style.backgroundColor || dot.style.background;
+    if(dotColor && (dotColor===currentAccent || rgbToHex(dotColor)===currentAccent)) dot.classList.add('active'); 
 }); 
 document.getElementById('themeToggle').checked=isDarkMode;
+
+function rgbToHex(rgb) {
+    if(!rgb) return '';
+    const result = rgb.match(/\d+/g);
+    if(!result) return '';
+    return '#' + result.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
+}
 
 const fontSlider=document.getElementById('fontSlider'); 
 function setDuaFontSize(val){ 
@@ -1371,6 +1422,20 @@ function updateMenuFavButton() {
     } else {
         svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
         btn.setAttribute('data-tooltip', currentLang === 'ar' ? 'أضف إلى المفضلة' : 'Add to Favorites');
+    }
+}
+
+function updateFavButtonUI(isFav) {
+    const btn = document.getElementById('btnFav');
+    const svg = document.getElementById('favSvgIcon');
+    const t = translations[currentLang];
+    if(!btn || !svg) return;
+    if(isFav) {
+        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/>';
+        btn.setAttribute('data-tooltip', t.favTooltipRemove);
+    } else {
+        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
+        btn.setAttribute('data-tooltip', t.favTooltipAdd);
     }
 }
 
