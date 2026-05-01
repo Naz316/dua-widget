@@ -24,6 +24,7 @@
             --envelope-flap: #d0d0d0;
             --heart-stroke-light: #333333;
             --heart-stroke-dark: #ffffff;
+            --source-bg: #f2f2f2;
         }
 
         body.dark-mode {
@@ -37,6 +38,7 @@
             --popup-border: #444;
             --shadow: 0 8px 20px rgba(0,0,0,0.3);
             --envelope-flap: #555555;
+            --source-bg: #36364a;
         }
 
         body {
@@ -46,34 +48,27 @@
             transition: background-color 0.3s ease;
             font-family: 'Tajawal', 'Inter', sans-serif;
         }
-        /* Floating icon animation from Azkar widget */
 
-        /* English text uses Inter font */
         .dua-translation, .message-card p, .message-card .sub-title, .grid-item span, .menu-section-title span:last-child, .setting-label span:last-child, .setting-row, .share-popup-title, .empty-fav {
             font-family: 'Inter', sans-serif;
         }
-        /* Arabic text uses Tajawal/Amiri */
         .dua-arabic, .dua-transliteration, .message-card h2, .message-card .open-link, .dua-number, .subcategory-btn, .back-button, .tab span, .tab label {
             font-family: 'Amiri', 'Tajawal', serif;
         }
         body.dark-mode { background-color: #12121a; }
 
-        /* Text direction classes */
         body.text-rtl .message-card, body.text-rtl .dua-card { direction: rtl; text-align: right; }
         body.text-ltr .message-card, body.text-ltr .dua-card { direction: ltr; text-align: left; }
 
-        /* Menu section title alignment - FIXED for Arabic */
         body.text-rtl .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; direction: ltr; }
         body.text-ltr .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; }
 
         .grid-item { text-align: center !important; }
         .message-card { text-align: center !important; }
 
-        /* FIXED: Swap heart/number positions based on language */
         body.text-rtl .dua-header { flex-direction: row-reverse; }
         body.text-ltr .dua-header { flex-direction: row; }
 
-        /* FIXED: Heart color in light mode */
         body:not(.dark-mode) .fav-btn-small svg path { stroke: var(--heart-stroke-light) !important; }
         body.dark-mode .fav-btn-small svg path { stroke: var(--heart-stroke-dark) !important; }
 
@@ -127,7 +122,6 @@
         .lang-btn img { max-width: 28px; max-height: 28px; }
         .menu-icon span { font-size: 26px; font-weight: bold; color: white; line-height: 1; }
 
-        /* FLOATING ICON ANIMATION */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -148,7 +142,6 @@
             transform: translateX(-50%);
         }
 
-        /* ENVELOPE with CLEAN V-SHAPE - FIXED */
         .message-container { padding: 25px 20px; perspective: 1000px; }
         .message-card {
             background: var(--card-bg);
@@ -188,7 +181,6 @@
         .message-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
         .message-card .open-link { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
 
-        /* GRID */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -223,7 +215,6 @@
         .grid-item img { width: 70px; height: 70px; margin-bottom: 12px; object-fit: contain; }
         .grid-item span { font-weight: 700; font-size: 1rem; color: var(--text); }
 
-        /* RUQYAH & FAVORITES Views */
         .ruqyah-view, .favorites-view {
             display: none;
             flex-direction: column;
@@ -264,8 +255,9 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 500px;
+            max-height: 60vh;
             overflow-y: auto;
+            padding-bottom: 20px;
         }
         .dua-card {
             background: var(--card-bg);
@@ -276,7 +268,6 @@
             transition: 0.2s;
             position: relative;
         }
-        /* FIXED: Highlight selected dua */
         .dua-card.selected {
             background: var(--accent-soft);
             transform: scale(0.98);
@@ -310,7 +301,6 @@
         .fav-btn-small:hover { transform: scale(1.15); }
         .fav-btn-small svg { width: 22px; height: 22px; }
 
-        /* FIXED: Heart fill color */
         .fav-btn-small svg path[fill="#ff4444"] { fill: #ff4444 !important; }
 
         .dua-arabic { 
@@ -335,23 +325,27 @@
             transition: all 0.3s ease;
         }
 
-        /* FIXED: Language priority styling */
-        /* Main language - bold and colored */
-        .dua-main-lang { font-weight: 700; }
-        /* Secondary language - grey */
-        .dua-secondary-lang { font-weight: 400; color: var(--text-dim) !important; }
-        /* Transliteration always grey */
-        .dua-transliteration { color: var(--text-dim) !important; }
+        .dua-source-box {
+            background: var(--source-bg);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+            display: none;
+            border-right: 3px solid #999;
+        }
 
-        /* Light mode: main text black, secondary grey */
+        .dua-main-lang { font-weight: 700; }
+        .dua-secondary-lang { font-weight: 400; color: var(--text-dim) !important; }
+
         body:not(.dark-mode) .dua-main-lang { color: #1a1a1a !important; }
         body:not(.dark-mode) .dua-secondary-lang { color: #666666 !important; }
 
-        /* Dark mode: main text accent color, secondary grey */
         body.dark-mode .dua-main-lang { color: var(--accent) !important; }
         body.dark-mode .dua-secondary-lang { color: var(--text-dim) !important; }
 
-        /* MENU POPOVER - FIXED for Arabic alignment */
         .menu-popover {
             position: fixed; 
             top: 70px; 
@@ -375,7 +369,6 @@
             align-items: center; 
             margin-bottom: 12px; 
         }
-        /* FIXED: Menu section title always left-aligned */
         .menu-section-title { 
             color: var(--text); 
             font-size: 14px; 
@@ -554,7 +547,6 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); background-color: white; }
 
-        /* FIXED: Share popup from Azkar widget */
         .share-popup {
             position: fixed; 
             bottom: 100px; 
@@ -634,6 +626,8 @@
             max-width: 380px; 
             text-align: center; 
             color: var(--text); 
+            max-height: 85vh;
+            overflow-y: auto;
         }
         .dua-text { 
             font-size: var(--dua-font-size); 
@@ -671,7 +665,7 @@
         <div class="header-icons" style="width:100%; justify-content:space-between; align-items:center;">
             <button class="icon-btn lang-btn" id="langToggleBtn"><img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language"></button>
             <div class="header-center" style="position:absolute; left:50%; transform:translateX(-50%);">
-                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/13773/13773984.png" onclick="changeIcon()" alt="Icon" style="width:50px; height:50px; cursor:pointer; animation:float 3s ease-in-out infinite;">
+                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/13773/13773984.png" onclick="changeIcon()" alt="Icon">
             </div>
             <button class="icon-btn menu-icon" id="menuToggleBtn"><span>☰</span></button>
         </div>
@@ -688,16 +682,15 @@
 
     <div class="grid-container" id="gridContainer">
         <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
+        <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
         <div class="grid-item" data-category="wird"><img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird"><span id="labelWird">ورد الدعاء</span></div>
         <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
         <div class="grid-item" data-category="personal"><img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal"><span id="labelPersonal">أدعيتي</span></div>
         <div class="grid-item" data-category="favorites"><img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites"><span id="labelFavorites">المفضلة</span></div>
-        <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
     </div>
 
-    <!-- Ruqyah View -->
     <div class="ruqyah-view" id="ruqyahView">
-        <div class="subcategory-buttons">
+        <div class="subcategory-buttons" id="ruqyahSubs">
             <button class="subcategory-btn active" data-sub="self" id="selfBtn">ارق نفسك</button>
             <button class="subcategory-btn" data-sub="other" id="otherBtn">ارق غيرك</button>
         </div>
@@ -705,13 +698,11 @@
         <div class="dua-list-container" id="duaListContainer"></div>
     </div>
 
-    <!-- Favorites View -->
     <div class="favorites-view" id="favoritesView">
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
 
-    <!-- FIXED: Share popup from Azkar widget -->
     <div id="sharePopup" class="share-popup">
         <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
         <div class="share-grid" id="shareGrid"></div>
@@ -742,8 +733,9 @@
         <div class="setting-row"><div class="setting-label"><span>🔊</span><span id="set1">صوت النقرة</span></div><label class="switch"><input type="checkbox" id="chkClick" checked><span class="slider"></span></label></div>
         <div class="setting-row"><div class="setting-label"><span>📳</span><span id="set2">اهتزاز</span></div><label class="switch"><input type="checkbox" id="chkVibrate" checked><span class="slider"></span></label></div>
         <div class="setting-row"><div class="setting-label"><span>🔄</span><span id="set3">تحويل تلقائي</span></div><label class="switch"><input type="checkbox" id="chkAuto" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>📜</span><span id="setSource">المصدر والشرح</span></div><label class="switch"><input type="checkbox" id="chkSource" checked><span class="slider"></span></label></div>
         <div class="setting-row"><div class="setting-label"><span>🔤</span><span id="setTranslit">الترجمة الصوتية</span></div><label class="switch"><input type="checkbox" id="chkTranslit" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">حجم الخط (الدعاء فقط)</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
+        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">حجم الخط</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
         <div class="action-btns">
             <button class="action-btn" id="btnCopy" data-tooltip="نسخ النص">
                 <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
@@ -761,55 +753,127 @@
     </div>
 </div>
 <script>
-// ==================== RUQYAH DATA (48 duas - 24 self + 24 others) ====================
-const ruqyahSelf = [
-    { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ.", translit: "A'udhu billahi as-samee'il 'aleemi min ash-shaytani ar-rajeemi min hamzihi, wa nafkhihi, wa nafthihi.", en: "I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing." },
-    { ar: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ...", translit: "Bismillahi ar-rahmani ar-raheem. Alhamdu lillahi rabbi al-alameen...", en: "Surah Al-Fatihah: In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of the Worlds..." },
-    { ar: "قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.", translit: "Qul huwallahu ahad. Allahu as-samad. Lam yalid wa lam yulad. Wa lam yakun lahu kufuwan ahad.", en: "Surah Al-Ikhlas: Say, He is Allah, the One. Allah, the Eternal Refuge. He neither begets nor is born, nor is there to Him any equivalent." },
-    { ar: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِنْ شَرِّ مَا خَلَقَ * وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.", translit: "Qul a'udhu birabbi al-falaq. Min sharri ma khalaq. Wa min sharri ghasiqin idha waqab. Wa min sharri an-naffathati fi al-uqad. Wa min sharri hasidin idha hasad.", en: "Surah Al-Falaq: Say, I seek refuge in the Lord of daybreak from the evil of that which He created, and from the evil of darkness when it settles..." },
-    { ar: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَٰهِ النَّاسِ * مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَالنَّاسِ.", translit: "Qul a'udhu birabbi an-nas. Maliki an-nas. Ilahi an-nas. Min sharri al-waswasi al-khannas. Alladhi yuwaswisu fi suduri an-nas. Mina al-jinnati wa an-nas.", en: "Surah An-Nas: Say, I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the retreating whisperer..." },
-    { ar: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ...", translit: "Allahu la ilaha illa huwa al-hayyu al-qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fi as-samawati wa ma fi al-ard...", en: "Ayat-ul-Kursi: Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep..." },
-    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.", translit: "A'udhu bi-kalimati Allahi at-tammati, min kulli shaytanin wa hammatin, wa min kulli 'aynin lammatin.", en: "I seek refuge in the perfect words of Allah from every devil and every poisonous reptile, and from every evil eye." },
-    { ar: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيعُ الْعَلِيمُ.", translit: "Bismillahi alladhi la yadurru ma'asmihi shay'un fi al-ardi wa la fi as-sama'i, wa huwa as-samee'u al-'aleem.", en: "In the name of Allah, with whose name nothing can cause harm on earth or in the heavens, and He is the All-Hearing, the All-Knowing." },
-    { ar: "أَعُوذُ بِعِزَّةِ اللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ.", translit: "A'udhu bi-'izzatillahi wa qudratihi min sharri ma ajidu wa uhadhiru.", en: "I seek refuge in the might and power of Allah from the evil of what I feel and what I fear." },
-    { ar: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَّجِيدٌ.", translit: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahim wa 'ala ali Ibrahim, innaka hamidun majid.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad, as You sent blessings upon Ibrahim and the family of Ibrahim. You are indeed Praiseworthy and Glorious." },
-    { ar: "اللَّهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ.", translit: "Allahumma inni as'aluka al-'afwa wal-'afiyata fi ad-dunya wal-akhirah.", en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter." },
-    { ar: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ.", translit: "Astaghfirullaha al-'azeem alladhi la ilaha illa huwa al-hayyu al-qayyum wa atubu ilayh.", en: "I seek forgiveness from Allah the Magnificent, there is no deity except Him, the Ever-Living, the Sustainer, and I repent to Him." },
-    { ar: "يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَىٰ نَفْسِي طَرْفَةَ عَيْنٍ.", translit: "Ya hayyu ya qayyum, bi-rahmatika astaghithu, aslih li sha'ni kullahu, wa la takilni ila nafsi tarfata 'ayn.", en: "O Ever-Living One, O Eternal One, by Your mercy I seek help. Rectify for me all of my affairs and do not leave me to myself even for the blink of an eye." },
-    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ...", translit: "Allahumma inni a'udhu bika min al-hammi wal-hazan, wa a'udhu bika min al-'ajzi wal-kasal...", en: "O Allah, I seek refuge in You from anxiety and sorrow, and from incapacity and laziness..." },
-    { ar: "رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ، وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ.", translit: "Rabbi a'udhu bika min hamazati ash-shayateen, wa a'udhu bika rabbi an yahdurun.", en: "My Lord, I seek refuge in You from the incitements of the devils, and I seek refuge in You, my Lord, lest they be present with me." },
-    { ar: "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ.", translit: "La ilaha illa anta subhanaka inni kuntu min az-zalimeen.", en: "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers." },
-    { ar: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ.", translit: "Hasbunallahu wa ni'ma al-wakeel.", en: "Sufficient for us is Allah, and He is the best Disposer of affairs." },
-    { ar: "مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ.", translit: "Ma sha' Allahu la quwwata illa billah.", en: "What Allah has willed, there is no power except with Allah." },
-    { ar: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ. اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا.", translit: "Inna lillahi wa inna ilayhi raji'un. Allahumma ujurni fi musibati wa akhlif li khayran minha.", en: "Indeed we belong to Allah, and indeed to Him we will return. O Allah, reward me for my affliction and replace it for me with something better." },
-    { ar: "اللَّهُمَّ اشْفِنِي شِفَاءً لَا يُغَادِرُ سَقَمًا.", translit: "Allahumma ash-fini shifa'an la yughadiru saqaman.", en: "O Allah, cure me with a healing that leaves no sickness." },
-    { ar: "أَعُوذُ بِوَجْهِ اللَّهِ الْكَرِيمِ، وَبِكَلِمَاتِ اللَّهِ التَّامَّاتِ، مِنْ شَرِّ مَا أَنْتَ آخِذٌ بِنَاصِيَتِهِ.", translit: "A'udhu bi-wajhillahi al-kareem, wa bi-kalimatillahi at-tammat, min sharri ma anta akhidhun bi-nasiyatih.", en: "I seek refuge in the Noble Countenance of Allah and in the perfect words of Allah from the evil of what You seize by its forelock." },
-    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ مَا سَأَلَكَ مِنْهُ نَبِيُّكَ مُحَمَّدٌ...", translit: "Allahumma inni as'aluka min khayri ma sa'alaka minhu nabiyyuka Muhammad...", en: "O Allah, I ask You for the good that Your Prophet Muhammad asked You for..." },
-    { ar: "اللَّهُمَّ رَحْمَتَكَ أَرْجُو فَلَا تَكِلْنِي إِلَىٰ نَفْسِي طَرْفَةَ عَيْنٍ...", translit: "Allahumma rahmataka arju fala takilni ila nafsi tarfata 'ayn...", en: "O Allah, it is Your mercy that I hope for, so do not leave me to myself for the blink of an eye..." },
-    { ar: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.", translit: "Subhanallahi wa bihamdihi, 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatih.", en: "Glory be to Allah and praise Him, by the number of His creation, by His pleasure, by the weight of His Throne, and by the ink of His words." }
+// ==================== DATA ====================
+const sunnahDuas = [
+    {
+        ar: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ...",
+        en: "O Allah, for You is all praise – You are the Sustainer of the heavens and the earth...",
+        translit: "Allāhumma laka l-ḥamdu anta qayyimu s-samāwāti wa l-arḍi wa man fīhinna...",
+        source: "Ṣaḥīḥ al-Bukhārī (1120).",
+        tafsir: "“Qayyimu s-samāwāti...” = He Who constantly manages the creation... “Anta l-muqaddimu...” = You advance whom You will..."
+    },
+    {
+        ar: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ...",
+        en: "O Allah, You are my Lord, there is no deity except You. You created me...",
+        translit: "Allāhumma anta rabbī lā ilāha illā anta, khalaqtanī wa anā ‘abduka...",
+        source: "Ṣaḥīḥ al-Bukhārī (6306).",
+        tafsir: "“Abū’u laka” = I confess and acknowledge to You."
+    },
+    {
+        ar: "اللَّهُمَّ مَالِكَ الْمُلْكِ، تُؤْتِي الْمُلْكَ مَنْ تَشَاءُ، وَتَنْزِعُ الْمُلْكَ مِمَّنْ تَشَاءُ...",
+        en: "O Allah, Owner of all sovereignty, You give sovereignty to whom You will...",
+        translit: "Allāhumma mālika l-mulki, tu’ti l-mulka man tashā’u wa tanzi‘u l-mulka...",
+        source: "Al-Mu‘jam aṣ-Ṣaghīr li-ṭ-Ṭabarānī (558).",
+        tafsir: "Al-Mundhirī said: Isnād jayyid. Al-Albānī said: Ḥasan."
+    },
+    {
+        ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ...",
+        en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter...",
+        translit: "Allāhumma innī as’aluka l-‘afwa wa l-‘āfiyata fī d-dunyā wa l-ākhirah...",
+        source: "Sunan Ibn Mājah (3871), authenticated by Al-Albānī.",
+        tafsir: "“Ughtāla” = i.e., being swallowed by the earth (cave-in)."
+    },
+    {
+        ar: "اللَّهُمَّ لَكَ أَسْلَمْتُ، وَبِكَ آمَنْتُ، وَعَلَيْكَ تَوَكَّلْتُ...",
+        en: "O Allah, to You I have submitted, in You I have believed...",
+        translit: "Allāhumma laka aslamtu, wa bika āmantu, wa ‘alayka tawakkaltu...",
+        source: "Ṣaḥīḥ Muslim (2717)."
+    },
+    {
+        ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى، وَالْعَفَافَ وَالْغِنَى.",
+        en: "O Allah, I ask You for guidance, piety, chastity, and self-sufficiency.",
+        translit: "Allāhumma innī as’aluka l-hudā wa t-tuqā, wa l-‘afāfa wa l-ghinā.",
+        source: "Ṣaḥīḥ Muslim (2721)."
+    },
+    {
+        ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ.",
+        en: "O Turner of hearts, make my heart firm upon Your religion.",
+        translit: "Yā muqalliba l-qulūbi thabbit qalbī ‘alā dīnik.",
+        source: "Sunan at-Tirmidhī (3522), authenticated by Al-Albānī."
+    },
+    {
+        ar: "اللَّهُمَّ جَنِّبْنِي مُنْكَرَاتِ الْأَخْلَاقِ، وَالْأَهْوَاءِ، وَالْأَعْمَالِ وَالْأَدْوَاءِ.",
+        en: "O Allah, keep me away from evil manners, evil desires, evil deeds, and evil diseases.",
+        translit: "Allāhumma jannibnī munkarāti l-akhlāqi, wa l-ahwā’i, wa l-a‘māli wa l-adwā’.",
+        source: "Al-Mustadrak ‘alā aṣ-Ṣaḥīḥayn lil-Ḥākim (1949).",
+        tafsir: "“Al-adwā’” = plural of dā’ (disease), repulsive illnesses such as leprosy."
+    },
+    {
+        ar: "اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي...",
+        en: "O Allah, set right for me my religion which is the safeguard of my affairs...",
+        translit: "Allāhumma aṣliḥ lī dīnī alladhī huwa ‘iṣmatu amrī...",
+        source: "Ṣaḥīḥ Muslim (2720)."
+    },
+    {
+        ar: "اللَّهُمَّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي، وَإِسْرَافِي فِي أَمْرِي...",
+        en: "O Allah, forgive me my sin, my ignorance, my excess in my affairs...",
+        translit: "Allāhumma ghfir lī khaṭī’atī wa jahlī, wa isrāfī fī amrī...",
+        source: "Ṣaḥīḥ al-Bukhārī (6399), Ṣaḥīḥ Muslim (2719)."
+    },
+    {
+        ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ...",
+        en: "O Allah, I seek refuge in You from the removal of Your blessing...",
+        translit: "Allāhumma innī a‘ūdhu bika min zawāli ni‘matika...",
+        source: "Ṣaḥīḥ Muslim (2739).",
+        tafsir: "“Fujā’atu niqmatika” = sudden unexpected retribution."
+    },
+    {
+        ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَالْجُبْنِ وَالْبُخْلِ...",
+        en: "O Allah, I seek refuge in You from incapacity, laziness...",
+        translit: "Allāhumma innī a‘ūdhu bika mina l-‘ajzi wa l-kasali...",
+        source: "Ṣaḥīḥ al-Bukhārī (6367), Ṣaḥīḥ Muslim (2706)."
+    },
+    {
+        ar: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا، وَفِي بَصَرِي نُورًا، وَفِي سَمْعِي نُورًا...",
+        en: "O Allah, place light in my heart, light in my sight...",
+        translit: "Allāhumma j‘al fī qalbī nūran, wa fī baṣarī nūran, wa fī sam‘ī nūran...",
+        source: "Ṣaḥīḥ al-Bukhārī (6316), Ṣaḥīḥ Muslim (763)."
+    }
 ];
 
-// Create ruqyahOther by modifying self duas for others (change pronouns)
-const ruqyahOther = ruqyahSelf.map((d, idx) => ({
-    ar: d.ar
-        .replace(/أَعُوذُ/g, 'أُعِيذُكَ')
-        .replace(/أَسْأَلُكَ/g, 'أَسْأَلُ لَكَ')
-        .replace(/اشْفِنِي/g, 'اشْفِهِ')
-        .replace(/عَافِنِي/g, 'عَافِهِ')
-        .replace(/أَصْلِحْ لِي/g, 'أَصْلِحْ لَهُ')
-        .replace(/تَكِلْنِي/g, 'تَكِلْهُ')
-        .replace(/حِفْظِي/g, 'حِفْظَهُ')
-        .replace(/نَفْسِي/g, 'نَفْسَهُ')
-        .replace(/بِدَنِي/g, 'بِبَدَنِهِ')
-        .replace(/سَمْعِي/g, 'سَمْعِهِ')
-        .replace(/بَصَرِي/g, 'بَصَرِهِ')
-        .replace(/أَجِرْنِي/g, 'أَجِرْهُ')
-        .replace(/أَخْلِفْ لِي/g, 'أَخْلِفْ لَهُ'),
-    translit: d.translit,
-    en: d.en.replace(/me/g, 'him').replace(/my/g, 'his').replace(/I /g, 'He ')
+const ruqyahSelf = [
+    { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ. (مرة واحدة)", en: "I seek refuge in Allah... from his evil whispers, his puffing up with pride, and his blowing. (Once)", translit: "A‘ūdhu billāhi s-samī‘i l-‘alīmi mina sh-shayṭāni r-rajīmi min hamzihi, wa nafkhihi, wa nafthihi.", source: "Sunan Abī Dāwūd (775).", tafsir: "Hamzihi = what the devil casts into a person’s heart at death." },
+    { ar: "{بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ...} (سبع مرات)", en: "Surat al-Fatihah (7 times)", translit: "Bismillāhi r-raḥmāni r-raḥīm. Alḥamdu lillāhi rabbi l-‘ālamīn...", source: "Ṣaḥīḥ al-Bukhārī (5749)." },
+    { ar: "{قُلْ هُوَ اللَّهُ أَحَدٌ...} (ثلاث مرات مع النفث)", en: "Surat al-Ikhlas (3 times with blowing and wiping)", translit: "Qul huwa llāhu aḥad...", source: "Ṣaḥīḥ al-Bukhārī (5016).", method: "Blow into hands, wipe over body." },
+    { ar: "{قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...}", en: "Surat al-Falaq (3 times)", translit: "Qul a‘ūdhu birabbi l-falaq...", source: "Ṣaḥīḥ al-Bukhārī (5016).", method: "Blow into hands, wipe over body." },
+    { ar: "{قُلْ أَعُوذُ بِرَبِّ النَّاسِ...}", en: "Surat an-Nas (3 times)", translit: "Qul a‘ūdhu birabbi n-nās...", source: "Ṣaḥīḥ al-Bukhārī (5016).", method: "Blow into hands, wipe over body." },
+    { ar: "{اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...}", en: "Ayat al-Kursi", translit: "Allāhu lā ilāha illā huwa l-ḥayyu l-qayyūm...", source: "Sunan al-Kubrā lil-Nasā’ī (10730)." },
+    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.", en: "I seek refuge in the perfect words of Allah... from every evil eye.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati...", source: "Ṣaḥīḥ al-Bukhārī (3371).", tafsir: "Hāmmah = poisonous creature." },
+    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ غَضَبِهِ وَشَرِّ عِبَادِهِ...", en: "I seek refuge in the perfect words of Allah from His wrath...", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati...", source: "Sunan Abī Dāwūd (3893)." },
+    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", en: "I seek refuge in the perfect words of Allah from the evil of what He has created.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmāti min sharri mā khalaq.", source: "Ṣaḥīḥ Muslim (2709)." },
+    { ar: "بِسْمِ اللهِ... أَعُوذُ بِاللهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ. (سبع مرات)", en: "In the name of Allah (3) I seek refuge in Allah... (7)", translit: "Bismillāh... A‘ūdhu billāhi wa qudratihi...", source: "Ṣaḥīḥ Muslim (2202).", method: "Place your hand on the place of pain." },
+    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ الَّتِي لَا يُجَاوِزُهُنَّ بَرٌّ، وَلَا فَاجِرٌ...", en: "I seek refuge in the perfect words of Allah which no person can exceed...", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmāti...", source: "Musnad Aḥmad (15461)." },
+    { ar: "أَذْهِبِ الْبَاسَ رَبَّ النَّاسِ، وَاشْفِ أَنْتَ الشَّافِي...", en: "Remove the harm, O Lord of mankind...", translit: "Adhhibi l-bā’sa rabba n-nās...", source: "Ṣaḥīḥ al-Bukhārī (5750).", method: "Wipe with your right hand over the place of pain." },
+    { ar: "امْسَحِ الْبَاسَ رَبَّ النَّاسِ، بِيَدِكَ الشِّفَاءُ...", en: "Wipe away the affliction...", translit: "Imsaḥi l-bā’sa rabba n-nās...", source: "Ṣaḥīḥ al-Bukhārī (5744)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ.", en: "O Allah, send blessings upon Muhammad...", translit: "Allāhumma ṣalli ‘alā Muḥammadin...", source: "Sunan an-Nasā’ī (1292).", note: "Every supplication is veiled until one sends blessings upon the Prophet ﷺ." },
+    { ar: "بِسْمِ اللهِ يُبْرِينِي، وَمِنْ كُلِّ دَاءٍ يَشْفِينِي...", en: "In the name of Allah, He cures me...", translit: "Bismillāhi yubrīnِي...", source: "Al-Jāmi‘ li-Ibni Wahb (708)." },
+    { ar: "بِسْمِ اللَّهِ أَرْقِي نَفْسِي، مِنْ كُلِّ شَيْءٍ يُؤْذِينِي...", en: "In the name of Allah, I perform ruqyah on myself...", translit: "Bismillāhi arqī nafsī...", source: "Ṣaḥīḥ Muslim (2186)." },
+    { ar: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ...", en: "In the name of Allah, with whose name nothing can harm...", translit: "Bismillāhi lladhī lā yaḍurru...", source: "Ṣaḥīḥ Ibn Ḥibbān (862)." },
+    { ar: "بِسْمِ اللهِ، تُرْبَةُ أَرْضِنَا، بِرِيقَتِنَا، لِيُشْفَى بِهِ...", en: "In the name of Allah, the dust of our land mixed with saliva...", translit: "Bismillāh, turbatu arḍinā...", source: "Ṣaḥīḥ al-Bukhārī (5745).", method: "Take saliva on finger, place on dust, wipe on pain." },
+    { ar: "لَا بَأْسَ عَلَيَّ طَهُورٌ إِنْ شَاءَ اللهُ.", en: "No harm is upon me. It is purification...", translit: "Lā ba’sa ‘alayya ṭahūrun...", source: "Ṣaḥīḥ al-Bukhārī (7470)." },
+    { ar: "اللَّهُمَّ اشْفِنِي، أَنْكَأُ لَكَ عَدُوًّا، أَوْ أَمْشِي لَكَ إِلَى صَلَاةٍ.", en: "O Allah, heal me so I may defeat an enemy...", translit: "Allāhumma ishfinī, ankā’u laka...", source: "Ṣaḥīḥ Ibn Ḥibbān (2974)." },
+    { ar: "أَسْأَلُ اللهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَنِي. (سبع مرات)", en: "I ask Allah the Almighty to heal me. (7 times)", translit: "As’alu Llāha l-‘aẓīma...", source: "Sunan Abī Dāwūd (3106)." },
+    { ar: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي...", en: "O Allah, grant me well-being in my body...", translit: "Allāhumma ‘āfinī fī badanī...", source: "Sunan Abī Dāwūd (5090)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ...", en: "O Allah, I ask You for well-being...", translit: "Allāhumma innī as’aluka l-‘āfiyata...", source: "Al-Adab al-Mufrad (1200)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ...", en: "O Allah, send blessings upon Muhammad, Your servant...", translit: "Allāhumma ṣalli ‘alā Muḥammadin...", source: "Ṣaḥīḥ al-Bukhārī (4520)." }
+];
+
+const ruqyahOther = ruqyahSelf.map(d => ({
+    ...d,
+    ar: d.ar.replace(/أَرْقِي نَفْسِي/g, 'أَرْقِيكَ').replace(/أَسْأَلُ لِي/g, 'أَسْأَلُ لَكَ').replace(/أَعُوذُ/g, 'أُعِيذُكَ').replace(/اشْفِنِي/g, 'اشْفِهِ'),
+    en: d.en.replace(/myself/g, 'you').replace(/ me /g, ' you ').replace(/ my /g, ' your ')
 }));
 
-// ==================== TRANSLATIONS ====================
 const translations = {
     ar: { 
         msgTitle:"رسالتك اليوم", 
@@ -828,10 +892,11 @@ const translations = {
         set2:"اهتزاز", 
         set3:"تحويل تلقائي", 
         set4:"حجم الخط", 
+        setSource: "المصدر والشرح",
         setTranslit:"الترجمة الصوتية", 
         copyTooltip:"نسخ النص", 
         shareTooltip:"مشاركة", 
-        favTooltipAdd:"أضف إلى المفضلة", 
+        favTooltipAdd:"أضف للمفضلة", 
         favTooltipRemove:"إزالة من المفضلة", 
         refreshTooltip:"تحديث", 
         shareTitle:"مشاركة الدعاء", 
@@ -849,27 +914,28 @@ const translations = {
         noFavorites:"لا توجد أدعية مفضلة"
     },
     en: { 
-        msgTitle:"Your Message Today", 
-        msgSub:"Your message today", 
-        msgText:"Behind this supplication there may be a message written for you, and today you need it most.", 
-        msgLink:"Click here to open it", 
-        ruqya:"Spiritual Ruqya", 
-        wird:"Daily Wird", 
-        quranic:"Quranic Duas", 
-        personal:"My Duas", 
+        msgTitle:"Daily Message", 
+        msgSub:"Message for today", 
+        msgText:"Behind this dua there is a message written for you.", 
+        msgLink:"Click to open", 
+        ruqya:"Ruqya", 
+        wird:"Wird", 
+        quranic:"Quranic", 
+        personal:"Personal", 
         favorites:"Favorites", 
         sunnah:"Sunnah Duas", 
         menuColors:"Colors", 
         menuSettings:"Settings", 
         set1:"Click Sound", 
-        set2:"Vibration", 
+        set2:"Vibrate", 
         set3:"Auto Transfer", 
         set4:"Font Size", 
+        setSource: "Source & Info",
         setTranslit:"Transliteration", 
-        copyTooltip:"Copy Text", 
+        copyTooltip:"Copy", 
         shareTooltip:"Share", 
-        favTooltipAdd:"Add to Favorites", 
-        favTooltipRemove:"Remove from Favorites", 
+        favTooltipAdd:"Add to Fav", 
+        favTooltipRemove:"Remove Fav", 
         refreshTooltip:"Refresh", 
         shareTitle:"Share Dua", 
         closeModal:"Close", 
@@ -879,16 +945,17 @@ const translations = {
         telegram:"Telegram",
         messenger:"Messenger",
         copyLink:"Copy Link",
-        gridTooltip:"Grid Layout",
+        gridTooltip:"Grid",
         selfBtn:"Heal Yourself", 
         otherBtn:"Heal Others", 
         back:"Back",
-        noFavorites:"No favorite duas yet"
+        noFavorites:"Empty favorites"
     }
 };
 
-let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, 
-    ruqyahActive=false, favoritesActive=false, currentRuqyahSub='self', selectedDuaIndex=-1;
+// ==================== LOGIC ====================
+let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true,
+    activeCategory='ruqya', currentRuqyahSub='self', selectedDuaIndex=-1;
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
 
 function playClickSound(){ 
@@ -912,9 +979,6 @@ function playVibration(){
 
 function applyLanguage(){ 
     const t=translations[currentLang];
-    updateColorTooltips(); 
-
-    // Update all text elements
     document.getElementById('msgTitle').innerText=t.msgTitle;
     document.getElementById('msgSub').innerText=t.msgSub;
     document.getElementById('msgText').innerText=t.msgText;
@@ -931,174 +995,30 @@ function applyLanguage(){
     document.getElementById('set2').innerText=t.set2;
     document.getElementById('set3').innerText=t.set3;
     document.getElementById('set4').innerText=t.set4;
+    document.getElementById('setSource').innerText=t.setSource;
     document.getElementById('setTranslit').innerText=t.setTranslit;
-    document.getElementById('shareTitle').innerText=t.shareTitle;
     document.getElementById('selfBtn').innerText=t.selfBtn;
     document.getElementById('otherBtn').innerText=t.otherBtn;
     document.getElementById('backText').innerText=t.back;
     document.getElementById('favBackText').innerText=t.back;
     document.getElementById('closeModalBtn').innerText=t.closeModal;
 
-    // Update tooltips
-    document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip);
-    document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip);
-    document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
+    if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } 
+    else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
 
-    // Update body direction
-    if(currentLang==='ar'){ 
-        document.body.classList.add('text-rtl'); 
-        document.body.classList.remove('text-ltr'); 
-    } else { 
-        document.body.classList.add('text-ltr'); 
-        document.body.classList.remove('text-rtl'); 
-    }
-
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-    updateGlobalFavIcon(); 
+    renderActiveCategory();
 }
 
-function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
-
-function isFavorited(sub,idx){ 
-    return favoritesList.some(f=>f.sub===sub && f.idx===idx); 
+function renderActiveCategory(){
+    if(activeCategory==='ruqya') renderDuas(currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther, 'ruqyah');
+    else if(activeCategory==='sunnah') renderDuas(sunnahDuas, 'sunnah');
+    else if(activeCategory==='favorites') renderFavorites();
 }
 
-function addFavorite(sub,idx,dua){ 
-    if(!isFavorited(sub,idx)){ 
-        favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit}); 
-        saveFavorites(); 
-        if(ruqyahActive) renderRuqyahDuas(); 
-        if(favoritesActive) renderFavorites(); 
-    } 
-}
-
-function removeFavorite(sub,idx){ 
-    favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); 
-    saveFavorites(); 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-}
-
-function getHeartStrokeColor(){ 
-    return isDarkMode ? 'white' : '#333333'; 
-}
-
-// FIXED: Render Ruqyah duas with proper language priority and selection highlighting
-function renderRuqyahDuas(){ 
-    const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; 
+function renderDuas(data, catId){ 
     const container=document.getElementById('duaListContainer'); 
     container.innerHTML=''; 
-
     data.forEach((dua,idx)=>{ 
-        const card=document.createElement('div'); 
-        card.className='dua-card';
-        // FIXED: Add selected class if this dua is selected
-        if(idx === selectedDuaIndex) {
-            card.classList.add('selected');
-        }
-
-        const header=document.createElement('div'); 
-        header.className='dua-header'; 
-
-        const num=document.createElement('div'); 
-        num.className='dua-number'; 
-        num.innerText=(idx+1)+'.'; 
-
-        const fav=isFavorited(currentRuqyahSub,idx); 
-        const favBtn=document.createElement('button'); 
-        favBtn.className='fav-btn-small'; 
-        const strokeColor=getHeartStrokeColor(); 
-        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`; 
-        favBtn.onclick=(e)=>{ 
-            e.stopPropagation(); 
-            if(fav) removeFavorite(currentRuqyahSub,idx); 
-            else addFavorite(currentRuqyahSub,idx,dua); 
-            playClickSound(); 
-        }; 
-
-        header.append(num, favBtn); 
-
-        // FIXED: Create text elements with proper priority based on language
-        const arabic=document.createElement('div'); 
-        arabic.className='dua-arabic'; 
-        arabic.innerText=dua.ar; 
-
-        const trans=document.createElement('div'); 
-        trans.className='dua-translation'; 
-        trans.innerText=dua.en; 
-
-        const tl=document.createElement('div'); 
-        tl.className='dua-transliteration'; 
-        tl.innerText=dua.translit; 
-
-        // FIXED: Apply priority classes based on selected language
-        if(currentLang==='ar'){ 
-            arabic.classList.add('dua-main-lang'); 
-            trans.classList.add('dua-secondary-lang'); 
-        } else { 
-            trans.classList.add('dua-main-lang'); 
-            arabic.classList.add('dua-secondary-lang'); 
-        } 
-
-        // FIXED: Append in correct order based on language
-        card.append(header); 
-        if(currentLang==='ar'){ 
-            card.append(arabic, trans); 
-        } else { 
-            card.append(trans, arabic); 
-        }
-        if(showTranslit) card.appendChild(tl); 
-
-        // FIXED: Click to select and show in modal
-        card.addEventListener('click',()=>{ 
-            // Remove selected from all cards
-            document.querySelectorAll('.dua-card').forEach(c => c.classList.remove('selected'));
-            // Add selected to clicked card
-            card.classList.add('selected');
-            selectedDuaIndex = idx;
-
-            // Show in modal
-            showDuaModal(dua);
-            playClickSound(); 
-        }); 
-
-        container.appendChild(card); 
-    });
-    updateMenuFavButton();
-}
-
-function showDuaModal(dua) {
-    const modal = document.getElementById('duaModal');
-    const output = document.getElementById('duaOutput');
-
-    let content = '';
-    if(currentLang === 'ar') {
-        content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div>`;
-        content += `<div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`;
-    } else {
-        content = `<div style="font-weight:700; color:${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${dua.en}</div>`;
-        content += `<div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`;
-    }
-    if(showTranslit) {
-        content += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
-    }
-
-    output.innerHTML = content;
-    modal.style.display = 'flex';
-}
-
-function renderFavorites(){ 
-    const container=document.getElementById('favoritesListContainer'); 
-    container.innerHTML=''; 
-    if(favoritesList.length===0){ 
-        const empty=document.createElement('div'); 
-        empty.className='empty-fav'; 
-        empty.innerText=translations[currentLang].noFavorites;
-        container.appendChild(empty); 
-        return; 
-    } 
-    favoritesList.forEach((fav,idx)=>{ 
         const card=document.createElement('div'); 
         card.className='dua-card'; 
         const header=document.createElement('div'); 
@@ -1106,453 +1026,169 @@ function renderFavorites(){
         const num=document.createElement('div'); 
         num.className='dua-number'; 
         num.innerText=(idx+1)+'.'; 
+
+        const fav=favoritesList.some(f=>f.ar===dua.ar); 
         const favBtn=document.createElement('button'); 
         favBtn.className='fav-btn-small'; 
-        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/></svg>`; 
+        const strokeColor=isDarkMode?'white':'#333';
+        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`; 
         favBtn.onclick=(e)=>{ 
             e.stopPropagation(); 
-            removeFavorite(fav.sub,fav.idx); 
+            if(fav) favoritesList=favoritesList.filter(f=>f.ar!==dua.ar);
+            else favoritesList.push(dua);
+            localStorage.setItem('dua_favorites', JSON.stringify(favoritesList));
+            renderActiveCategory();
             playClickSound(); 
         }; 
         header.append(num, favBtn); 
 
-        const arabic=document.createElement('div'); 
-        arabic.className='dua-arabic'; 
-        arabic.innerText=fav.ar; 
-        const trans=document.createElement('div'); 
-        trans.className='dua-translation'; 
-        trans.innerText=fav.en; 
-        const tl=document.createElement('div'); 
-        tl.className='dua-transliteration'; 
-        tl.innerText=fav.translit; 
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar; 
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en; 
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit; 
 
-        if(currentLang==='ar'){ 
-            arabic.classList.add('dua-main-lang'); 
-            trans.classList.add('dua-secondary-lang'); 
-        } else { 
-            trans.classList.add('dua-main-lang'); 
-            arabic.classList.add('dua-secondary-lang'); 
-        } 
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } 
+        else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); } 
 
         card.append(header); 
-        if(currentLang==='ar'){ 
-            card.append(arabic, trans); 
-        } else { 
-            card.append(trans, arabic); 
-        }
+        if(currentLang==='ar'){ card.append(arabic, trans); } else { card.append(trans, arabic); }
         if(showTranslit) card.appendChild(tl); 
 
+        // Source Box
+        const sBox = document.createElement('div');
+        sBox.className = 'dua-source-box';
+        let sContent = `<strong>Source:</strong> ${dua.source || 'Sunnah'}`;
+        if(dua.tafsir) sContent += `<br><strong>Tafsir:</strong> ${dua.tafsir}`;
+        if(dua.method) sContent += `<br><strong>Method:</strong> ${dua.method}`;
+        if(dua.note) sContent += `<br><strong>Note:</strong> ${dua.note}`;
+        sBox.innerHTML = sContent;
+        if(showSource) sBox.style.display = 'block';
+        card.appendChild(sBox);
+
         card.addEventListener('click',()=>{ 
-            document.querySelectorAll('.dua-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            showDuaModal(fav);
+            showDuaModal(dua);
             playClickSound(); 
         }); 
-
         container.appendChild(card); 
     });
-    updateMenuFavButton();
 }
 
-function showRuqyah(){ 
-    ruqyahActive=true; 
-    favoritesActive=false; 
-    selectedDuaIndex = -1;
-    document.getElementById('gridContainer').style.display='none'; 
-    document.getElementById('messageContainer').style.display='none'; 
-    document.getElementById('ruqyahView').style.display='flex'; 
-    document.getElementById('favoritesView').style.display='none'; 
-    renderRuqyahDuas(); 
-    document.querySelectorAll('.subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); 
+function renderFavorites(){ 
+    const container=document.getElementById('favoritesListContainer'); 
+    container.innerHTML=''; 
+    if(favoritesList.length===0){ 
+        const empty=document.createElement('div'); empty.className='empty-fav'; empty.innerText=translations[currentLang].noFavorites;
+        container.appendChild(empty); return; 
+    } 
+    favoritesList.forEach((dua,idx)=>{ 
+        const card=document.createElement('div'); card.className='dua-card'; 
+        const header=document.createElement('div'); header.className='dua-header'; 
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.'; 
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small'; 
+        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/></svg>`; 
+        favBtn.onclick=(e)=>{ 
+            e.stopPropagation(); 
+            favoritesList=favoritesList.filter(f=>f.ar!==dua.ar);
+            localStorage.setItem('dua_favorites', JSON.stringify(favoritesList));
+            renderFavorites();
+            playClickSound(); 
+        }; 
+        header.append(num, favBtn); 
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar; 
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en; 
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); card.append(header, arabic, trans); } 
+        else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); card.append(header, trans, arabic); }
+        if(showTranslit){ const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit; card.appendChild(tl); }
+        card.onclick=()=>showDuaModal(dua);
+        container.appendChild(card); 
+    });
 }
 
-function showFavorites(){ 
-    favoritesActive=true; 
-    ruqyahActive=false; 
-    selectedDuaIndex = -1;
+function showDuaModal(dua) {
+    const modal = document.getElementById('duaModal');
+    const output = document.getElementById('duaOutput');
+    let content = `<div style="font-weight:700; color:var(--accent); margin-bottom:15px;">${dua.ar}</div>`;
+    content += `<div style="color:var(--text); margin-bottom:10px;">${dua.en}</div>`;
+    if(showTranslit) content += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
+    
+    if(showSource){
+        content += `<div class="dua-source-box" style="display:block; text-align:left; font-size:0.8rem;">`;
+        content += `<strong>Source:</strong> ${dua.source || 'Sunnah'}`;
+        if(dua.tafsir) content += `<br><strong>Tafsir:</strong> ${dua.tafsir}`;
+        if(dua.method) content += `<br><strong>Method:</strong> ${dua.method}`;
+        if(dua.note) content += `<br><strong>Note:</strong> ${dua.note}`;
+        content += `</div>`;
+    }
+
+    output.innerHTML = content;
+    modal.style.display = 'flex';
+}
+
+function showCategory(cat){ 
+    activeCategory=cat; 
     document.getElementById('gridContainer').style.display='none'; 
     document.getElementById('messageContainer').style.display='none'; 
-    document.getElementById('ruqyahView').style.display='none'; 
-    document.getElementById('favoritesView').style.display='flex'; 
-    renderFavorites(); 
+    if(cat==='favorites'){ document.getElementById('favoritesView').style.display='flex'; renderFavorites(); }
+    else { 
+        document.getElementById('ruqyahView').style.display='flex'; 
+        document.getElementById('ruqyahSubs').style.display = (cat==='ruqya'?'flex':'none');
+        renderActiveCategory(); 
+    }
 }
 
 function exitSubview(){ 
-    ruqyahActive=false; 
-    favoritesActive=false; 
-    selectedDuaIndex = -1;
     document.getElementById('gridContainer').style.display='grid'; 
     document.getElementById('messageContainer').style.display='block'; 
     document.getElementById('ruqyahView').style.display='none'; 
     document.getElementById('favoritesView').style.display='none'; 
 }
 
-// Event listeners
-document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
-document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
-
-// FIXED: Subcategory button click now properly highlights the active button
-document.querySelectorAll('.subcategory-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        currentRuqyahSub = this.getAttribute('data-sub');
-        selectedDuaIndex = -1;
-        // Remove active from all buttons, then add to clicked button
-        document.querySelectorAll('.subcategory-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        renderRuqyahDuas();
-        playClickSound();
-    });
+// Events
+document.querySelectorAll('.grid-item').forEach(item=>{
+    item.onclick=()=>{ showCategory(item.getAttribute('data-category')); playClickSound(); };
 });
 
-document.getElementById('backFromRuqyah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
-document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
-
-const duasList=["اللهم إني أسألك علماً نافعاً...","يا حي يا قيوم...","اللهم إنك عفو...","ربنا آتنا...","اللهم صل وسلم..."];
-document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ 
-    if(!ruqyahActive&&!favoritesActive){ 
-        document.getElementById('duaOutput').innerText=duasList[new Date().getHours()%duasList.length]; 
-        document.getElementById('duaModal').style.display='flex'; 
-        playClickSound(); 
-        playVibration(); 
-    } 
-});
-document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
-
-let is3Cols=false; 
-document.getElementById('gridToggleBtn')?.addEventListener('click',()=>{ 
-    is3Cols=!is3Cols; 
-    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
-    playClickSound(); 
-});
-document.getElementById('btnGrid')?.addEventListener('click',()=>{ 
-    is3Cols=!is3Cols; 
-    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); 
-    playClickSound(); 
+document.querySelectorAll('.subcategory-btn').forEach(btn=>{
+    btn.onclick=()=>{ 
+        currentRuqyahSub=btn.getAttribute('data-sub'); 
+        document.querySelectorAll('.subcategory-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active'); renderActiveCategory(); playClickSound(); 
+    };
 });
 
-// FIXED: Language toggle with proper direction handling
-document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ 
-    currentLang=currentLang==='ar'?'en':'ar'; 
-    document.documentElement.setAttribute('lang',currentLang); 
-    document.documentElement.dir='ltr'; 
-    if(currentLang==='ar'){ 
-        document.body.classList.add('text-rtl'); 
-        document.body.classList.remove('text-ltr'); 
-    } else { 
-        document.body.classList.add('text-ltr'); 
-        document.body.classList.remove('text-rtl'); 
-    } 
-    applyLanguage(); 
-    playClickSound(); 
-});
+document.getElementById('backFromRuqyah').onclick=exitSubview;
+document.getElementById('backFromFavorites').onclick=exitSubview;
+document.getElementById('closeModalBtn').onclick=()=>document.getElementById('duaModal').style.display='none';
+
+document.getElementById('chkSource').onchange=(e)=>{ showSource=e.target.checked; renderActiveCategory(); };
+document.getElementById('chkTranslit').onchange=(e)=>{ showTranslit=e.target.checked; renderActiveCategory(); };
+
+document.getElementById('langToggleBtn').onclick=()=>{ 
+    currentLang=currentLang==='ar'?'en':'ar'; applyLanguage(); playClickSound(); 
+};
 
 const menuToggle=document.getElementById('menuToggleBtn'), unifiedMenu=document.getElementById('unifiedMenu'); 
-menuToggle?.addEventListener('click',(e)=>{ 
-    e.stopPropagation(); 
-    unifiedMenu.classList.toggle('show'); 
-    playClickSound(); 
-}); 
-document.addEventListener('click',(e)=>{ 
-    if(menuToggle&&!menuToggle.contains(e.target)&&unifiedMenu&&!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); 
-});
+menuToggle.onclick=(e)=>{ e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); }; 
+document.onclick=(e)=>{ if(!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); };
 
+// Theme / Color logic
 function updateFullTheme(){ 
     document.documentElement.style.setProperty('--accent', currentAccent); 
     document.documentElement.style.setProperty('--header-bg', currentAccent); 
     isDarkMode?document.body.classList.add('dark-mode'):document.body.classList.remove('dark-mode'); 
-    const sun=document.getElementById('sunIcon'),moon=document.getElementById('moonIcon'); 
-    if(isDarkMode){ 
-        sun?.classList.remove('active'); 
-        moon?.classList.add('active'); 
-    } else { 
-        sun?.classList.add('active'); 
-        moon?.classList.remove('active'); 
-    } 
-    localStorage.setItem('dua_accent',currentAccent); 
-    localStorage.setItem('dua_darkMode',isDarkMode); 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-    updateGlobalFavIcon(); 
 }
+document.getElementById('themeToggle').onchange=(e)=>{ isDarkMode=e.target.checked; updateFullTheme(); };
 
-function setAccent(color,element){ 
-    currentAccent=color; 
-    updateFullTheme(); 
-    document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active')); 
-    if(element) element.classList.add('active'); 
-}
-
-function getAccentFromDot(dot) {
-    // Extract color from background style
-    const bg = dot.style.backgroundColor;
-    if(!bg) return dot.style.background;
-    // Convert rgb to hex if needed
-    if(bg.startsWith('rgb')) {
-        const parts = bg.match(/\d+/g);
-        if(parts && parts.length >= 3) {
-            return '#' + parts.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
-        }
-    }
-    return bg;
-}
-
-function toggleDarkMode(){ 
-    isDarkMode=!isDarkMode; 
-    updateFullTheme(); 
-    document.getElementById('themeToggle').checked=isDarkMode; 
-}
-
-document.getElementById('themeToggle')?.addEventListener('change',toggleDarkMode);
-
-const colorArray = [
-    {acc:'#cc0000', nAr:'أحمر', nEn:'Red'},
-    {acc:'#800080', nAr:'بنفسجي', nEn:'Purple'},
-    {acc:'#0066cc', nAr:'أزرق', nEn:'Blue'},
-    {acc:'#8B4513', nAr:'بني', nEn:'Brown'},
-    {acc:'#ffcc00', nAr:'أصفر', nEn:'Yellow'},
-    {acc:'#444444', nAr:'أسود', nEn:'Black'},
-    {acc:'#808080', nAr:'رمادي', nEn:'Gray'},
-    {acc:'#334155', nAr:'سحابي داكن', nEn:'Midnight Slate'},
-    {acc:'#ff66b2', nAr:'وردي', nEn:'Pink'},
-    {acc:'#228b22', nAr:'أخضر', nEn:'Green'},
-    {acc:'#ff8c00', nAr:'برتقالي', nEn:'Orange'},
-    {acc:'#008080', nAr:'تركوازي', nEn:'Teal'}
-]; 
-const colorMenuDiv=document.getElementById('colorMenu'); 
-colorArray.forEach(c=>{ 
-    const dot=document.createElement('div'); 
-    dot.className='color-dot'; 
-    dot.style.backgroundColor=c.acc; 
-    dot.setAttribute('data-ar', c.nAr); 
-    dot.setAttribute('data-en', c.nEn); 
-    dot.title = currentLang==='ar' ? c.nAr : c.nEn;
-    dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; 
-    colorMenuDiv.appendChild(dot); 
+const colors = ['#cc0000', '#800080', '#0066cc', '#228b22', '#ff8c00', '#444444'];
+colors.forEach(c=>{
+    const dot=document.createElement('div'); dot.className='color-dot'; dot.style.backgroundColor=c;
+    dot.onclick=()=>{ currentAccent=c; updateFullTheme(); playClickSound(); };
+    document.getElementById('colorMenu').appendChild(dot);
 });
 
-function updateColorTooltips() {
-    const colorDots = document.querySelectorAll('.color-dot');
-    colorDots.forEach(dot => {
-        dot.title = currentLang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en');
-    });
-}
+function changeIcon() { playClickSound(); }
 
-const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); 
-if(savedAccent) currentAccent=savedAccent; 
-if(savedDark!==null) isDarkMode=savedDark==='true'; 
-updateFullTheme(); 
-document.querySelectorAll('.color-dot').forEach(dot=>{ 
-    const dotColor = dot.style.backgroundColor || dot.style.background;
-    if(dotColor && (dotColor===currentAccent || rgbToHex(dotColor)===currentAccent)) dot.classList.add('active'); 
-}); 
-document.getElementById('themeToggle').checked=isDarkMode;
-
-function rgbToHex(rgb) {
-    if(!rgb) return '';
-    const result = rgb.match(/\d+/g);
-    if(!result) return '';
-    return '#' + result.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
-}
-
-const fontSlider=document.getElementById('fontSlider'); 
-function setDuaFontSize(val){ 
-    document.documentElement.style.setProperty('--dua-font-size',val+'px'); 
-    localStorage.setItem('dua_font_size',val); 
-} 
-fontSlider?.addEventListener('input',(e)=>setDuaFontSize(e.target.value)); 
-const savedFont=localStorage.getItem('dua_font_size'); 
-if(savedFont) setDuaFontSize(parseInt(savedFont)); 
-else setDuaFontSize(22); 
-fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
-
-document.getElementById('chkTranslit')?.addEventListener('change',(e)=>{ 
-    showTranslit=e.target.checked; 
-    if(ruqyahActive) renderRuqyahDuas(); 
-    if(favoritesActive) renderFavorites(); 
-});
-
-// FIXED: Copy button functionality
-document.getElementById('btnCopy')?.addEventListener('click',()=>{ 
-    const t = translations[currentLang];
-    // Get current visible dua text
-    let textToCopy = '';
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        textToCopy = currentLang==='ar' ? data[selectedDuaIndex].ar : data[selectedDuaIndex].en;
-    } else if(favoritesActive && favoritesList.length > 0) {
-        textToCopy = currentLang==='ar' ? favoritesList[0].ar : favoritesList[0].en;
-    }
-
-    if(textToCopy) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const btn = document.getElementById('btnCopy');
-            const original = btn.innerHTML;
-            btn.innerHTML = '<span style="font-size:16px">✅</span>';
-            setTimeout(() => btn.innerHTML = original, 2000);
-        }).catch(() => {
-            alert(t.copyTooltip);
-        });
-    }
-    playClickSound(); 
-});
-
-// FIXED: Share button with Azkar widget popup
-document.getElementById('btnShare')?.addEventListener('click',()=>{ 
-    toggleSharePopup();
-    playClickSound(); 
-});
-
-document.getElementById('btnRefresh')?.addEventListener('click',()=>location.reload());
-
-function updateGlobalFavIcon(){ 
-    const svgPath=document.querySelector('#favSvgIcon path'); 
-    if(svgPath){ 
-        svgPath.setAttribute('stroke','white'); 
-    } 
-}
-
-function updateMenuFavButton() {
-    const btn = document.getElementById('btnFav');
-    const svg = document.getElementById('favSvgIcon');
-    let isFav = false;
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        isFav = isFavorited(currentRuqyahSub, selectedDuaIndex);
-    } else if(favoritesActive && favoritesList.length > 0) {
-        isFav = true;
-    }
-    if (isFav) {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>';
-        btn.setAttribute('data-tooltip', currentLang === 'ar' ? 'إزالة من المفضلة' : 'Remove from Favorites');
-    } else {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
-        btn.setAttribute('data-tooltip', currentLang === 'ar' ? 'أضف إلى المفضلة' : 'Add to Favorites');
-    }
-}
-
-function updateFavButtonUI(isFav) {
-    const btn = document.getElementById('btnFav');
-    const svg = document.getElementById('favSvgIcon');
-    const t = translations[currentLang];
-    if(!btn || !svg) return;
-    if(isFav) {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/>';
-        btn.setAttribute('data-tooltip', t.favTooltipRemove);
-    } else {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>';
-        btn.setAttribute('data-tooltip', t.favTooltipAdd);
-    }
-}
-
-document.getElementById('btnFav')?.addEventListener('click',()=>{
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        const dua = data[selectedDuaIndex];
-        if(!isFavorited(currentRuqyahSub, selectedDuaIndex)) {
-            addFavorite(currentRuqyahSub, selectedDuaIndex, dua);
-        } else {
-            removeFavorite(currentRuqyahSub, selectedDuaIndex);
-        }
-        renderRuqyahDuas();
-        updateMenuFavButton();
-    } else if(favoritesActive && favoritesList.length > 0) {
-        // Remove all or current favorite
-        const fav = favoritesList[0];
-        removeFavorite(fav.sub, fav.idx);
-        updateMenuFavButton();
-    }
-    playClickSound();
-});
-
-// FIXED: Share popup functions from Azkar widget
-function toggleSharePopup() {
-    const pop = document.getElementById('sharePopup');
-    pop.classList.toggle('show');
-    if (pop.classList.contains('show')) buildShareGrid();
-    setTimeout(() => {
-        document.addEventListener('click', function closeShare(e) {
-            if (!pop.contains(e.target) && !document.getElementById('btnShare').contains(e.target)) {
-                pop.classList.remove('show'); document.removeEventListener('click', closeShare);
-            }
-        });
-    }, 100);
-}
-
-function buildShareGrid() {
-    let text = '';
-    if(ruqyahActive && selectedDuaIndex >= 0) {
-        const data = currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-        text = currentLang==='ar' ? data[selectedDuaIndex].ar : data[selectedDuaIndex].en;
-    } else if(favoritesActive && favoritesList.length > 0) {
-        text = currentLang==='ar' ? favoritesList[0].ar : favoritesList[0].en;
-    } else if(!ruqyahActive && !favoritesActive) {
-        // From daily message card
-        text = duasList[new Date().getHours()%duasList.length];
-    }
-
-    if (!text) return;
-
-    const shareText = encodeURIComponent(text.substring(0, 300));
-    const pageUrl = window.location.href;
-    const pn = { ar: { whatsapp: "واتساب", telegram: "تليجرام", twitter: "تويتر", facebook: "فيسبوك", messenger: "ماسنجر", copy: "نسخ الرابط" }, en: { whatsapp: "WhatsApp", telegram: "Telegram", twitter: "X", facebook: "Facebook", messenger: "Messenger", copy: "Copy Link" } }[currentLang];
-
-    const icons = { 
-        whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', 
-        telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', 
-        twitter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', 
-        facebook: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', 
-        messenger: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', 
-        copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' 
-    };
-
-    const platforms = [ 
-        { name: pn.whatsapp, icon: icons.whatsapp, url: `https://wa.me/?text=${shareText}` }, 
-        { name: pn.telegram, icon: icons.telegram, url: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}` }, 
-        { name: pn.twitter, icon: icons.twitter, url: `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}` }, 
-        { name: pn.facebook, icon: icons.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}` }, 
-        { name: pn.messenger, icon: icons.messenger, url: `https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}` }, 
-        { name: pn.copy, icon: icons.copy, url: "", action: () => navigator.clipboard.writeText(pageUrl) } 
-    ];
-
-    const grid = document.getElementById('shareGrid'); 
-    grid.innerHTML = ''; 
-    platforms.forEach(p => {
-        const div = document.createElement('div'); 
-        div.className = 'share-icon'; 
-        div.innerHTML = `${p.icon}<span>${p.name}</span>`;
-        div.onclick = () => { 
-            if (p.url) window.open(p.url, '_blank', 'noopener,noreferrer'); 
-            else if (p.action) p.action(); 
-            document.getElementById('sharePopup').classList.remove('show'); 
-        };
-        grid.appendChild(div);
-    });
-}
-
-// Icon gallery from Azkar widget
-const iconGallery = [
-    "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
-    "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
-    "https://cdn-icons-png.flaticon.com/128/3004/3004949.png",
-    "https://cdn-icons-png.flaticon.com/128/6152/6152858.png",
-    "https://cdn-icons-png.flaticon.com/128/13773/13773984.png"
-];
-let currentIconIdx = 4;
-function changeIcon() {
-    currentIconIdx = (currentIconIdx + 1) % iconGallery.length;
-    document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
-    playClickSound();
-}
-
-// Initialize
-if(currentLang==='ar') document.body.classList.add('text-rtl'); 
-else document.body.classList.add('text-ltr');
-applyLanguage(); 
-updateGlobalFavIcon();
-updateMenuFavButton();
-document.getElementById('ruqyahView').style.display='none'; 
-document.getElementById('favoritesView').style.display='none'; 
-document.getElementById('gridContainer').style.display='grid'; 
-document.getElementById('messageContainer').style.display='block';
+applyLanguage();
+updateFullTheme();
 </script>
 </body>
 </html>
