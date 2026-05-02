@@ -206,6 +206,11 @@
             gap: 15px;
             justify-content: center;
             margin: 10px 0 15px 0;
+            /* Added to control direction based on language */
+            direction: ltr;
+        }
+        body.text-rtl .subcategory-buttons {
+            direction: rtl;
         }
         .subcategory-btn {
             background: var(--card-bg);
@@ -658,7 +663,6 @@
     <!-- Ruqyah View -->
     <div class="ruqyah-view" id="ruqyahView">
         <div class="subcategory-buttons">
-            <!-- First button (rightmost) = ارق نفسك -->
             <button class="subcategory-btn" data-sub="self" id="selfBtn">ارق نفسك</button>
             <button class="subcategory-btn" data-sub="other" id="otherBtn">ارق غيرك</button>
         </div>
@@ -670,7 +674,7 @@
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
-    <!-- Sunnah View with five wird buttons (order: الأول, الثاني, الثالث, الرابع, الخامس from right to left) -->
+    <!-- Sunnah View with five wird buttons -->
     <div class="sunnah-view" id="sunnahView">
         <div class="subcategory-buttons" id="sunnahSubButtons">
             <button class="subcategory-btn" data-wird="wird1" id="wird1Btn">الورد الأول</button>
