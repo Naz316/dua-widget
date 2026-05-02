@@ -206,7 +206,6 @@
             gap: 15px;
             justify-content: center;
             margin: 10px 0 15px 0;
-            /* Added to control direction based on language */
             direction: ltr;
         }
         body.text-rtl .subcategory-buttons {
@@ -602,7 +601,37 @@
             width: 100%; 
             max-width: 380px; 
             text-align: center; 
-            color: var(--text); 
+            color: var(--text);
+            position: relative;
+        }
+        /* New X close button for modal */
+        .modal-close-x {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: 0.2s;
+            line-height: 1;
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .modal-close-x:hover {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+        body.text-rtl .modal-close-x {
+            right: auto;
+            left: 12px;
         }
         .dua-text { 
             font-size: var(--dua-font-size); 
@@ -692,6 +721,7 @@
     </div>
     <div id="duaModal">
         <div class="modal-content">
+            <button class="modal-close-x" id="modalCloseX">✕</button>
             <div class="dua-text" id="duaOutput"></div>
             <button class="close-modal" id="closeModalBtn">إغلاق</button>
         </div>
@@ -1036,6 +1066,7 @@ document.getElementById('backFromSunnah')?.addEventListener('click',()=>{ exitSu
 const duasList=["اللهم إني أسألك علماً نافعاً...","يا حي يا قيوم...","اللهم إنك عفو...","ربنا آتنا...","اللهم صل وسلم..."];
 document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ if(!ruqyahActive&&!favoritesActive&&!sunnahActive){ document.getElementById('duaOutput').innerText=duasList[new Date().getHours()%duasList.length]; document.getElementById('duaModal').style.display='flex'; playClickSound(); playVibration(); } });
 document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
+document.getElementById('modalCloseX')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 
 let is3Cols=false; document.getElementById('btnGrid')?.addEventListener('click',()=>{ is3Cols=!is3Cols; document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); playClickSound(); });
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
