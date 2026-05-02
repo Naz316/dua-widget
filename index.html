@@ -681,9 +681,9 @@
         </div>
     </div>
     <div class="grid-container" id="gridContainer">
-        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
+        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
         <div class="grid-item" data-category="wird"><img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird"><span id="labelWird">ورد الدعاء</span></div>
-        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
+        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
         <div class="grid-item" data-category="personal"><img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal"><span id="labelPersonal">أدعيتي</span></div>
         <div class="grid-item" data-category="favorites"><img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites"><span id="labelFavorites">المفضلة</span></div>
         <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
@@ -1140,6 +1140,12 @@ const duasList=["اللهم إني أسألك علماً نافعاً...","يا 
 document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ if(!ruqyahActive&&!favoritesActive&&!sunnahActive&&!quranicActive){ document.getElementById('duaOutput').innerText=duasList[new Date().getHours()%duasList.length]; document.getElementById('duaModal').style.display='flex'; playClickSound(); playVibration(); } });
 document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 document.getElementById('modalCloseX')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
+// NEW: Click outside modal content closes it
+document.getElementById('duaModal')?.addEventListener('click',function(e){
+    if(e.target === this){
+        this.style.display='none';
+    }
+});
 
 let is3Cols=false; document.getElementById('btnGrid')?.addEventListener('click',()=>{ is3Cols=!is3Cols; document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); playClickSound(); });
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
