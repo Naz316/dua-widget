@@ -126,6 +126,8 @@
             transform: translateX(-50%);
         }
         .message-container { padding: 25px 20px; perspective: 1000px; }
+        
+        /* THE GREY TRIANGLE FLAP (Initial State) */
         .message-card {
             background: var(--card-bg);
             border-radius: 35px;
@@ -148,6 +150,47 @@
             background: var(--envelope-flap);
             clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
             z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+        }
+        
+        /* THE UPWARD OPENING ANIMATION */
+        .message-card.open-flap::before {
+            transform: translateY(-55px) scaleY(-1);
+            z-index: 1;
+        }
+        
+        /* GOLDEN STAR CLUSTER STYLES */
+        .star-loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            position: relative;
+        }
+        .star-cluster {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+        .star-shape {
+            position: absolute;
+            background: #EEDD82; /* Golden Star Color */
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: star-pulse 1.5s infinite ease-in-out;
+        }
+        
+        /* Individual star delays to create the "Cluster" effect */
+        .star-shape:nth-child(1) { width: 22px; height: 22px; top: 0; left: 19px; animation-delay: 0s; }
+        .star-shape:nth-child(2) { width: 16px; height: 16px; top: 25px; left: 0; animation-delay: 0.2s; }
+        .star-shape:nth-child(3) { width: 16px; height: 16px; top: 25px; left: 40px; animation-delay: 0.4s; }
+        .star-shape:nth-child(4) { width: 12px; height: 12px; top: 48px; left: 24px; animation-delay: 0.6s; }
+        .star-shape:nth-child(5) { width: 14px; height: 14px; top: 10px; left: 45px; animation-delay: 0.1s; }
+        .star-shape:nth-child(6) { width: 14px; height: 14px; top: 10px; left: -5px; animation-delay: 0.3s; }
+        
+        @keyframes star-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.3); opacity: 1; }
         }
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
@@ -673,22 +716,42 @@
         </div>
     </header>
     <div class="message-container" id="messageContainer">
-        <div class="message-card" id="dailyMessageCard">
-            <h2 id="msgTitle">رسالتك اليوم</h2>
-            <div class="sub-title" id="msgSub">رسالتك اليوم</div>
-            <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
-            <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
+        <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
+
+        <div class="message-card envelope-animation" id="dailyMessageCard">
+            <div id="msgStateClosed">
+                <h2 id="msgTitle">رسالتك اليوم</h2>
+                <div class="sub-title" id="msgSub">رسالتك اليوم</div>
+                <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
+                <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
+            </div>
+
+            <div id="msgStateLoading" style="display:none;">
+                <div class="star-loading-container">
+                    <div class="star-cluster">
+                        <div class="star-shape"></div>
+                        <div class="star-shape"></div>
+                        <div class="star-shape"></div>
+                        <div class="star-shape"></div>
+                        <div class="star-shape"></div>
+                        <div class="star-shape"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="msgStateOpened" style="display:none; text-align: right; direction: rtl;">
+                <p id="msgOpenedQuote" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;"></p>
+            </div>
         </div>
     </div>
     <div class="grid-container" id="gridContainer">
-        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
+        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
         <div class="grid-item" data-category="wird"><img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird"><span id="labelWird">ورد الدعاء</span></div>
-        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
+        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
         <div class="grid-item" data-category="personal"><img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal"><span id="labelPersonal">أدعيتي</span></div>
         <div class="grid-item" data-category="favorites"><img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites"><span id="labelFavorites">المفضلة</span></div>
         <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
     </div>
-    <!-- Ruqyah View -->
     <div class="ruqyah-view" id="ruqyahView">
         <div class="subcategory-buttons">
             <button class="subcategory-btn" data-sub="self" id="selfBtn">ارق نفسك</button>
@@ -697,12 +760,10 @@
         <button class="back-button" id="backFromRuqyah"><span>←</span> <span id="backText">رجوع</span></button>
         <div class="dua-list-container" id="duaListContainer"></div>
     </div>
-    <!-- Favorites View -->
     <div class="favorites-view" id="favoritesView">
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
-    <!-- Sunnah View with five wird buttons -->
     <div class="sunnah-view" id="sunnahView">
         <div class="subcategory-buttons" id="sunnahSubButtons">
             <button class="subcategory-btn" data-wird="wird1" id="wird1Btn">الورد الأول</button>
@@ -714,7 +775,6 @@
         <button class="back-button" id="backFromSunnah"><span>←</span> <span id="sunnahBackText">رجوع</span></button>
         <div class="dua-list-container" id="sunnahListContainer"></div>
     </div>
-    <!-- Quranic View (3 Wirds) -->
     <div class="quranic-view" id="quranicView">
         <div class="subcategory-buttons" id="quranicSubButtons">
             <button class="subcategory-btn" data-wird="quranic1" id="quranicWird1Btn">الورد الأول</button>
@@ -862,7 +922,7 @@ const sunnahDuas = [
     { ar: "اللَّهُمَّ لَكَ أَسْلَمْتُ، وَبِكَ آمَنْتُ، وَعَلَيْكَ تَوَكَّلْتُ...", translit: "Allāhumma laka aslamtu...", en: "O Allah, to You I have submitted...", source: "Ṣaḥīḥ Muslim (2717)." },
     { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى، وَالْعَفَافَ وَالْغِنَى.", translit: "Allāhumma innī as’aluka l-hudā wa t-tuqā...", en: "O Allah, I ask You for guidance, piety, chastity, and self-sufficiency.", source: "Ṣaḥīḥ Muslim (2721)." },
     { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ.", translit: "Yā muqalliba l-qulūbi thabbit qalbī ‘alā dīnik.", en: "O Turner of hearts, make my heart firm upon Your religion.", source: "Sunan at-Tirmidhī (3522)." },
-    { ar: "اللَّهُمَّ جَنِّبْنِي مُنْكَرَاتِ الْأَخْلَاقِ، وَالْأَهْوَاءِ، وَالْأَعْمَالِ وَالْأَدْوَاءِ.", translit: "Allāhumma jannibnī munkarāti l-akhlāqi...", en: "O Allah, keep me away from evil manners, evil desires, evil deeds, and evil diseases.", source: "Al-Mustadrak (1949), ṣaḥīḥ." },
+    { ar: "اللَّهُمَّ جَنِّبْنِي مُنْكَرَاتِ الْأَخْلَاقِ، وَالْأَهْوَاءِ، وَالْأَعْمَالِ وَالْأَدْوَاءِ.", translit: "Allāhumma jannibnī munkarāti l-akhlāqi...", en: "O Allah, keep me away from evil manners, evil desires, and evil diseases.", source: "Al-Mustadrak (1949), ṣaḥīḥ." },
     { ar: "اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي، وَأَصْلِحْ لِي دُنْيَايَ الَّتِي فِيهَا مَعَاشِي...", translit: "Allāhumma aṣliḥ lī dīnī...", en: "O Allah, set right for me my religion...", source: "Ṣaḥīḥ Muslim (2720)." },
     { ar: "اللَّهُمَّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي، وَإِسْرَافِي فِي أَمْرِي...", translit: "Allāhumma ghfir lī khaṭī’atī...", en: "O Allah, forgive me my sin...", source: "Ṣaḥīḥ Muslim (2719)." },
     { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ.", translit: "Allāhumma innī a‘ūdhu bika min zawāli ni‘matika...", en: "O Allah, I seek refuge in You from the removal of Your blessing...", source: "Ṣaḥīḥ Muslim (2739)." },
@@ -880,7 +940,7 @@ const sunnahDuas = [
     { ar: "{رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ} [الأعراف: 23]", translit: "Rabbanā ẓalamnā anfusanā wa illam taghfir lanā wa tarḥamnā lanakūnanna mina l-khāsirīn.", en: "Our Lord, we have wronged ourselves...", source: "Al-A‘rāf (7):23" },
     { ar: "{رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ} [الأعراف: 126]", translit: "Rabbanā afrigh ‘alaynā ṣabraw wa tawaffanā muslimīn.", en: "Our Lord, pour upon us patience and cause us to die as Muslims.", source: "Al-A‘rāf (7):126" },
     { ar: "{رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ} [إبراهيم: 40]", translit: "Rabbi ij‘alnī muqīma ṣ-ṣalāti wa min dhurriyyatī, rabbanā wa taqabbal du‘ā’.", en: "My Lord, make me an establisher of prayer...", source: "Ibrāhīm (14):40" },
-    { ar: "{رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ} [إبراهيم: 41]", translit: "Rabbanā ghfir lī wa li-wālidayya wa lil-mu’minīna yawma yaqūmu l-ḥisāb.", en: "Our Lord, forgive me and my parents and the believers the Day the account is established.", source: "Ibrāhīm (14):41" },
+    { ar: "{رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ} [إبراهيم: 41]", translit: "Rabbanā ghfir lanā wa li-wālidayya wa lil-mu’minīna yawma yaqūmu l-ḥisāb.", en: "Our Lord, forgive me and my parents and the believers the Day the account is established.", source: "Ibrāhīm (14):41" },
     { ar: "{رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا} [الفرقان: 74]", translit: "Rabbanā hab lanā min azwājinā wa dhurriyyātinā qurrata a‘yunin waj‘alnā lil-muttaqīna imāmā.", en: "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous.", source: "Al-Furqān (25):74" },
     { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَغَلَبَةِ الْعَدُوِّ، وَشَمَاتَةِ الْأَعْدَاءِ.", translit: "Allāhumma innī a‘ūdhu bika min ghalabati d-dayn...", en: "O Allah, I seek refuge in You from being overwhelmed by debt, from being overcome by the enemy, and from the rejoicing of enemies.", source: "Sunan an-Nasā’ī (5475)." },
     { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa azwājihi wa dhurriyyatihi...", en: "O Allah, send blessings upon Muhammad, his wives, and his offspring...", source: "Ṣaḥīḥ al-Bukhārī (5999)." },
@@ -1185,7 +1245,66 @@ document.getElementById('backFromSunnah')?.addEventListener('click',()=>{ exitSu
 document.getElementById('backFromQuranic')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 
 const duasList=["اللهم إني أسألك علماً نافعاً...","يا حي يا قيوم...","اللهم إنك عفو...","ربنا آتنا...","اللهم صل وسلم..."];
-document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ if(!ruqyahActive&&!favoritesActive&&!sunnahActive&&!quranicActive){ document.getElementById('duaOutput').innerText=duasList[new Date().getHours()%duasList.length]; document.getElementById('duaModal').style.display='flex'; playClickSound(); playVibration(); } });
+
+// =============================== MESSAGE CARD MISSING FUNCTIONS ===============================
+function showTodayModal(dua) {
+    showDuaModal(dua);
+}
+
+function setOpenedView() {
+    document.getElementById('msgStateClosed').style.display = 'none';
+    document.getElementById('msgStateLoading').style.display = 'none';
+    document.getElementById('msgStateOpened').style.display = 'block';
+    document.getElementById('msgOpenedQuote').innerText = currentLang === 'ar' ? 'تم قراءة رسالتك اليوم بنجاح. عُد غداً لرسالة جديدة!' : 'Your message for today has been read. Come back tomorrow!';
+    document.getElementById('dailyMessageCard').style.cursor = 'default';
+}
+
+function handleMessageClick() {
+    const today = new Date().toDateString();
+    if (localStorage.getItem('dua_last_opened_date') === today) return;
+
+    playClickSound();
+    playVibration();
+
+    const card = document.getElementById('dailyMessageCard');
+    
+    // 1. First, flip the triangle UP
+    card.classList.add('open-flap');
+
+    // 2. Wait for flap animation, then transition to Stars Loading
+    setTimeout(() => {
+        document.getElementById('msgStateClosed').style.display = 'none';
+        document.getElementById('msgStateLoading').style.display = 'block';
+
+        setTimeout(() => {
+            // 3. Random Dua selection from database
+            const pool = [...sunnahDuas, ...quranicDuas, ...ruqyahSelf];
+            const randomDua = pool[Math.floor(Math.random() * pool.length)];
+            
+            // 4. Show the Today Modal
+            showTodayModal(randomDua);
+
+            // 5. Final state: hide stars, show quote
+            document.getElementById('msgStateLoading').style.display = 'none';
+            setOpenedView();
+
+            // 6. Save so it stays open until tomorrow
+            localStorage.setItem('dua_last_opened_date', today);
+        }, 1800); // Pulse stars for 1.8 seconds
+    }, 600); // Flap opening time
+}
+
+document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ if(!ruqyahActive&&!favoritesActive&&!sunnahActive&&!quranicActive){ handleMessageClick(); } });
+
+// Check if message was already opened today on load
+window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toDateString();
+    if (localStorage.getItem('dua_last_opened_date') === today) {
+        document.getElementById('dailyMessageCard').classList.add('open-flap');
+        setOpenedView();
+    }
+});
+
 document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 document.getElementById('modalCloseX')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 document.getElementById('duaModal')?.addEventListener('click',function(e){
