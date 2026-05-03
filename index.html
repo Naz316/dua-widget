@@ -138,6 +138,8 @@
             overflow: hidden;
             animation: mailSwing 1.2s ease-out forwards;
         }
+        
+        /* THE GREY TRIANGLE FLAP (Initial State) */
         .message-card::before {
             content: "";
             position: absolute;
@@ -151,10 +153,14 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: top;
         }
+
+        /* THE UPWARD OPENING ANIMATION */
         .message-card.open-flap::before {
             transform: translateY(-55px) scaleY(-1);
             z-index: 1;
         }
+
+        /* GOLDEN STAR CLUSTER STYLES */
         .star-loading-container {
             display: flex;
             justify-content: center;
@@ -169,20 +175,35 @@
         }
         .star-shape {
             position: absolute;
-            background: #EEDD82;
+            background: #EEDD82; /* Golden Star Color */
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             animation: star-pulse 1.5s infinite ease-in-out;
         }
+        /* Individual star delays to create the "Cluster" effect */
         .star-shape:nth-child(1) { width: 22px; height: 22px; top: 0; left: 19px; animation-delay: 0s; }
         .star-shape:nth-child(2) { width: 16px; height: 16px; top: 25px; left: 0; animation-delay: 0.2s; }
         .star-shape:nth-child(3) { width: 16px; height: 16px; top: 25px; left: 40px; animation-delay: 0.4s; }
         .star-shape:nth-child(4) { width: 12px; height: 12px; top: 48px; left: 24px; animation-delay: 0.6s; }
         .star-shape:nth-child(5) { width: 14px; height: 14px; top: 10px; left: 45px; animation-delay: 0.1s; }
         .star-shape:nth-child(6) { width: 14px; height: 14px; top: 10px; left: -5px; animation-delay: 0.3s; }
+
         @keyframes star-pulse {
             0%, 100% { transform: scale(1); opacity: 0.3; }
             50% { transform: scale(1.3); opacity: 1; }
         }
+
+        .tomorrow-banner {
+            display: none;
+            text-align: center;
+            padding: 12px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
             15% { transform: rotate(12deg); }
@@ -707,12 +728,9 @@
         </div>
     </header>
     <div class="message-container" id="messageContainer">
-        <!-- Banner linked to dynamic accent color -->
         <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
 
-        <!-- The Message Card -->
         <div class="message-card envelope-animation" id="dailyMessageCard">
-            <!-- CLOSED STATE -->
             <div id="msgStateClosed">
                 <h2 id="msgTitle">رسالتك اليوم</h2>
                 <div class="sub-title" id="msgSub">رسالتك اليوم</div>
@@ -720,7 +738,6 @@
                 <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
             </div>
 
-            <!-- LOADING STATE: GOLDEN STAR CLUSTER -->
             <div id="msgStateLoading" style="display:none;">
                 <div class="star-loading-container">
                     <div class="star-cluster">
@@ -734,21 +751,19 @@
                 </div>
             </div>
 
-            <!-- OPENED STATE -->
-            <div id="msgStateOpened" style="display:none; text-align: right; direction: rtl;">
+            <div id="msgStateOpened" style="display:none; text-align: center; direction: rtl;">
                 <p id="msgOpenedQuote" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;"></p>
             </div>
         </div>
     </div>
     <div class="grid-container" id="gridContainer">
-        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
+        <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
         <div class="grid-item" data-category="wird"><img src="https://cdn-icons-png.flaticon.com/128/17185/17185688.png" alt="wird"><span id="labelWird">ورد الدعاء</span></div>
-        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
+        <div class="grid-item" data-category="quranic"><img src="https://cdn-icons-png.flaticon.com/128/7246/7246452.png" alt="quran"><span id="labelQuranic">دعاء من القرآن</span></div>
         <div class="grid-item" data-category="personal"><img src="https://cdn-icons-png.flaticon.com/128/14900/14900883.png" alt="personal"><span id="labelPersonal">أدعيتي</span></div>
         <div class="grid-item" data-category="favorites"><img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites"><span id="labelFavorites">المفضلة</span></div>
         <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
     </div>
-    <!-- Ruqyah View -->
     <div class="ruqyah-view" id="ruqyahView">
         <div class="subcategory-buttons">
             <button class="subcategory-btn" data-sub="self" id="selfBtn">ارق نفسك</button>
@@ -757,12 +772,10 @@
         <button class="back-button" id="backFromRuqyah"><span>←</span> <span id="backText">رجوع</span></button>
         <div class="dua-list-container" id="duaListContainer"></div>
     </div>
-    <!-- Favorites View -->
     <div class="favorites-view" id="favoritesView">
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
-    <!-- Sunnah View with five wird buttons -->
     <div class="sunnah-view" id="sunnahView">
         <div class="subcategory-buttons" id="sunnahSubButtons">
             <button class="subcategory-btn" data-wird="wird1" id="wird1Btn">الورد الأول</button>
@@ -774,7 +787,6 @@
         <button class="back-button" id="backFromSunnah"><span>←</span> <span id="sunnahBackText">رجوع</span></button>
         <div class="dua-list-container" id="sunnahListContainer"></div>
     </div>
-    <!-- Quranic View (3 Wirds) -->
     <div class="quranic-view" id="quranicView">
         <div class="subcategory-buttons" id="quranicSubButtons">
             <button class="subcategory-btn" data-wird="quranic1" id="quranicWird1Btn">الورد الأول</button>
@@ -832,7 +844,7 @@ const ruqyahSelf = [
     { ar: "{قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ (4)} (ثلاث مرات مع النفث في اليدين ومسح الجسد)", translit: "Qul huwa llāhu aḥad. Allāhu ṣ-ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahu kufuwan aḥad. (Thalātha marrāt ma‘a n-nafth fī l-yadayn wa masḥi l-jasad)", en: "Say: He is Allah, the One. Allah, the Eternal, the Absolute. He neither begets nor is born. Nor is there to Him any equivalent. (3 times with blowing into the hands and wiping over the body)", source: "Ṣaḥīḥ al-Bukhārī (5016), Ṣaḥīḥ Muslim (2192).", method: "Blow into hands, wipe over body." },
     { ar: "{قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)} (ثلاث مرات مع النفث في اليدين ومسح الجسد)", translit: "Qul a‘ūdhu birabbi l-falaq. Min sharri mā khalaq. Wa min sharri ghāsiqin idhā waqab. Wa min sharri n-naffāthāti fī l-‘uqad. Wa min sharri ḥāsidin idhā ḥasad. (Thalātha marrāt ma‘a n-nafth fī l-yadayn wa masḥi l-jasad)", en: "Say: I seek refuge in the Lord of daybreak. From the evil of that which He created. And from the evil of darkness when it settles. And from the evil of the blowers in knots. And from the evil of an envier when he envies. (3 times with blowing into hands and wiping over body)", source: "Ṣaḥīḥ al-Bukhārī (5016), Ṣaḥīḥ Muslim (2192).", method: "Blow into hands, wipe over body." },
     { ar: "{قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)} (ثلاث مرات مع النفث في اليدين ومسح الجسد)", translit: "Qul a‘ūdhu birabbi n-nās. Maliki n-nās. Ilāhi n-nās. Min sharri l-waswāsi l-khannās. Alladhī yuwaswisu fī ṣudūri n-nās. Mina l-jinnati wa n-nās. (Thalātha marrāt ma‘a n-nafth fī l-yadayn wa masḥi l-jasad)", en: "Say: I seek refuge in the Lord of mankind. The Sovereign of mankind. The God of mankind. From the evil of the retreating whisperer. Who whispers in the breasts of mankind. From among the jinn and mankind. (3 times with blowing into hands and wiping over body)", source: "Ṣaḥīḥ al-Bukhārī (5016), Ṣaḥīḥ Muslim (2192).", method: "Blow into hands, wipe over body." },
-    { ar: "{اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ} [البقرة: 255]", translit: "Allāhu lā ilāha illā huwa l-ḥayyu l-qayyūm. Lā ta’khudhuhu sinatun wa lā nawm. Lahu mā fī s-samāwāti wa mā fī l-arḍ. Man dhā lladhī yashfa‘u ‘indahu illā bi-idhnihi. Ya‘lamu mā bayna aydīhim wa mā khalfahum, wa lā yuḥīṭūna bi shay’in min ‘ilmihi illā bi mā shā’. Wasi‘a kursiyyuhu s-samāwāti wa l-arḍ, wa lā ya’ūduhu ḥifẓuhumā, wa huwa l-‘aliyyu l-‘aẓīm.", en: "Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.", source: "Sunan al-Kubrā lil-Nasā’ī (10730), Silsilah Ṣaḥīḥah (3245)." },
+    { ar: "{اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ} [البقرة: 255]", translit: "Allāhu lā ilāha illā huwa l-ḥayyu l-qayyūm. Lā ta’khudhuhu sinatun wa lā nawm. Lahu mā fī s-samāwāti wa mā fī l-arḍ. Man dhā lladhī yashfa‘u ‘indahu illā bi-idhnihi. Ya‘lamu mā bayna aydīhim wa mā khalfahum, wa lā yuḥīṭūna bi shay’in min ‘ilmihi illā bi mā shā’. Wasi‘a kursiyyuhu s-samāwāti wa l-arḍ, wa lā ya’ūduhu ḥifẓuhumā, wa huwa l-‘aliyyu l-‘aẓīm.", en: "Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation tires Him not. And He is Most High, the Most Great.", source: "Sunan al-Kubrā lil-Nasā’ī (10730), Silsilah Ṣaḥīḥah (3245)." },
     { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati, min kulli shayṭānin wa hāmmah, wa min kulli ‘aynin lāmmah.", en: "I seek refuge in the perfect words of Allah from every devil and every poisonous reptile, and from every evil eye.", source: "Ṣaḥīḥ al-Bukhārī (3371).", tafsir: "Hāmmah = every poisonous/venomous creature. Lāmmah = the evil eye that afflicts with harm." },
     { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ غَضَبِهِ وَشَرِّ عِبَادِهِ، وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati, min ghaḍabihi wa sharri ‘ibādihi, wa min hamazāti sh-shayāṭīni wa an yaḥḍurūn.", en: "I seek refuge in the perfect words of Allah from His wrath, the evil of His servants, from the whisperings of devils, and from their presence around me.", source: "Sunan Abī Dāwūd (3893), ḥasan isnād." },
     { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmāti min sharri mā khalaq.", en: "I seek refuge in the perfect words of Allah from the evil of what He has created.", source: "Ṣaḥīḥ Muslim (2709)." },
@@ -1244,10 +1256,38 @@ document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exi
 document.getElementById('backFromSunnah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 document.getElementById('backFromQuranic')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 
-const duasList=["اللهم إني أسألك علماً نافعاً...","يا حي يا قيوم...","اللهم إنك عفو...","ربنا آتنا...","اللهم صل وسلم..."];
+function showTodayModal(dua) {
+    showDuaModal(dua);
+}
+
+function setOpenedView(dua) {
+    document.getElementById('msgStateClosed').style.display = 'none';
+    document.getElementById('msgStateLoading').style.display = 'none';
+    document.getElementById('msgStateOpened').style.display = 'block';
+    document.getElementById('tomorrowBanner').style.display = 'block';
+    
+    const quoteEl = document.getElementById('msgOpenedQuote');
+    if(dua) {
+        localStorage.setItem('dua_today_quote', JSON.stringify(dua));
+        quoteEl.innerText = currentLang === 'ar' ? dua.ar : dua.en;
+    } else {
+        const saved = localStorage.getItem('dua_today_quote');
+        if(saved) {
+            const parsed = JSON.parse(saved);
+            quoteEl.innerText = currentLang === 'ar' ? parsed.ar : parsed.en;
+        }
+    }
+}
+
 function handleMessageClick() {
+    if (ruqyahActive || favoritesActive || sunnahActive || quranicActive) return;
+
     const today = new Date().toDateString();
-    if (localStorage.getItem('dua_last_opened_date') === today) return;
+    if (localStorage.getItem('dua_last_opened_date') === today) {
+        const saved = localStorage.getItem('dua_today_quote');
+        if(saved) showTodayModal(JSON.parse(saved));
+        return;
+    }
 
     playClickSound();
     playVibration();
@@ -1272,14 +1312,22 @@ function handleMessageClick() {
 
             // 5. Final state: hide stars, show quote
             document.getElementById('msgStateLoading').style.display = 'none';
-            setOpenedView();
+            setOpenedView(randomDua);
 
             // 6. Save so it stays open until tomorrow
             localStorage.setItem('dua_last_opened_date', today);
         }, 1800); // Pulse stars for 1.8 seconds
     }, 600); // Flap opening time
 }
-document.getElementById('dailyMessageCard')?.addEventListener('click',()=>{ if(!ruqyahActive&&!favoritesActive&&!sunnahActive&&!quranicActive){ handleMessageClick(); } });
+
+document.getElementById('dailyMessageCard')?.addEventListener('click', handleMessageClick);
+
+if(localStorage.getItem('dua_last_opened_date') === new Date().toDateString()) {
+    const card = document.getElementById('dailyMessageCard');
+    if(card) card.classList.add('open-flap');
+    setOpenedView();
+}
+
 document.getElementById('closeModalBtn')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 document.getElementById('modalCloseX')?.addEventListener('click',()=>document.getElementById('duaModal').style.display='none');
 document.getElementById('duaModal')?.addEventListener('click',function(e){
