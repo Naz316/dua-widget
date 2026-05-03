@@ -144,9 +144,7 @@
         .message-card.envelope-animation {
             animation: mailSwing 1.2s ease-out forwards;
         }
-        
-        /* THE GREY TRIANGLE FLAP */
-        .message-card::before {
+        .message-card.envelope-animation::before {
             content: "";
             position: absolute;
             top: 0;
@@ -156,16 +154,7 @@
             background: var(--envelope-flap);
             clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
             z-index: 2;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: top;
         }
-        
-        /* FLAP OPENING ANIMATION */
-        .message-card.open-flap::before {
-            transform: translateY(-55px) scaleY(-1);
-            z-index: 1;
-        }
-
         @keyframes mailSwing {
             0% { transform: rotate(0deg); }
             15% { transform: rotate(12deg); }
@@ -181,40 +170,16 @@
         .message-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
         .message-card .open-link { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
 
-        /* GOLDEN STAR CLUSTER ANIMATION */
-        .star-loading-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            position: relative;
-        }
-        .star-cluster {
-            position: relative;
-            width: 60px;
-            height: 60px;
-        }
-        .star-shape {
-            position: absolute;
-            background: #EEDD82; 
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: star-pulse 1.5s infinite ease-in-out;
-        }
-        .star-shape:nth-child(1) { width: 22px; height: 22px; top: 0; left: 19px; animation-delay: 0s; }
-        .star-shape:nth-child(2) { width: 16px; height: 16px; top: 25px; left: 0; animation-delay: 0.2s; }
-        .star-shape:nth-child(3) { width: 16px; height: 16px; top: 25px; left: 40px; animation-delay: 0.4s; }
-        .star-shape:nth-child(4) { width: 12px; height: 12px; top: 48px; left: 24px; animation-delay: 0.6s; }
-        .star-shape:nth-child(5) { width: 14px; height: 14px; top: 10px; left: 45px; animation-delay: 0.1s; }
-        .star-shape:nth-child(6) { width: 14px; height: 14px; top: 10px; left: -5px; animation-delay: 0.3s; }
-
-        @keyframes star-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
+        /* Sparkle Animation */
+        .sparkle-loading { font-size: 40px; padding: 40px 0; animation: sparklePulse 1s infinite ease-in-out; }
+        @keyframes sparklePulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
             50% { transform: scale(1.3); opacity: 1; }
         }
 
-        /* Tomorrow Banner with DYNAMIC ACCENT color */
+        /* Banner from video */
         .tomorrow-banner {
-            background: var(--accent);
+            background: var(--video-blue);
             color: white;
             padding: 12px;
             border-radius: 15px;
@@ -224,7 +189,6 @@
             font-size: 0.95rem;
             display: none;
             box-shadow: var(--shadow);
-            transition: background 0.3s ease;
         }
 
         /* Video Modal Styles */
@@ -764,12 +728,12 @@
     </header>
 
     <div class="message-container" id="messageContainer">
-        <!-- Tomorrow Banner with DYNAMIC ACCENT color -->
+        <!-- Banner shown after opening today's message -->
         <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
 
-        <!-- The Message Card with multi-stage opening flap -->
+        <!-- The Message Card with multiple states -->
         <div class="message-card envelope-animation" id="dailyMessageCard">
-            <!-- State 1: Closed (Envelope) -->
+            <!-- Default Closed State -->
             <div id="msgStateClosed">
                 <h2 id="msgTitle">رسالتك اليوم</h2>
                 <div class="sub-title" id="msgSub">رسالتك اليوم</div>
@@ -777,23 +741,16 @@
                 <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
             </div>
 
-            <!-- State 2: GOLDEN STAR CLUSTER (Loading) -->
+            <!-- Loading State -->
             <div id="msgStateLoading" style="display:none;">
-                <div class="star-loading-container">
-                    <div class="star-cluster">
-                        <div class="star-shape"></div>
-                        <div class="star-shape"></div>
-                        <div class="star-shape"></div>
-                        <div class="star-shape"></div>
-                        <div class="star-shape"></div>
-                        <div class="star-shape"></div>
-                    </div>
-                </div>
+                <div class="sparkle-loading">✨✨✨</div>
             </div>
 
-            <!-- State 3: Opened (Result/Quote) -->
+            <!-- Result State (Opened) -->
             <div id="msgStateOpened" style="display:none; text-align: right; direction: rtl;">
-                <p id="msgOpenedQuote" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;"></p>
+                <p style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                    الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️
+                </p>
             </div>
         </div>
     </div>
@@ -886,7 +843,7 @@
     </div>
 </div>
 <script>
-// =============================== DATA ARRAYS (PRESERVED) ===============================
+// =============================== RUQYAH DATA (24 self + 24 others) ===============================
 const ruqyahSelf = [
     { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ. (مرة واحدة)", translit: "A‘ūdhu billāhi s-samī‘i l-‘alīmi mina sh-shayṭāni r-rajīmi min hamzihi, wa nafkhihi, wa nafthihi. (Marrah wāḥidah)", en: "I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing (of evil poetry). (Once)", source: "Sunan Abī Dāwūd (775), ṣaḥīḥ isnād.", tafsir: "Hamzihi = what the devil casts into a person’s heart at the time of death. Nafkhihi = pride that the devil casts into a person’s soul. Nafthihi = blameworthy, forbidden poetry." },
     { ar: "{بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)} (سبع مرات)", translit: "Bismillāhi r-raḥmāni r-raḥīm. Alḥamdu lillāhi rabbi l-‘ālamīn. Ar-raḥmāni r-raḥīm. Māliki yawmi d-dīn. Iyyāka na‘budu wa iyyāka nasta‘īn. Ihdina ṣ-ṣirāṭa l-mustaqīm. Ṣirāṭa lladhīna an‘amta ‘alayhim ghayri l-maghḍūbi ‘alayhim wa la ḍ-ḍāllīn. (Sab‘a marrāt)", en: "In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of the worlds. The Most Gracious, the Most Merciful. Master of the Day of Judgment. You alone we worship, and You alone we ask for help. Guide us to the straight path. The path of those upon whom You have bestowed favor, not of those who have evoked Your anger or of those who are astray. (7 times)", source: "Ṣaḥīḥ al-Bukhārī (5749), Ṣaḥīḥ Muslim (2201)." },
@@ -894,7 +851,7 @@ const ruqyahSelf = [
     { ar: "{قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)} (ثلاث مرات مع النفث في اليدين ومسح الجسد)", translit: "Qul a‘ūdhu birabbi l-falaq. Min sharri mā khalaq. Wa min sharri ghāsiqin idhā waqab. Wa min sharri n-naffāthāti fī l-‘uqad. Wa min sharri ḥāsidin idhā ḥasad. (Thalātha marrāt ma‘a n-nafth fī l-yadayn wa masḥi l-jasad)", en: "Say: I seek refuge in the Lord of daybreak. From the evil of that which He created. And from the evil of darkness when it settles. And from the evil of the blowers in knots. And from the evil of an envier when he envies. (3 times with blowing into hands and wiping over body)", source: "Ṣaḥīḥ al-Bukhārī (5016), Ṣaḥīḥ Muslim (2192).", method: "Blow into hands, wipe over body." },
     { ar: "{قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)} (ثلاث مرات مع النفث في اليدين ومسح الجسد)", translit: "Qul a‘ūdhu birabbi n-nās. Maliki n-nās. Ilāhi n-nās. Min sharri l-waswāsi l-khannās. Alladhī yuwaswisu fī ṣudūri n-nās. Mina l-jinnati wa n-nās. (Thalātha marrāt ma‘a n-nafth fī l-yadayn wa masḥi l-jasad)", en: "Say: I seek refuge in the Lord of mankind. The Sovereign of mankind. The God of mankind. From the evil of the retreating whisperer. Who whispers in the breasts of mankind. From among the jinn and mankind. (3 times with blowing into hands and wiping over body)", source: "Ṣaḥīḥ al-Bukhārī (5016), Ṣaḥīḥ Muslim (2192).", method: "Blow into hands, wipe over body." },
     { ar: "{اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ} [البقرة: 255]", translit: "Allāhu lā ilāha illā huwa l-ḥayyu l-qayyūm. Lā ta’khudhuhu sinatun wa lā nawm. Lahu mā fī s-samāwāti wa mā fī l-arḍ. Man dhā lladhī yashfa‘u ‘indahu illā bi-idhnihi. Ya‘lamu mā bayna aydīhim wa mā khalfahum, wa lā yuḥīṭūna bi shay’in min ‘ilmihi illā bi mā shā’. Wasi‘a kursiyyuhu s-samāwāti wa l-arḍ, wa lā ya’ūduhu ḥifẓuhumā, wa huwa l-‘aliyyu l-‘aẓīm.", en: "Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.", source: "Sunan al-Kubrā lil-Nasā’ī (10730), Silsilah Ṣaḥīḥah (3245)." },
-    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati, min kulli shayṭānin wa hāmmah, wa min kulli ‘aynin lāmmah.", en: "I seek refuge in the perfect words of Allah from every devil and every poisonous reptile, and from every evil eye.", source: "Ṣaḥīˆ al-Bukhārī (3371).", tafsir: "Hāmmah = every poisonous/venomous creature. Lāmmah = the evil eye that afflicts with harm." },
+    { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati, min kulli shayṭānin wa hāmmah, wa min kulli ‘aynin lāmmah.", en: "I seek refuge in the perfect words of Allah from every devil and every poisonous reptile, and from every evil eye.", source: "Ṣaḥīḥ al-Bukhārī (3371).", tafsir: "Hāmmah = every poisonous/venomous creature. Lāmmah = the evil eye that afflicts with harm." },
     { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ غَضَبِهِ وَشَرِّ عِبَادِهِ، وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmati, min ghaḍabihi wa sharri ‘ibādihi, wa min hamazāti sh-shayāṭīni wa an yaḥḍurūn.", en: "I seek refuge in the perfect words of Allah from His wrath, the evil of His servants, from the whisperings of devils, and from their presence around me.", source: "Sunan Abī Dāwūd (3893), ḥasan isnād." },
     { ar: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", translit: "A‘ūdhu bi-kalimāti llāhi t-tāmmāti min sharri mā khalaq.", en: "I seek refuge in the perfect words of Allah from the evil of what He has created.", source: "Ṣaḥīḥ Muslim (2709)." },
     { ar: "بِسْمِ اللهِ، بِسْمِ اللهِ، بِسْمِ اللهِ. أَعُوذُ بِاللهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ. (سبع مرات)", translit: "Bismillāh, bismillāh, bismillāh. A‘ūdhu billāhi wa qudratihi min sharri mā ajidu wa uḥādhiru. (Sab‘a marrāt)", en: "In the name of Allah, in the name of Allah, in the name of Allah. I seek refuge in Allah and His power from the evil of what I feel and what I fear. (7 times)", source: "Ṣaḥīḥ Muslim (2202).", method: "Place your hand on the place of pain, then supplicate." },
@@ -902,7 +859,7 @@ const ruqyahSelf = [
     { ar: "أَذْهِبِ الْبَاسَ رَبَّ النَّاسِ، وَاشْفِ أَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَمًا.", translit: "Adhhibi l-bā’sa rabba n-nās, washfi anta sh-shāfī, lā shifā’a illā shifā’uka, shifā’an lā yughādiru saqamā.", en: "Remove the harm, O Lord of mankind, and heal, for You are the Healer. There is no healing except Your healing, a healing that leaves no disease behind.", source: "Ṣaḥīḥ al-Bukhārī (5750), Ṣaḥīḥ Muslim (2191).", method: "Wipe with your right hand over yourself or the place of pain, then supplicate." },
     { ar: "امْسَحِ الْبَاسَ رَبَّ النَّاسِ، بِيَدِكَ الشِّفَاءُ، لَا كَاشِفَ لَهُ إِلَّا أَنْتَ.", translit: "Imsaḥi l-bā’sa rabba n-nās, biyadika sh-shifā’, lā kāshifa lahu illā anta.", en: "Wipe away the affliction, O Lord of mankind, in Your Hand is the cure. There is none who can remove it except You.", source: "Ṣaḥīḥ al-Bukhārī (5744)." },
     { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammad.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad.", source: "Sunan an-Nasā’ī (1292), ṣaḥīḥ isnād.", note: "‘Alī ibn Abī Ṭālib said: “Every supplication is veiled until one sends blessings upon the Prophet ﷺ.” (Ṣaḥīḥ al-Jāmi‘, 4523)" },
-    { ar: "بِسْمِ اللهِ يُبْرِينِي، وَمِنْ كُلِّ دَاءٍ يَشْفِينِي، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ، وَمِنْ شَرِّ كُلِّ ذِي عَيْنٍ.", translit: "Bismillāhi yubrīnī, wa min kulli dā’in yashfīnِي, wa min sharri ḥāsidin idhā ḥasad, wa min sharri kulli dhī ‘ayn.", en: "In the name of Allah, He cures me; from every disease He heals me; from the evil of an envier when he envies, and from the evil of every evil eye.", source: "Al-Jāmi‘ li-Ibni Wahb (708), ṣaḥīḥ isnād." },
+    { ar: "بِسْمِ اللهِ يُبْرِينِي، وَمِنْ كُلِّ دَاءٍ يَشْفِينِي، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ، وَمِنْ شَرِّ كُلِّ ذِي عَيْنٍ.", translit: "Bismillāhi yubrīnī, wa min kulli dā’in yashfīnī, wa min sharri ḥāsidin idhā ḥasad, wa min sharri kulli dhī ‘ayn.", en: "In the name of Allah, He cures me; from every disease He heals me; from the evil of an envier when he envies, and from the evil of every evil eye.", source: "Al-Jāmi‘ li-Ibni Wahb (708), ṣaḥīḥ isnād." },
     { ar: "بِسْمِ اللَّهِ أَرْقِي نَفْسِي، مِنْ كُلِّ شَيْءٍ يُؤْذِينِي، مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ، اللَّهُ يَشْفِينِي بِاسْمِ اللَّهِ أَرْقِي نَفْسِي.", translit: "Bismillāhi arqī nafsī, min kulli shay’in yu’dhīnī, min sharri kulli nafsin aw ‘ayni ḥāsidin, Allāhu yashfīnī, bismillāhi arqī nafsī.", en: "In the name of Allah, I perform ruqyah on myself from everything that harms me, from the evil of every soul or envious eye. Allah heals me; in the name of Allah I perform ruqyah on myself.", source: "Ṣaḥīḥ Muslim (2186)." },
     { ar: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ. (ثلاث مرات)", translit: "Bismillāhi lladhī lā yaḍurru ma‘a smihi shay’un fī l-arḍi wa lā fī s-samā’i wa huwa s-samī‘u l-‘alīm. (Thalātha marrāt)", en: "In the name of Allah, with whose name nothing can harm on earth or in heaven, and He is the All-Hearing, the All-Knowing. (3 times)", source: "Ṣaḥīḥ Ibn Ḥibbān (862), ṣaḥīḥ isnād." },
     { ar: "بِسْمِ اللهِ، تُرْبَةُ أَرْضِنَا، بِرِيقَتِنَا، لِيُشْفَى بِهِ، بِإِذْنِ رَبِّنَا.", translit: "Bismillāh, turbatu arḍinā, birīqatinā, liyushfā bihī, bi-idhni rabbinā.", en: "In the name of Allah, the dust of our land mixed with the saliva of one of us, may our sick be healed by it with the permission of our Lord.", source: "Ṣaḥīḥ al-Bukhārī (5745), Ṣaḥīḥ Muslim (2194).", method: "Take saliva on the index finger, then place it on dust, then wipe it on the place of pain while supplicating." },
@@ -910,150 +867,320 @@ const ruqyahSelf = [
     { ar: "اللَّهُمَّ اشْفِنِي، أَنْكَأُ لَكَ عَدُوًّا، أَوْ أَمْشِي لَكَ إِلَى صَلَاةٍ.", translit: "Allāhumma ishfinī, ankā’u laka ‘aduwwan, aw amshī laka ilā ṣalāh.", en: "O Allah, heal me, so that I may defeat an enemy for You, or walk to prayer for You.", source: "Ṣaḥīḥ Ibn Ḥibbān (2974), ḥasan ṣaḥīḥ isnād." },
     { ar: "أَسْأَلُ اللهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَنِي. (سبع مرات)", translit: "As’alu Llāha l-‘aẓīma rabba l-‘arshi l-‘aẓīmi an yashfiyanī. (Sab‘a marrāt)", en: "I ask Allah the Almighty, Lord of the Mighty Throne, to heal me. (7 times)", source: "Sunan Abī Dāwūd (3106), ṣaḥīḥ isnād." },
     { ar: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. (ثلاث مرات)", translit: "Allāhumma ‘āfinī fī badanī, Allāhumma ‘āfinī fī sam‘ī, Allāhumma ‘āfinī fī baṣarī, lā ilāha illā anta. (Thalātha marrāt)", en: "O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no deity except You. (3 times)", source: "Sunan Abī Dāwūd (5090), ḥasan isnād." },
-    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي وَمِنْ فَوْقِي وَأَعُوذُ بِعَظَمَتِكَ مِنْ أَنْ أُغْتَالَ مِنْ تَحْتِي.", translit: "Allāhumma innī as’aluka l-‘āfiyata fī d-dunyā wa l-ākhirah. Allāhumma innī as’aluka l-‘afwa wa l-‘āfiyata fī dīnī wa dunyāya wa ahlī wa mālī. Allāhumma stur ‘awrātī wa āmin raw‘ātī. Allāhumma iḥfaẓnī min bayni yadayya wa min khalfī wa ‘an yamِينِي wa ‘an shimālī wa min fawqī, wa a‘ūdhu bi ‘aẓamatika min an ughtāla min taḥtī.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion, my worldly affairs, my family, and my wealth. O Allah, conceal my faults and calm my fears. O Allah, protect me from before me, from behind me, from my right, from my left, and from above me. And I seek refuge in Your greatness from being unexpectedly destroyed from beneath me.", source: "Al-Adab al-Mufrad (1200), ṣaḥīḥ isnād." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي وَمِنْ فَوْقِي وَأَعُوذُ بِعَظَمَتِكَ مِنْ أَنْ أُغْتَالَ مِنْ تَحْتِي.", translit: "Allāhumma innī as’aluka l-‘āfiyata fī d-dunyā wa l-ākhirah. Allāhumma innī as’aluka l-‘afwa wa l-‘āfiyata fī dīnī wa dunyāya wa ahlī wa mālī. Allāhumma stur ‘awrātī wa āmin raw‘ātī. Allāhumma iḥfaẓnī min bayni yadayya wa min khalfī wa ‘an yamīnī wa ‘an shimālī wa min fawqī, wa a‘ūdhu bi ‘aẓamatika min an ughtāla min taḥtī.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion, my worldly affairs, my family, and my wealth. O Allah, conceal my faults and calm my fears. O Allah, protect me from before me, from behind me, from my right, from my left, and from above me. And I seek refuge in Your greatness from being unexpectedly destroyed from beneath me.", source: "Al-Adab al-Mufrad (1200), ṣaḥīḥ isnād." },
     { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ، وَبَارِكْ عَلَى مُحَمَّدٍ، وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin ‘abdika wa rasūlika, kamā ṣallayta ‘alā āli Ibrāhīm, wa bārik ‘alā Muḥammadin wa ‘alā āli Muḥammadin, kamā bārakta ‘alā Ibrāhīm.", en: "O Allah, send blessings upon Muhammad, Your servant and Messenger, just as You sent blessings upon the family of Ibrahim. And bless Muhammad and the family of Muhammad, just as You blessed Ibrahim.", source: "Ṣaḥīḥ al-Bukhārī (4520)." }
 ];
-
 const ruqyahOther = ruqyahSelf.map((d, idx) => {
-    let newAr = d.ar.replace(/أَعُوذُ/g, 'أُعِيذُكَ').replace(/أَسْأَلُكَ/g, 'أَسْأَلُ لَكَ').replace(/اشْفِنِي/g, 'اشْفِهِ').replace(/عَافِنِي/g, 'عَافِهِ').replace(/أَصْلِحْ لِي/g, 'أَصْلِحْ لَهُ').replace(/تَكِلْنِي/g, 'تَكِلْهُ').replace(/حِفْظِي/g, 'حِفْظَهُ').replace(/نَفْسِي/g, 'نَفْسَهُ').replace(/بِدَنِي/g, 'بِبَدَنِهِ').replace(/سَمْعِي/g, 'سَمْعِهِ').replace(/بَصَرِي/g, 'بَصَرِهِ').replace(/أَجِرْنِي/g, 'أَجِرْهُ').replace(/أَخْلِفْ لِي/g, 'أَخْلِفْ لَهُ').replace(/يُبْرِينِي/g, 'يُبْرِيكَ').replace(/يَشْفِينِي/g, 'يَشْفِيكَ').replace(/أَرْقِي نَفْسِي/g, 'أَرْقِيكَ');
-    let newEn = d.en.replace(/me/g, 'him').replace(/my/g, 'his').replace(/I /g, 'He ').replace(/myself/g, 'himself');
+    let newAr = d.ar
+        .replace(/أَعُوذُ/g, 'أُعِيذُكَ')
+        .replace(/أَسْأَلُكَ/g, 'أَسْأَلُ لَكَ')
+        .replace(/اشْفِنِي/g, 'اشْفِهِ')
+        .replace(/عَافِنِي/g, 'عَافِهِ')
+        .replace(/أَصْلِحْ لِي/g, 'أَصْلِحْ لَهُ')
+        .replace(/تَكِلْنِي/g, 'تَكِلْهُ')
+        .replace(/حِفْظِي/g, 'حِفْظَهُ')
+        .replace(/نَفْسِي/g, 'نَفْسَهُ')
+        .replace(/بِدَنِي/g, 'بِبَدَنِهِ')
+        .replace(/سَمْعِي/g, 'سَمْعِهِ')
+        .replace(/بَصَرِي/g, 'بَصَرِهِ')
+        .replace(/أَجِرْنِي/g, 'أَجِرْهُ')
+        .replace(/أَخْلِفْ لِي/g, 'أَخْلِفْ لَهُ')
+        .replace(/يُبْرِينِي/g, 'يُبْرِيكَ')
+        .replace(/يَشْفِينِي/g, 'يَشْفِيكَ')
+        .replace(/أَرْقِي نَفْسِي/g, 'أَرْقِيكَ');
+    let newEn = d.en
+        .replace(/me/g, 'him')
+        .replace(/my/g, 'his')
+        .replace(/I /g, 'He ')
+        .replace(/myself/g, 'himself');
     return { ar: newAr, translit: d.translit, en: newEn, source: d.source, tafsir: d.tafsir, method: d.method, note: d.note };
 });
+ruqyahOther[0].ar = "أُعِيذُكَ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ. (مرة واحدة)";
+ruqyahOther[0].en = "I seek refuge for you in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing (of evil poetry). (Once)";
+ruqyahOther[2].ar = "{قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ (4)} (ثلاث مرات مع النفث ومسح رأس المريض ووجهه وما يبلغ من جسده)";
+ruqyahOther[2].method = "Blow and wipe over the patient’s head, face, and body.";
+ruqyahOther[3].method = "Blow and wipe over the patient.";
+ruqyahOther[4].method = "Blow and wipe over the patient.";
+ruqyahOther[6].ar = "أُعِيذُكَ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ.";
+ruqyahOther[7].ar = "أُعِيذُكَ بِكَلِمَاتِ اللهِ التَّامَّةِ، مِنْ غَضَبِهِ وَشَرِّ عِبَادِهِ، وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ.";
+ruqyahOther[8].ar = "أُعِيذُكَ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.";
+ruqyahOther[9].ar = "بِسْمِ اللهِ، بِسْمِ اللهِ، بِسْمِ اللهِ. أُعِيذُكَ بِاللهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا تَجِدُ وَتُحَاذِرُ. (سبع مرات)";
+ruqyahOther[9].method = "Place your hand on the patient’s place of pain, then supplicate.";
+ruqyahOther[11].method = "Wipe with your right hand over the patient, then supplicate.";
+ruqyahOther[13].ar = "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى آلِ إِبْرَاهِيمَ فِي الْعَالَمِينَ، إِنَّكَ حَمِيدٌ مَجِيدٌ.";
+ruqyahOther[13].note = "Every supplication is veiled until one sends blessings upon the Prophet ﷺ (Ṣaḥīḥ al-Jāmi‘ 4523)";
+ruqyahOther[14].ar = "بِسْمِ اللهِ يُبْرِيكَ، وَمِنْ كُلِّ دَاءٍ يَشْفِيكَ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ، وَمِنْ شَرِّ كُلِّ ذِي عَيْنٍ.";
+ruqyahOther[15].ar = "بِسْمِ اللهِ أَرْقِيكَ، مِنْ كُلِّ شَيْءٍ يُؤْذِيكَ، مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ، اللهُ يَشْفِيكَ بِاسْمِ اللهِ أَرْقِيكَ.";
+ruqyahOther[17].ar = "بِسْمِ اللهِ، تُرْبَةُ أَرْضِنَا، بِرِيقَةِ بَعْضِنَا، لِيُشْفَى بِهِ سَقِيمُنَا، بِإِذْنِ رَبِّنَا.";
+ruqyahOther[18].ar = "لَا بَأْسَ عَلَيْكَ طَهُورٌ إِنْ شَاءَ اللهُ.";
+ruqyahOther[19].ar = "اللَّهُمَّ اشْفِ عَبْدَكَ يَنْكَأُ لَكَ عَدُوًّا، أَوْ يَمْشِي لَكَ إِلَى صَلَاةٍ.";
+ruqyahOther[20].ar = "أَسْأَلُ اللهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ. (سبع مرات)";
+ruqyahOther[21].ar = "اللَّهُمَّ عَافِهِ فِي بَدَنِهِ، اللَّهُمَّ عَافِهِ فِي سَمْعِهِ، اللَّهُمَّ عَافِهِ فِي بَصَرِهِ، لَا إِلَهَ إِلَّا أَنْتَ. (ثلاث مرات)";
+ruqyahOther[22].ar = "اللَّهُمَّ إِنَّا نَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنَّا نَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِهِ وَدُنْيَاهُ وَأَهْلِهِ وَمَالِهِ، اللَّهُمَّ اسْتُرْ عَوْرَاتِهِ وَآمِنْ رَوْعَاتِهِ، اللَّهُمَّ احْفَظْهُ مِنْ بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ وَعَنْ يَمِينِهِ وَعَنْ شِمَالِهِ وَمِنْ فَوْقِهِ وَنَعُوذُ بِعَظَمَتِكَ مِنْ أَنْ يُغْتَالَ مِنْ تَحْتِهِ.";
+ruqyahOther[23].ar = "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ، وَبَارِكْ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا بَارَكْتَ عَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ.";
 
+// =============================== SUNNAH DUAS (124 entries preserved) ===============================
 const sunnahDuas = [
-    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ لَكَ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ مَلِكُ السَّمَاوَاتِ وَالْأَرْضِ، وَلَكَ الْحَمْدُ أَنْتَ الْحَقُّ وَوَعْدُكَ الْحَقُّ، وَلِقَاؤُكَ حَقٌّ، وَقَوْلُكَ الْحَقُّ، وَالْجَنَّةُ حَقٌّ، وَالنَّارُ حَقٌّ، وَالنَّبِيُّونَ حَقٌّ، وَمُحَمَّدٌ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ حَقٌّ، وَالسَّاعَةُ حَقٌّ، اللَّهُمَّ لَكَ أَسْلَمْتُ، وَبِكَ آمَنْتُ، وَعَلَيْكَ تَوَكَّلْتُ، وَإِلَيْكَ أَنَبْتُ، وَبِكَ خَاصَمْتُ، وَإِلَيْكَ حَاكَمْتُ، فَاغْفِرْ لِي مَا قَدَّمْتُ وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ وَمَا أَعْلَنْتُ، أَنْتَ الْمُقَدِّمُ، وَأَنْتَ الْمُؤَخِّرُ، لَا إِلَهَ إِلَّا أَنْتَ.", translit: "Allāhumma laka l-ḥamdu anta qayyimu s-samāwāti...", en: "O Allah, for You is all praise...", source: "Ṣaḥīḥ al-Bukhārī (1120)." },
-    { ar: "اللَّهُمَّ إِنِّي أُشْهِدُكَ وَأُشْهِدُ مَلَائِكَتَكَ وَحَمَلَةَ عَرْشِكَ، وَأُشْهِدُ مَنْ فِي السَّمَاوَاتِ وَمَنْ فِي الْأَرْضِ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.", translit: "Allāhumma innī ushhiduka...", en: "O Allah, I call You to witness...", source: "Al-Mustadrak (1920)." },
-    { ar: "اللَّهُ، اللَّهُ رَبِّي لَا أُشْرِكُ بِهِ شَيْئًا.", translit: "Allāhu, Allāhu rabbī...", en: "Allah, Allah is my Lord...", source: "Sunan Ibn Mājah (3882)." }
-    // ... all 124 sunnah entries follow ...
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ لَكَ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ مَلِكُ السَّمَاوَاتِ وَالْأَرْضِ، وَلَكَ الْحَمْدُ أَنْتَ الْحَقُّ وَوَعْدُكَ الْحَقُّ، وَلِقَاؤُكَ حَقٌّ، وَقَوْلُكَ حَقٌّ، وَالْجَنَّةُ حَقٌّ، وَالنَّارُ حَقٌّ، وَالنَّبِيُّونَ حَقٌّ، وَمُحَمَّدٌ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ حَقٌّ، وَالسَّاعَةُ حَقٌّ، اللَّهُمَّ لَكَ أَسْلَمْتُ، وَبِكَ آمَنْتُ، وَعَلَيْكَ تَوَكَّلْتُ، وَإِلَيْكَ أَنَبْتُ، وَبِكَ خَاصَمْتُ، وَإِلَيْكَ حَاكَمْتُ، فَاغْفِرْ لِي مَا قَدَّمْتُ وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ وَمَا أَعْلَنْتُ، أَنْتَ الْمُقَدِّمُ، وَأَنْتَ الْمُؤَخِّرُ، لَا إِلَهَ إِلَّا أَنْتَ.", translit: "Allāhumma laka l-ḥamdu anta qayyimu s-samāwāti wa l-arḍi wa man fīhinna, wa laka l-ḥamdu laka mulku s-samāwāti wa l-arḍi wa man fīhinna, wa laka l-ḥamdu anta nūru s-samāwāti wa l-arḍi wa man fīhinna, wa laka l-ḥamdu anta maliku s-samāwāti wa l-arḍ, wa laka l-ḥamdu anta l-ḥaqqu wa wa‘duka l-ḥaqq, wa liqā’uka ḥaqq, wa qawluka ḥaqq, wa l-jannatu ḥaqq, wa n-nāru ḥaqq, wa n-nabiyyūna ḥaqq, wa Muḥammadun ṣallallāhu ‘alayhi wa sallama ḥaqq, wa s-sā‘atu ḥaqq. Allāhumma laka aslamtu, wa bika āmantu, wa ‘alayka tawakkaltu, wa ilayka anabtu, wa bika khāṣamtu, wa ilayka ḥākamtu, faghfir lī mā qaddamtu wa mā akhkhartu, wa mā asrartu wa mā a‘lantu, anta l-muqaddimu wa anta l-mu’akhkhiru, lā ilāha illā anta.", en: "O Allah, for You is all praise – You are the Sustainer of the heavens and the earth... There is no deity except You.", source: "Ṣaḥīḥ al-Bukhārī (1120).", tafsir: "“Qayyimu...” = He Who constantly manages the creation... “Anta l-muqaddimu...” = You advance whom You will..." },
+    { ar: "اللَّهُمَّ إِنِّي أُشْهِدُكَ وَأُشْهِدُ مَلَائِكَتَكَ وَحَمَلَةَ عَرْشِكَ، وَأُشْهِدُ مَنْ فِي السَّمَاوَاتِ وَمَنْ فِي الْأَرْضِ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.", translit: "Allāhumma innī ushhiduka wa ushhidu malā’ikataka wa ḥamalata ‘arshik, wa ushhidu man fī s-samāwāti wa man fī l-arḍ, annaka anta Llāhu lā ilāha illā anta waḥdaka lā sharīka lak, wa ashhadu anna Muḥammadan ‘abduka wa rasūluk.", en: "O Allah, I call You to witness... that Muhammad is Your servant and Your Messenger.", source: "Al-Mustadrak (1920), Silsilah Ṣaḥīḥah (267)." },
+    { ar: "اللَّهُ، اللَّهُ رَبِّي لَا أُشْرِكُ بِهِ شَيْئًا.", translit: "Allāhu, Allāhu rabbī lā ushriku bihī shay’ā.", en: "Allah, Allah is my Lord, I do not associate anything with Him.", source: "Sunan Ibn Mājah (3882)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammad.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad.", source: "Sunan an-Nasā’ī (1292), ṣaḥīḥ isnād.", note: "Every supplication is veiled until one sends blessings upon the Prophet ﷺ." },
+    { ar: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.", translit: "Allāhumma anta rabbī lā ilāha illā anta...", en: "O Allah, You are my Lord, there is no deity except You...", source: "Ṣaḥīḥ al-Bukhārī (6306).", tafsir: "“Abū’u laka” = I confess and acknowledge to You." },
+    { ar: "اللَّهُمَّ مَالِكَ الْمُلْكِ، تُؤْتِي الْمُلْكَ مَنْ تَشَاءُ، وَتَنْزِعُ الْمُلْكَ مِمَّنْ تَشَاءُ، وَتُعِزُّ مَنْ تَشَاءُ، وَتُذِلُّ مَنْ تَشَاءُ، بِيَدِكَ الْخَيْرُ إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَحْمَانُ الدُّنْيَا وَالْآخِرَةِ، تُعْطِيهِمَا مَنْ تَشَاءُ، وَتَمْنَعُ مِنْهُمَا مَنْ تَشَاءُ، ارْحَمْنِي رَحْمَةً تُغْنِينِي بِهَا عَنْ رَحْمَةِ مَنْ سِوَاكَ.", translit: "Allāhumma mālika l-mulki...", en: "O Allah, Owner of all sovereignty...", source: "Al-Mu‘jam aṣ-Ṣaghīr li-ṭ-Ṭabarānī (558)." },
+    { ar: "{رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا...} [البقرة: 286]", translit: "Rabbanā lā tu’ākhidhnā in nasīnā aw akhṭa’nā...", en: "Our Lord, do not impose blame upon us if we have forgotten or erred...", source: "Al-Baqarah (2):286" },
+    { ar: "{رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا...} [آل عمران: 8]", translit: "Rabbanā lā tuzigh qulūbanā ba‘da idh hadaytanā...", en: "Our Lord, let not our hearts deviate after You have guided us...", source: "Āl ‘Imrān (3):8" },
+    { ar: "{رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ} [آل عمران: 16]", translit: "Rabbanā innanā āmannā faghfir lanā dhunūbanā wa qinā ‘adhāba n-nār.", en: "Our Lord, indeed we have believed, so forgive us our sins and protect us from the punishment of the Fire.", source: "Āl ‘Imrān (3):16" },
+    { ar: "{رَبِّ هَبْ لِي مِن لَّدُنكَ ذُرِّيَّةً طَيِّبَةً...} [آل عمران: 38]", translit: "Rabbi hab lī min ladunka dhurriyyatan ṭayyibah...", en: "My Lord, grant me from Yourself a good offspring...", source: "Āl ‘Imrān (3):38" },
+    { ar: "{رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِي أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ} [آل عمران: 147]", translit: "Rabbanā ghfir lanā dhunūbanā wa isrāfanā fī amrinā wa thabbit aqdāmanā wanṣurnā ‘alā l-qawmi l-kāfirīn.", en: "Our Lord, forgive us our sins and excesses in our affairs, make firm our feet and give us victory over the disbelieving people.", source: "Āl ‘Imrān (3):147" },
+    { ar: "{رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا} [الكهف: 10]", translit: "Rabbanā ātinā min ladunka raḥmataw wa hayyi’ lanā min amrinā rashadā.", en: "Our Lord, grant us from Yourself mercy and prepare for us from our affair right guidance.", source: "Al-Kahf (18):10" },
+    { ar: "{رَبَّنَا اصْرِفْ عَنَّا عَذَابَ جَهَنَّمَ إِنَّ عَذَابَهَا كَانَ غَرَامًا} [الفرقان: 65]", translit: "Rabbanā iṣrif ‘annā ‘adhāba jahannam, inna ‘adhābahā kāna gharāmā.", en: "Our Lord, avert from us the punishment of Hell. Indeed, its punishment is ever adhering.", source: "Al-Furqān (25):65" },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ... إِنَّكَ حَمِيدٌ مَجِيدٌ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammadin, kamā ṣallayta ‘alā āli Ibrāhīm... innaka Ḥamīdun Majīd.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad...", source: "Ṣaḥīḥ Muslim (405).", note: "Every supplication is veiled until one sends blessings upon the Prophet ﷺ." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي...", translit: "Allāhumma innī as’aluka l-‘afwa wa l-‘āfiyata fī d-dunyā wa l-ākhirah...", en: "O Allah, I ask You for forgiveness and well-being...", source: "Sunan Ibn Mājah (3871).", tafsir: "“Ughtāla” = being swallowed by the earth." },
+    { ar: "اللَّهُمَّ لَكَ أَسْلَمْتُ، وَبِكَ آمَنْتُ، وَعَلَيْكَ تَوَكَّلْتُ...", translit: "Allāhumma laka aslamtu...", en: "O Allah, to You I have submitted...", source: "Ṣaḥīḥ Muslim (2717)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى، وَالْعَفَافَ وَالْغِنَى.", translit: "Allāhumma innī as’aluka l-hudā wa t-tuqā...", en: "O Allah, I ask You for guidance, piety, chastity, and self-sufficiency.", source: "Ṣaḥīḥ Muslim (2721)." },
+    { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ.", translit: "Yā muqalliba l-qulūbi thabbit qalbī ‘alā dīnik.", en: "O Turner of hearts, make my heart firm upon Your religion.", source: "Sunan at-Tirmidhī (3522)." },
+    { ar: "اللَّهُمَّ جَنِّبْنِي مُنْكَرَاتِ الْأَخْلَاقِ، وَالْأَهْوَاءِ، وَالْأَعْمَالِ وَالْأَدْوَاءِ.", translit: "Allāhumma jannibnī munkarāti l-akhlāqi...", en: "O Allah, keep me away from evil manners, evil desires, evil deeds, and evil diseases.", source: "Al-Mustadrak (1949), ṣaḥīḥ." },
+    { ar: "اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي، وَأَصْلِحْ لِي دُنْيَايَ الَّتِي فِيهَا مَعَاشِي...", translit: "Allāhumma aṣliḥ lī dīnī...", en: "O Allah, set right for me my religion...", source: "Ṣaḥīḥ Muslim (2720)." },
+    { ar: "اللَّهُمَّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي، وَإِسْرَافِي فِي أَمْرِي...", translit: "Allāhumma ghfir lī khaṭī’atī...", en: "O Allah, forgive me my sin...", source: "Ṣaḥīḥ Muslim (2719)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ.", translit: "Allāhumma innī a‘ūdhu bika min zawāli ni‘matika...", en: "O Allah, I seek refuge in You from the removal of Your blessing...", source: "Ṣaḥīḥ Muslim (2739)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَالْجُبْنِ وَالْبُخْلِ وَالْهَرَمِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-‘ajzi...", en: "O Allah, I seek refuge in You from incapacity, laziness...", source: "Ṣaḥīḥ al-Bukhārī (6367)." },
+    { ar: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا، وَفِي بَصَرِي نُورًا...", translit: "Allāhumma j‘al fī qalbī nūran...", en: "O Allah, place light in my heart and in my sight...", source: "Ṣaḥīḥ al-Bukhārī (6316)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammadin...", en: "O Allah, send blessings upon Muhammad...", source: "Ṣaḥīḥ Muslim (405)." },
+    // ===== WIRD 2 =====
+    { ar: "يَا رَبِّ لَكَ الْحَمْدُ كَمَا يَنْبَغِي لِجَلَالِ وَجْهِكَ وَلِعَظِيمِ سُلْطَانِكَ.", translit: "Yā rabbi laka l-ḥamdu kamā yanbaghī li-jalāli wajhika wa li-‘aẓīmi sulṭānik.", en: "O Lord, to You is all praise as befits the majesty of Your face and the greatness of Your sovereignty.", source: "Sunan Ibn Mājah (3801)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّ لَكَ الْحَمْدَ، لَا إِلَهَ إِلَّا أَنْتَ الْمَنَّانُ...", translit: "Allāhumma innī as’aluka bi-anna laka l-ḥamda, lā ilāha illā anta l-manānu...", en: "O Allah, I ask You, as all praise belongs to You, there is no deity except You...", source: "Sunan Abī Dāwūd (1495)." },
+    { ar: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ...", translit: "Lā ilāha illā Llāhu waḥdahu lā sharīka lahu...", en: "There is no deity except Allah alone...", source: "Ṣaḥīḥ al-Bukhārī (1154)." },
+    { ar: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ... أَنْجَزَ وَعْدَهُ، وَنَصَرَ عَبْدَهُ، وَهَزَمَ الْأَحْزَابَ وَحْدَهُ.", translit: "Lā ilāha illā Llāhu waḥdahu lā sharīka lahu... anjaza wa‘dahu, wa naṣara ‘abdahu, wa hazama l-aḥzāba waḥdah.", en: "There is no deity except Allah alone... He fulfilled His promise...", source: "Ṣaḥīḥ Muslim (1218)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin ‘abdika wa rasūlika...", en: "O Allah, send blessings upon Muhammad, Your servant and Messenger...", source: "Ṣaḥīḥ al-Bukhārī (4520)." },
+    { ar: "اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ...", translit: "Allāhumma ‘ālima l-ghaybi wa sh-shahādah...", en: "O Allah, Knower of the unseen and seen...", source: "Sunan at-Tirmidhī (3392)." },
+    { ar: "{رَبَّنَا فَاغْفِرْ لَنَا ذُنُوبَنَا وَكَفِّرْ عَنَّا سَيِّئَاتِنَا وَتَوفَّنَا مَعَ الْأَبْرَارِ} [آل عمران: 193]", translit: "Rabbanā faghfir lanā ذunūbanā wa kaffir ‘annā sayyi’ātinā wa tawaffanā ma‘a l-abrār.", en: "Our Lord, so forgive us our sins and remove from us our misdeeds and cause us to die with the righteous.", source: "Āl ‘Imrān (3):193" },
+    { ar: "{رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ} [الأعراف: 23]", translit: "Rabbanā ẓalamnā anfusanā wa illam taghfir lanā wa tarḥamnā lanakūnanna mina l-khāsirīn.", en: "Our Lord, we have wronged ourselves...", source: "Al-A‘rāf (7):23" },
+    { ar: "{رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ} [الأعراف: 126]", translit: "Rabbanā afrigh ‘alaynā ṣabraw wa tawaffanā muslimīn.", en: "Our Lord, pour upon us patience and cause us to die as Muslims.", source: "Al-A‘rāf (7):126" },
+    { ar: "{رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ} [إبراهيم: 40]", translit: "Rabbi ij‘alnī muqīma ṣ-ṣalāti wa min dhurriyyatī, rabbanā wa taqabbal du‘ā’.", en: "My Lord, make me an establisher of prayer...", source: "Ibrāhīm (14):40" },
+    { ar: "{رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ} [إبراهيم: 41]", translit: "Rabbanā ghfir lī wa li-wālidayya wa lil-mu’minīna yawma yaqūmu l-ḥisāb.", en: "Our Lord, forgive me and my parents and the believers the Day the account is established.", source: "Ibrāhīm (14):41" },
+    { ar: "{رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا} [الفرقان: 74]", translit: "Rabbanā hab lanā min azwājinā wa dhurriyyātinā qurrata a‘yunin waj‘alnā lil-muttaqīna imāmā.", en: "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous.", source: "Al-Furqān (25):74" },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَغَلَبَةِ الْعَدُوِّ، وَشَمَاتَةِ الْأَعْدَاءِ.", translit: "Allāhumma innī a‘ūdhu bika min ghalabati d-dayn...", en: "O Allah, I seek refuge in You from being overwhelmed by debt, from being overcome by the enemy, and from the rejoicing of enemies.", source: "Sunan an-Nasā’ī (5475)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa azwājihi wa dhurriyyatihi...", en: "O Allah, send blessings upon Muhammad, his wives, and his offspring...", source: "Ṣaḥīḥ al-Bukhārī (5999)." },
+    { ar: "اللَّهُمَّ أَحْسَنْتَ خَلْقِي، فَأَحْسِنْ خُلُقِي.", translit: "Allāhumma aḥsanta khalqī, fa aḥsin khuluqī.", en: "O Allah, You have made my creation excellent, so make my character excellent.", source: "Musnad Aḥmad (3823)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ، وَالْكَسَلِ، وَالْجُبْنِ، وَالْبُخْلِ، وَالْهَرَمِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-‘ajzi...", en: "O Allah, I seek refuge in You from incapacity, laziness...", source: "Ṣaḥīḥ Muslim (2722)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْجُوعِ، فَإِنَّهُ بِئْسَ الضَّجِيعُ، وَأَعُوذُ بِكَ مِنَ الْخِيَانَةِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-jū‘i...", en: "O Allah, I seek refuge in You from hunger... and from treachery.", source: "Sunan Abī Dāwūd (1547)." },
+    { ar: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ.", translit: "Allāhumma kfinī bi-ḥalālika ‘an ḥarāmika...", en: "O Allah, suffice me with Your lawful against Your unlawful...", source: "Sunan at-Tirmidhī (3563)." },
+    { ar: "رَبِّ أَعِنِّي وَلَا تُعِنْ عَلَيَّ، وَانْصُرْنِي وَلَا تَنْصُرْ عَلَيَّ...", translit: "Rabbi a‘innī wa lā tu‘in ‘alayya...", en: "My Lord, help me and do not help others against me...", source: "Sunan Abī Dāwūd (1510)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالسَّدَادَ.", translit: "Allāhumma innī as’aluka l-hudā wa s-sadād.", en: "O Allah, I ask You for guidance and right direction.", source: "Ṣaḥīḥ Muslim (2725)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ جَهْدِ الْبَلَاءِ، وَدَرَكِ الشَّقَاءِ، وَسُوءِ الْقَضَاءِ، وَشَمَاتَةِ الْأَعْدَاءِ.", translit: "Allāhumma innī a‘ūdhu bika min jahdi l-balā’...", en: "O Allah, I seek refuge in You from the severity of hardship...", source: "Ṣaḥīḥ al-Bukhārī (6616)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْبَرَصِ، وَالْجُنُونِ، وَالْجُذَامِ، وَمِنْ سَيِّئِ الْأَسْقَامِ.", translit: "Allāhumma innī a‘ūdhu bika mina l-baraṣi...", en: "O Allah, I seek refuge in You from leprosy, madness, vitiligo, and evil diseases.", source: "Sunan Abī Dāwūd (1554)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ فِتْنَةِ النَّارِ، وَعَذَابِ النَّارِ، وَمِنْ شَرِّ الْغِنَى وَالْفَقْرِ.", translit: "Allāhumma innī a‘ūdhu bika min fitnati n-nār...", en: "O Allah, I seek refuge in You from the trial of the Fire, its torment, and from the evil of riches and poverty.", source: "Sunan Abī Dāwūd (1543)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ سَمْعِي، وَمِنْ شَرِّ بَصَرِي، وَمِنْ شَرِّ لِسَانِي...", translit: "Allāhumma innī a‘ūdhu bika min sharri sam‘ī...", en: "O Allah, I seek refuge in You from the evil of my hearing, my sight, my tongue...", source: "Sunan Abī Dāwūd (1551)." },
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ كُلُّهُ...", translit: "(Long supplication)", en: "O Allah, all praise belongs to You... (lengthy request for blessings and protection)", source: "Al-Adab al-Mufrad (243)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin...", en: "O Allah, send blessings upon Muhammad...", source: "Ṣaḥīḥ al-Bukhārī (4520)." },
+    // ===== WIRD 3 =====
+    { ar: "{الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ} [الفاتحة: 2-4]", translit: "Alḥamdu lillāhi rabbi l-‘ālamīn, ar-raḥmāni r-raḥīm, māliki yawmi d-dīn.", en: "All praise is due to Allah, Lord of the worlds – the Most Gracious, the Most Merciful – Master of the Day of Judgment.", source: "Al-Fātiḥah (1):2-4" },
+    { ar: "سُبْحَانَكَ مَا أَعْظَمَكَ رَبَّنَا.", translit: "Subḥānaka mā a‘ẓamaka rabbanā.", en: "Glory be to You, how great You are, our Lord.", source: "Al-Mu‘jam al-Awsaṭ (7324)." },
+    { ar: "سُبْحَانَ ذِي الْجَبَرُوتِ وَالْمَلَكُوتِ وَالْكِبْرِيَاءِ وَالْعَظَمَةِ.", translit: "Subḥāna dhī l-jabarūti wa l-malakūti wa l-kibriyā’i wa l-‘aẓamah.", en: "Glory be to the Possessor of power, dominion, majesty, and greatness.", source: "Sunan an-Nasā’ī (1049)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin ‘abdika wa rasūlika...", en: "O Allah, send blessings upon Muhammad, Your servant and Messenger...", source: "Ṣaḥīḥ al-Bukhārī (4520)." },
+    { ar: "اللَّهُمَّ مَالِكَ الْمُلْكِ تُؤْتِي الْمُلْكَ مَنْ تَشَاءُ...", translit: "Allāhumma mālika l-mulki tu’ti l-mulka man tashā’u...", en: "O Allah, Owner of all sovereignty... Have mercy on me with a mercy that makes me independent of anyone else.", source: "Ṣaḥīḥ at-Targhīb wa at-Tarhīb (1821)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ يَا اللَّهُ الْأَحَدُ الصَّمَدُ...", translit: "Allāhumma innī as’aluka yā Llāhu l-aḥadu ṣ-ṣamad...", en: "O Allah, I ask You, O Allah, the One, the Eternal Refuge, to forgive my sins.", source: "Sunan Abī Dāwūd (1493)." },
+    { ar: "أَعُوذُ بِاللَّهِ مِنْ عَذَابِ الْقَبْرِ، وَأَعُوذُ بِاللَّهِ مِنْ عَذَابِ النَّارِ...", translit: "A‘ūdhu billāhi min ‘adhābi l-qabr...", en: "I seek refuge in Allah from the torment of the grave, the Fire...", source: "Musnad Aḥmad (2667)." },
+    { ar: "اللَّهُمَّ اغْفِرْ لِي ذَنْبِي؛ خَطَئِي وَعَمْدِي...", translit: "Allāhumma ghfir lī dhanbī; khaṭa’ī wa ‘amdī...", en: "O Allah, forgive me my sin, my error and deliberate sin...", source: "Musnad Aḥmad (17905)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ فِتْنَةِ النَّارِ وَعَذَابِ النَّارِ...", translit: "Allāhumma innī a‘ūdhu bika min fitnati n-nār...", en: "O Allah, I seek refuge in You from the trial of the Fire...", source: "Ṣaḥīḥ al-Bukhārī (6377)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin...", en: "O Allah, send blessings upon Muhammad...", source: "Ṣaḥīḥ Muslim (405)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ...", translit: "Allāhumma innī as’aluka l-jannah (x3). Allāhumma innī astajīru bika min an-nār (x3).", en: "O Allah, I ask You for Paradise (3 times)...", source: "Sunan at-Tirmidhī (2572)." },
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ مِلْءَ السَّمَاءِ، وَمِلْءَ الْأَرْضِ...", translit: "Allāhumma laka l-ḥamdu mil’a s-samā’i...", en: "O Allah, to You is all praise filling the heavens... Purify me with snow, hail, and cold water...", source: "Ṣaḥīḥ Muslim (476)." },
+    { ar: "اللَّهُمَّ لَا تُخْزِنِي يَوْمَ الْقِيَامَةِ.", translit: "Allāhumma lā tukhzinī yawma l-qiyāmah.", en: "O Allah, do not disgrace me on the Day of Resurrection.", source: "Musnad Aḥmad (18056)." },
+    { ar: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", translit: "Allāhumma qinī ‘adhābaka yawma tab‘athu ‘ibādak.", en: "O Allah, protect me from Your punishment on the day You resurrect Your servants.", source: "Sunan Abī Dāwūd (5045)." },
+    { ar: "اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ، كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ...", translit: "Allāhumma bā‘id baynī wa bayna khaṭāyāya...", en: "O Allah, distance me from my sins...", source: "Ṣaḥīḥ al-Bukhārī (744)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكَسَلِ وَالْهَرَمِ، وَالْمَغْرَمِ وَالْمَأْثَمِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-kasali...", en: "O Allah, I seek refuge in You from laziness, old age, debt, and sin...", source: "Ṣaḥīḥ al-Bukhārī (6375)." },
+    { ar: "اللَّهُمَّ أَعُنِّي عَلَى ذِكْرِكَ، وَشُكْرِكَ، وَحُسْنِ عِبَادَتِكَ.", translit: "Allāhumma a‘innī ‘alā dhikrika, wa shukrika, wa ḥusni ‘ibādatik.", en: "O Allah, help me to remember You, to thank You, and to worship You well.", source: "Sunan Abī Dāwūd (1522)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لَا يَنْفَعُ، وَقَلْبٍ لَا يَخْشَعُ...", translit: "Allāhumma innī a‘ūdhu bika min ‘ilmin lā yanfa‘u...", en: "O Allah, I seek refuge in You from knowledge that does not benefit...", source: "Sunan an-Nasā’ī (5470)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ مَا عَمِلْتُهُ نَفْسِي.", translit: "Allāhumma innī a‘ūdhu bika min sharri mā ‘amilat-hu nafsī.", en: "O Allah, I seek refuge in You from the evil of what my soul has done.", source: "Musnad Aḥmad (24033)." },
+    { ar: "اللَّهُمَّ بِعِلْمِكَ الْغَيْبَ، وَقُدْرَتِكَ عَلَى الْخَلْقِ...", translit: "Allāhumma bi-‘ilmika l-ghayb...", en: "O Allah, by Your knowledge of the unseen... I ask You for fear of You in secret and public...", source: "Sunan an-Nasā’ī (1306)." },
+    { ar: "اللَّهُمَّ وَأَسْأَلُكَ لَذَّةَ الْعَيْشِ بَعْدَ الْمَوْتِ...", translit: "Allāhumma wa as’aluka ladhdata l-‘ayshi ba‘da l-mawt...", en: "O Allah, I ask You for the delight of life after death...", source: "As-Sunnah li-Ibn Abī ‘Āṣim (424)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa azwājihi wa dhurriyyatihi...", en: "O Allah, send blessings upon Muhammad, his wives, and his offspring...", source: "Ṣaḥīḥ al-Bukhārī (5999)." },
+    // ===== WIRD 4 =====
+    { ar: "الْحَمْدُ لِلَّهِ حَمْدًا كَثِيرًا طَيِّبًا مُبَارَكًا فِيهِ.", translit: "Alḥamdu lillāhi ḥamdan kathīran ṭayyiban mubārakan fīh.", en: "Praise be to Allah, abundant, pure, and blessed praise.", source: "Ṣaḥīḥ Muslim (600)." },
+    { ar: "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ.", translit: "Lā ilāha illā anta subḥānaka innī kuntu mina ẓ-ẓālimīn.", en: "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.", source: "Sunan at-Tirmidhī (3505)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammad.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad.", source: "Sunan an-Nasā’ī (1292)." },
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ...", translit: "Allāhumma laka l-ḥamdu anta qayyimu s-samāwāti wa l-arḍi wa man fīhinna...", en: "O Allah, for You is all praise – You are the Sustainer of the heavens...", source: "Ṣaḥīḥ al-Bukhārī (1120)." },
+    { ar: "{رَبِّ إِنِّي أَعُوذُ بِكَ أَنْ أَسْأَلُكَ مَا لَيْسَ لِي بِهِ عِلْمٌ...} [هود: 47]", translit: "Rabbi innī a‘ūdhu bika an as’alaka mā laysa lī bihi ‘ilm...", en: "My Lord, I seek refuge in You from asking You that of which I have no knowledge...", source: "Hūd (11):47" },
+    { ar: "{أَنْتَ وَلِيُّنَا فَاغْفِرْ لَنَا وَارْحَمْنَا...} [الأعراف: 155-156]", translit: "Anta waliyyunā faghfir lanā warḥamnā...", en: "You are our Protector, so forgive us and have mercy upon us...", source: "Al-A‘rāf (7):155-156" },
+    { ar: "{رَبِّ اشْرَحْ لِي صَدْرِي (25) وَيَسِّرْ لِي أَمْرِي} [طه: 25-26]", translit: "Rabbi shraḥ lī ṣadrī, wa yassir lī amrī.", en: "My Lord, expand for me my chest and make easy for me my task.", source: "Ṭā Hā (20):25-26" },
+    { ar: "{رَبِّ زِدْنِي عِلْمًا} [طه: 114]", translit: "Rabbi zidnī ‘ilmā.", en: "My Lord, increase me in knowledge.", source: "Ṭā Hā (20):114" },
+    { ar: "{رَبَّنَا آمَنَّا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنْتَ خَيْرُ الرَّاحِمِينَ} [المؤمنون: 109]", translit: "Rabbanā āmannā faghfir lanā warḥamnā wa anta khayru r-rāḥimīn.", en: "Our Lord, we have believed, so forgive us and have mercy upon us...", source: "Al-Mu’minūn (23):109" },
+    { ar: "{رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ...} [النمل: 19]", translit: "Rabbi awzi‘nī an ashkura ni‘mataka allatī an‘amta ‘alayya...", en: "My Lord, enable me to be grateful for Your favor...", source: "An-Naml (27):19" },
+    { ar: "{رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ...} [الحشر: 10]", translit: "Rabbanā ghfir lanā wa li-ikhwāninā lladhīna sabaqūnā bil-īmān...", en: "Our Lord, forgive us and our brothers who preceded us in faith...", source: "Al-Ḥashr (59):10" },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْمَأْثَمِ وَالْمَغْرَمِ.", translit: "Allāhumma innī a‘ūdhu bika mina l-ma’thami wa l-maghram.", en: "O Allah, I seek refuge in You from sin and debt.", source: "Ṣaḥīḥ al-Bukhārī (832)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ أَنِّي أَشْهَدُ أَنَّكَ أَنْتَ اللَّهُ...", translit: "Allāhumma innī as’aluka annī ashhadu annaka anta Llāh, lā ilāha illā anta...", en: "O Allah, I ask You, as I bear witness that You are Allah...", source: "Sunan Abī Dāwūd (1493).", note: "The Greatest Name of Allah." },
+    { ar: "رَبِّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي، وَإِسْرَافِي فِي أَمْرِي كُلِّه...", translit: "Rabbi ghfir lī khaṭī’atī wa jahlī, wa isrāfī fī amrī kullih...", en: "My Lord, forgive me my sin, my ignorance, my excess...", source: "Ṣaḥīḥ al-Bukhārī (6398)." },
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ، أَنْتَ رَبُّ السَّمَاوَاتِ وَالْأَرْضِ...", translit: "Allāhumma laka l-ḥamd, anta rabbu s-samāwāti wa l-arḍ...", en: "O Allah, to You is all praise. You are the Lord of the heavens...", source: "Ṣaḥīḥ al-Bukhārī (7385)." },
+    { ar: "وَجَّهْتُ وَجْهِيَ لِلَّذِي فَطَرَ السَّمَاوَاتِ وَالْأَرْضَ حَنِيفًا...", translit: "Wajjahtu wajhiya lilladhī faṭara s-samāwāti wa l-arḍa ḥanīfaw...", en: "I have turned my face to the One who created the heavens and the earth...", source: "Sunan at-Tirmidhī (3421)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin ‘abdika wa rasūlika...", en: "O Allah, send blessings upon Muhammad, Your servant and Messenger...", source: "Ṣaḥīḥ al-Bukhārī (4520)." },
+    { ar: "اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا...", translit: "Allāhumma innī ẓalamtu nafsī ẓulman kathīran...", en: "O Allah, I have greatly wronged myself...", source: "Ṣaḥīḥ al-Bukhārī (834)." },
+    { ar: "اللَّهُمَّ اغْفِرْ لِي، وَتُبْ عَلَيَّ، إِنَّكَ أَنْتَ التَّوَّابُ الْغَفُورُ.", translit: "Allāhumma ghfir lī, wa tub ‘alayya, innaka anta t-tawwābu l-ghafūr.", en: "O Allah, forgive me and accept my repentance. Indeed, You are the Accepter of Repentance, the Oft-Forgiving.", source: "Musnad Aḥmad (5564)." },
+    { ar: "اللَّهُمَّ اغْفِرْ لِي ذَنْبِي خَطَئِي وَعَمْدِي...", translit: "Allāhumma ghfir lī dhanbī khaṭa’ī wa ‘amdī...", en: "O Allah, forgive me my sin – my error and my deliberate sin...", source: "Musnad Aḥmad (17905)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الثَّبَاتَ فِي الْأَمْرِ...", translit: "Allāhumma innī as’aluka th-thabāta fī l-amr...", en: "O Allah, I ask You for steadfastness in the matter...", source: "Ṣaḥīḥ Ibn Ḥibbān (935)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ.", translit: "Allāhumma innī as’aluka l-‘āfiyata fī d-dunyā wa l-ākhirah.", en: "O Allah, I ask You for well-being in this world and the Hereafter.", source: "Sunan at-Tirmidhī (3514)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِرِضَاكَ مِنْ سَخَطِكَ...", translit: "Allāhumma innī a‘ūdhu bi-riḍāka min sakhaṭik...", en: "O Allah, I seek refuge in Your pleasure from Your displeasure...", source: "Musnad Aḥmad (25655)." },
+    { ar: "اللَّهُمَّ إِنَّا نَسْتَعِينُكَ وَنَسْتَغْفِرُكَ...", translit: "Allāhumma innā nasta‘īnuka wa nastaghfiruka...", en: "O Allah, we seek Your help and Your forgiveness...", source: "Sunan al-Bayhaqī (3144)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ بِنُورِ وَجْهِكَ الَّذِي أَشْرَقَتْ لَهُ السَّمَاوَاتُ وَالْأَرْضُ...", translit: "Allāhumma innī as’aluka bi-nūri wajhika alladhī ashraqat lahu s-samāwātu wa l-arḍ...", en: "O Allah, I ask You by the light of Your face with which the heavens and the earth were illuminated...", source: "Muṣannaf Ibn Abī Shaybah (29539)." },
+    { ar: "اللَّهُمَّ رَبَّنَا لَكَ الْحَمْدُ مِلْءَ السَّمَاوَاتِ...", translit: "Allāhumma rabbanā laka l-ḥamdu mil’a s-samāwāti...", en: "O Allah, our Lord, to You is all praise as much as fills the heavens...", source: "Ṣaḥīḥ Ibn Ḥibbān (1906)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin...", en: "O Allah, send blessings upon Muhammad...", source: "Ṣaḥīḥ Muslim (405)." },
+    // ===== WIRD 5 =====
+    { ar: "اللَّهُمَّ لَكَ الْحَمْدُ كُلُّهُ، وَإِلَيْكَ يَرْجِعُ الْأَمْرُ كُلُّهُ.", translit: "Allāhumma laka l-ḥamdu kulluh, wa ilayka yarji‘u l-amru kulluh.", en: "O Allah, all praise belongs to You, and to You returns all affairs.", source: "Ṣaḥīḥ at-Targhīb (1576)." },
+    { ar: "لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَوَاتِ وَالْأَرْضِ...", translit: "Lā ilāha illā Llāhu l-‘aẓīmu l-ḥalīm...", en: "There is no deity except Allah, the Most Great, the Most Forbearing...", source: "Ṣaḥīḥ al-Bukhārī (6345)." },
+    { ar: "يَا ذَا الْجَلَالِ وَالْإِكْرَامِ.", translit: "Yā dha l-jalāli wa l-ikrām.", en: "O Possessor of majesty and honor.", source: "Sunan at-Tirmidhī (3525)." },
+    { ar: "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، ذُو الْمَلَكُوتِ وَالْجَبَرُوتِ...", translit: "Allāhu akbar, Allāhu akbar, Allāhu akbar, dhu l-malakūti wa l-jabarūti...", en: "Allah is the Greatest, Allah is the Greatest, Allah is the Greatest – the Possessor of sovereignty...", source: "Sunan Abī Dāwūd (874)." },
+    { ar: "اللَّهُ أَكْبَرُ كَبِيرًا، وَالْحَمْدُ لِلَّهِ كَثِيرًا، وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلًا.", translit: "Allāhu akbaru kabīrā, wa l-ḥamdu lillāhi kathīrā, wa subḥāna Llāhi bukratan wa aṣīlā.", en: "Allah is the Greatest, greatly; praise be to Allah, abundantly; and glory be to Allah, morning and evening.", source: "Ṣaḥīḥ Muslim (601)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa azwājihi wa dhurriyyatihi...", en: "O Allah, send blessings upon Muhammad, his wives, and his offspring...", source: "Ṣaḥīḥ al-Bukhārī (5999)." },
+    { ar: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، اللَّهُ أَكْبَرُ كَبِيرًا...", translit: "Lā ilāha illā Llāhu waḥdahu lā sharīka lahu, Allāhu akbaru kabīrā...", en: "There is no deity except Allah alone, with no partner. Allah is the Greatest...", source: "Ṣaḥīḥ Muslim (2696)." },
+    { ar: "اللَّهُمَّ رَبَّ جَبْرَائِيلَ، وَمِيكَائِيلَ، وَإِسْرَافِيلَ...", translit: "Allāhumma rabba Jibrā’īl, wa Mīkā’īl, wa Isrāfīl...", en: "O Allah, Lord of Jibrīl, Mīkā’īl, and Isrāfīl... Guide me to the truth...", source: "Ṣaḥīḥ Muslim (770)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ جَارِ السُّوءِ فِي دَارِ الْمُقَامَةِ...", translit: "Allāhumma innī a‘ūdhu bika min jāri s-sū’i fī dāri l-muqāmah...", en: "O Allah, I seek refuge in You from a bad neighbor in the permanent home...", source: "Al-Mustadrak (1951)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ.", translit: "Allāhumma ṣalli ‘alā Muḥammadin wa ‘alā āli Muḥammad.", en: "O Allah, send blessings upon Muhammad and upon the family of Muhammad.", source: "Sunan an-Nasā’ī (1292)." },
+    { ar: "اللَّهُمَّ مَتِّعْنِي بِسَمْعِي وَبَصَرِي وَاجْعَلْهُمَا الْوارِثَ مِنِّي...", translit: "Allāhumma matti‘nī bi-sam‘ī wa baṣarī waj‘alhumā l-wāritha minnī...", en: "O Allah, let me enjoy my hearing and sight, make them my heirs...", source: "Ṣaḥīḥ al-Jāmi‘ (1310)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْمُعَافَاةَ فِي الدُّنْيَا وَالْآخِرَةِ.", translit: "Allāhumma innī as’aluka l-mu‘āfāta fī d-dunyā wa l-ākhirah.", en: "O Allah, I ask You for well-being in this world and the Hereafter.", source: "Sunan Ibn Mājah (3851)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْبُخْلِ، وَأَعُوذُ بِكَ مِنَ الْجُبْنِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-bukhli, wa a‘ūdhu bika mina l-jubni...", en: "O Allah, I seek refuge in You from miserliness, cowardice...", source: "Ṣaḥīḥ al-Bukhārī (6390)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ فِتْنَةِ النَّارِ وَعَذَابِ النَّارِ...", translit: "Allāhumma innī a‘ūdhu bika min fitnati n-nār...", en: "O Allah, I seek refuge in You from the trial of the Fire...", source: "Ṣaḥīḥ al-Bukhārī (6377)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَالْقَسْوَةِ وَالْغَفْلَةِ...", translit: "Allāhumma innī a‘ūdhu bika mina l-‘ajzi wa l-kasali...", en: "O Allah, I seek refuge in You from incapacity, laziness, miserliness...", source: "Ṣaḥīḥ Ibn Ḥibbān (1023)." },
+    { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنَ الْخَيْرِ كُلِّهِ عَاجِلِهِ وَآجِلِهِ...", translit: "Allāhumma innī as’aluka mina l-khayri kullihi ‘ājilihi wa ājilihi...", en: "O Allah, I ask You for all good – immediate and later...", source: "Sunan Ibn Mājah (3846)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ يَوْمِ السَّوءِ، وَمِنْ لَيْلَةِ السَّوءِ...", translit: "Allāhumma innī a‘ūdhu bika min yawmi s-sū’...", en: "O Allah, I seek refuge in You from an evil day, an evil night...", source: "Ṣaḥīḥ al-Jāmi‘ (1299)." },
+    { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ مَا عَمِلْتُ، وَشَرِّ مَا لَمْ أَعَمَلْ.", translit: "Allāhumma innī a‘ūdhu bika min sharri mā ‘amilthu, wa sharri mā lam a‘mal.", en: "O Allah, I seek refuge in You from the evil of what I have done and from the evil of what I have not done.", source: "Ṣaḥīḥ Muslim (2716)." },
+    { ar: "اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ دِقَّهُ، وَجِلَّهُ...", translit: "Allāhumma ghfir lī dhanbī kullahu, diqqahu wa jillahu...", en: "O Allah, forgive me all my sin – its small and its large...", source: "Ṣaḥīḥ Muslim (483)." },
+    { ar: "اللَّهُمَّ رَبَّنَا لَكَ الْحَمْدُ، مِلْءَ السَّمَاوَاتِ...", translit: "Allāhumma rabbanā laka l-ḥamdu, mil’a s-samāwāti...", en: "O Allah, our Lord, to You is all praise – as much as fills the heavens...", source: "Ṣaḥīḥ Muslim (476)." },
+    { ar: "اللَّهُمَّ رَبَّ السَّمَوَاتِ، وَرَبَّ الْأَرَضِينَ... أَعُوذُ بِكَ مِنْ شَرِّ كُلِّ ذِي شَرٍّ...", translit: "Allāhumma rabba s-samāwāti...", en: "O Allah, Lord of the heavens, Lord of the earths... I seek refuge in You from the evil of every creature...", source: "Sunan at-Tirmidhī (3400)." },
+    { ar: "اللَّهُمَّ رَبَّ جَبْرَائِيلَ وَمِيكَائِيلَ، وَرَبَّ إِسْرَافِيلَ، أَعُوذُ بِكَ مِنْ حَرِّ النَّارِ...", translit: "Allāhumma rabba Jibrā’īla wa Mīkā’īla, wa rabba Isrāfīl, a‘ūdhu bika min ḥارِ النَّارِ...", en: "O Allah, Lord of Jibrīl, Mīkā’īl, and Lord of Isrāfīl, I seek refuge in You from the heat of the Fire...", source: "Sunan an-Nasā’ī (5519)." },
+    { ar: "اللَّهُمَّ مُصَرِّفَ الْقُلُوبِ صَرِّفْ قُلُوبَنَا عَلَى طَاعَتِكَ.", translit: "Allāhummu muṣarrifa l-qulūbi ṣarrif qulūbanā ‘alā ṭā‘atik.", en: "O Turner of hearts, direct our hearts to Your obedience.", source: "Ṣaḥīḥ Muslim (2654)." },
+    { ar: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ...", translit: "Allāhumma ṣalli ‘alā Muḥammadin ‘abdika wa rasūlika...", en: "O Allah, send blessings upon Muhammad, Your servant and Messenger...", source: "Ṣaḥīḥ al-Bukhārī (4520)." }
 ];
 
+// =============================== QURANIC DUAS preserved (20 entries) ===============================
 const quranicDuas = [
-    { ar: "{رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا...}", translit: "Rabbanā lā tu’ākhidhnā...", en: "Our Lord, do not impose blame...", source: "Al-Baqarah (2):286" }
-    // ... all quranic entries follow ...
+    { ar: "{رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ}", translit: "Rabbanā lā tu’ākhidhnā in nasīnā aw akhṭa’nā, rabbanā wa lā taḥmil ‘alaynā iṣran kamā ḥamaltahu ‘alā lladhīna min qablinā, rabbanā wa lā tuḥammilnā mā lā ṭāqata lanā bih, wa‘fu ‘annā wa ghfir lanā wa rḥamnā, anta mawlānā fanṣurnā ‘alā l-qawmi l-kāfirīn.", en: "Our Lord, do not impose blame upon us if we have forgotten or erred. Our Lord, and lay not upon us a burden like that which You laid upon those before us. Our Lord, and burden us not with that which we have no ability to bear. And pardon us; and forgive us; and have mercy upon us. You are our protector, so give us victory over the disbelieving people.", source: "Al-Baqarah (2):286" },
+    { ar: "{رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ}", translit: "Rabbanā lā tuzigh qulūbanā ba‘da idh hadaytanā wa hab lanā min ladunka raḥmah, innaka anta l-wahhāb.", en: "Our Lord, let not our hearts deviate after You have guided us and grant us from Yourself mercy. Indeed, You are the Bestower.", source: "Āl ‘Imrān (3):8" },
+    { ar: "{رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ}", translit: "Rabbanā innanā āmannā faghfir lanā ذunūbanā wa qinā ‘adhāba n-nār.", en: "Our Lord, indeed we have believed, so forgive us our sins and protect us from the punishment of the Fire.", source: "Āl ‘Imrān (3):16" },
+    { ar: "{رَبِّ هَبْ لِي مِن لَّدُنكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ}", translit: "Rabbi hab lī min ladunka ذurriyyatan ṭayyibah, innaka samī‘u d-du‘ā’.", en: "My Lord, grant me from Yourself a good offspring. Indeed, You are the Hearer of supplication.", source: "Āl ‘Imrān (3):38" },
+    { ar: "{رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِي أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ}", translit: "Rabbanā ghfir lanā ذunūbanā wa isrāfanā fī amrinā wa thabbit aqdāmanā wanṣurnā ‘alā l-qawmi l-kāfirīn.", en: "Our Lord, forgive us our sins and our excesses in our affairs, make firm our feet and give us victory over the disbelieving people.", source: "Āl ‘Imrān (3):147" },
+    { ar: "{رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا}", translit: "Rabbanā ātinā min ladunka raḥmataw wa hayyi’ lanā min amrinā rashadā.", en: "Our Lord, grant us from Yourself mercy and prepare for us from our affair right guidance.", source: "Al-Kahf (18):10" },
+    { ar: "{رَبَّنَا اصْرِفْ عَنَّا عَذَابَ جَهَنَّمَ إِنَّ عَذَابَهَا كَانَ غَرَامًا}", translit: "Rabbanā iṣrif ‘annā ‘adhāba jahannam, inna ‘adhābahā kāna gharāmā.", en: "Our Lord, avert from us the punishment of Hell. Indeed, its punishment is ever adhering.", source: "Al-Furqān (25):65" },
+    { ar: "{رَبَّنَا فَاغْفِرْ لَنَا ذُنُوبَنَا وَكَفِّرْ عَنَّا سَيِّئَاتِنَا وَتَوفَّنَا مَعَ الْأَبْرَارِ}", translit: "Rabbanā faghfir lanā ذunūbanā wa kaffir ‘annā sayyi’ātinā wa tawaffanā ma‘a l-abrār.", en: "Our Lord, so forgive us our sins and remove from us our misdeeds and cause us to die with the righteous.", source: "Āl ‘Imrān (3):193" },
+    { ar: "{رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ}", translit: "Rabbanā ẓalamnā anfusanā wa illam taghfir lanā wa tarḥamnā lanakūnanna mina l-khāsirīn.", en: "Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers.", source: "Al-A‘rāf (7):23" },
+    { ar: "{رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوفَّنَا مُسْلِمِينَ}", translit: "Rabbanā afrigh ‘alaynā ṣabraw wa tawaffanā muslimīn.", en: "Our Lord, pour upon us patience and cause us to die as Muslims.", source: "Al-A‘rāf (7):126" },
+    { ar: "{رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ}", translit: "Rabbi ij‘alnī muqīma ṣ-ṣalāti wa min ذurriyyatī, rabbanā wa taqabbal du‘ā’.", en: "My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.", source: "Ibrāhīm (14):40" },
+    { ar: "{رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ}", translit: "Rabbanā ghfir lī wa li-wālidayya wa lil-mu’minīna yawma yaqūmu l-ḥisāb.", en: "Our Lord, forgive me and my parents and the believers the Day the account is established.", source: "Ibrāhīm (14):41" },
+    { ar: "{رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا}", translit: "Rabbanā hab lanā min azwājinā wa ذurriyyātinā qurrata a‘yunin waj‘alnā lil-muttaqīna imāmā.", en: "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous.", source: "Al-Furqān (25):74" },
+    { ar: "{رَبِّ إِنِّي أَعُوذُ بِكَ أَنْ أَسْأَلُكَ مَا لَيْسَ لِي بِهِ عِلْمٌ وَإِلَّا تَغْفِرْ لِي وَتَرْحَمْنِي أَكُن مِّنَ الْخَاسِرِينَ}", translit: "Rabbi innī a‘ūdhu bika an as’alaka mā laysa lī bihi ‘ilm, wa illā taghfir lī wa tarḥamnī akun mina l-khāsirīn.", en: "My Lord, I seek refuge in You from asking You that of which I have no knowledge. And unless You forgive me and have mercy upon me, I will be among the losers.", source: "Hūd (11):47" },
+    { ar: "{أَنتَ وَلِيُّنَا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنتَ خَيْرُ الْغَافِرِينَ (155) وَاكْتُبْ لَنَا فِي هَٰذِهِ الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ إِنَّا هُدْنَا إِلَيْكَ}", translit: "Anta waliyyunā faghfir lanā warḥamnā wa anta khayru l-ghāfirīn. Waktub lanā fī hāذihi d-dunyā ḥasanatan wa fī l-ākhirah, innā hudnā ilayk.", en: "You are our Protector, so forgive us and have mercy upon us; and You are the best of forgivers. And decree for us in this world good and in the Hereafter. Indeed, we have turned back to You.", source: "Al-A‘rāf (7):155-156" },
+    { ar: "{رَبِّ اشْرَحْ لِي صَدْرِي (25) وَيَسِّرْ لِي أَمْرِي}", translit: "Rabbi shraḥ lī ṣadrī, wa yassir lī amrī.", en: "My Lord, expand for me my chest and make easy for me my task.", source: "Ṭā Hā (20):25-26" },
+    { ar: "{رَبِّ زِدْنِي عِلْمًا}", translit: "Rabbi zidnī ‘ilmā.", en: "My Lord, increase me in knowledge.", source: "Ṭā Hā (20):114" },
+    { ar: "{رَبَّنَا آمَنَّا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنتَ خَيْرُ الرَّاحِمِينَ}", translit: "Rabbanā āmannā faghfir lanā warḥamnā wa anta khayru r-rāḥimīn.", en: "Our Lord, we have believed, so forgive us and have mercy upon us, and You are the best of the merciful.", source: "Al-Mu’minūn (23):109" },
+    { ar: "{رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَدْخِلْنِي بِرَحْمَتِكَ فِي عِبَادِكَ الصَّالِحِينَ}", translit: "Rabbi awzi‘nī an ashkura ni‘mataka allatī an‘amta ‘alayya wa ‘alā wālidayya wa an a‘mala ṣāliḥan tarḍāhu wa adkhilnī bi-raḥmatika fī ‘ibādika ṣ-ṣāliḥīn.", en: "My Lord, enable me to be grateful for Your favor which You have bestowed upon me and upon my parents and to do righteousness of which You approve. And admit me by Your mercy into [the ranks of] Your righteous servants.", source: "An-Naml (27):19" },
+    { ar: "{رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ وَلَا تَجْعَلْ فِي قُلُوبِنَا غِلًّا لِّلَّذِينَ آمَنُوا رَبَّنَا إِنَّكَ رَءُوفٌ رَّحِيمٌ}", translit: "Rabbanā ghfir lanā wa li-ikhwāninā lladhīna sabaqūnā bil-īmān, wa lā taj‘al fī qulūbinā ghillan lil-ladhīna āmanū, rabbanā innaka ra’ūfun raḥīm.", en: "Our Lord, forgive us and our brothers who preceded us in faith and put not in our hearts [any] resentment toward those who have believed. Our Lord, indeed You are Kind and Merciful.", source: "Al-Ḥashr (59):10" }
 ];
 
-// =============================== LOGIC ===============================
-
+// =============================== APPLICATION LOGIC ===============================
 const translations = {
-    ar: { 
-        msgTitle:"رسالتك اليوم", 
-        msgSub:"رسالتك اليوم", 
-        msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", 
-        msgLink:"اضغط هنا لتفتحها", 
-        ruqya:"الرُّقية الشرعية", 
-        wird:"ورد الدعاء", 
-        quranic:"دعاء من القرآن", 
-        personal:"أدعيتي", 
-        favorites:"المفضلة", 
-        sunnah:"دعاء من السنة", 
-        closeModal:"إغلاق", 
-        back:"رجوع", 
-        todayDuaTitle: "دعاؤك اليوم",
-        tomorrowBanner: "رسالة جديدة ستكون غداً في انتظارك هنا",
-        openedQuote: "الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️"
-    },
-    en: { 
-        msgTitle:"Your Daily Message", 
-        msgSub:"Your Message", 
-        msgText:"Behind this dua is a message written for you, and today you need it most.", 
-        msgLink:"Click here to open it", 
-        ruqya:"Ruqyah", 
-        wird:"Daily Wird", 
-        quranic:"Quranic Dua", 
-        personal:"My Duas", 
-        favorites:"Favorites", 
-        sunnah:"Sunnah Dua", 
-        closeModal:"Close", 
-        back:"Back", 
-        todayDuaTitle: "Your Dua Today",
-        tomorrowBanner: "A new message will be waiting for you tomorrow here",
-        openedQuote: "Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️"
-    }
+    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", todayDua:"دعاؤك اليوم" },
+    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", todayDua:"Your Dua Today" }
 };
 
-let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true;
-let ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false;
-let currentRuqyahSub='self', selectedDuaIndex=-1;
+let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
 
 function playClickSound(){ const chk=document.getElementById('chkClick'); if(!chk||!chk.checked) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value=800; gain.gain.setValueAtTime(0.1,now); gain.gain.exponentialRampToValueAtTime(0.00001,now+0.12); osc.start(); osc.stop(now+0.1); }catch(e){} }
 function playVibration(){ const chk=document.getElementById('chkVibrate'); if(chk&&chk.checked&&navigator.vibrate) navigator.vibrate(60); }
 
-// =============================== MESSAGE OF TODAY LOGIC ===============================
+function applyLanguage(){
+    const t=translations[currentLang];
+    updateColorTooltips();
+    document.getElementById('msgTitle').innerText=t.msgTitle; document.getElementById('msgSub').innerText=t.msgSub; document.getElementById('msgText').innerText=t.msgText; document.getElementById('msgLink').innerText=t.msgLink;
+    document.getElementById('labelRuqya').innerText=t.ruqya; document.getElementById('labelWird').innerText=t.wird; document.getElementById('labelQuranic').innerText=t.quranic; document.getElementById('labelPersonal').innerText=t.personal; document.getElementById('labelFavorites').innerText=t.favorites; document.getElementById('labelSunnah').innerText=t.sunnah;
+    document.getElementById('menuTitleColors').innerText=t.menuColors; document.getElementById('menuTitleSettings').innerText=t.menuSettings;
+    document.getElementById('set1').innerText=t.set1; document.getElementById('set2').innerText=t.set2; document.getElementById('set3').innerText=t.set3; document.getElementById('set4').innerText=t.set4; document.getElementById('setTranslit').innerText=t.setTranslit; document.getElementById('setSource').innerText=t.setSource;
+    document.getElementById('shareTitle').innerText=t.shareTitle; document.getElementById('selfBtn').innerText=t.selfBtn; document.getElementById('otherBtn').innerText=t.otherBtn; document.getElementById('wird1Btn').innerText=t.wird1Btn; document.getElementById('wird2Btn').innerText=t.wird2Btn; document.getElementById('wird3Btn').innerText=t.wird3Btn; document.getElementById('wird4Btn').innerText=t.wird4Btn; document.getElementById('wird5Btn').innerText=t.wird5Btn;
+    document.getElementById('quranicWird1Btn').innerText=t.quranicWird1; document.getElementById('quranicWird2Btn').innerText=t.quranicWird2; document.getElementById('quranicWird3Btn').innerText=t.quranicWird3;
+    document.getElementById('backText').innerText=t.back; document.getElementById('favBackText').innerText=t.back; document.getElementById('sunnahBackText').innerText=t.back; document.getElementById('quranicBackText').innerText=t.back;
+    document.getElementById('closeModalBtn').innerText=t.closeModal;
+    document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip); document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip); document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
+    if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
+    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas();
+    updateGlobalFavIcon();
+    document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub));
+    document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentWird));
+    document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentQuranicWird));
+}
+
+// =============================== UPDATED DAILY MESSAGE LOGIC ===============================
 
 function checkDailyStatus() {
     const today = new Date().toDateString();
-    if (localStorage.getItem('dua_last_opened_date') === today) {
-        setOpenedView();
+    const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
+    if (lastOpenedDate === today) {
+        showDailyMessageOpened();
     }
 }
 
-function setOpenedView() {
+function showDailyMessageOpened() {
     document.getElementById('msgStateClosed').style.display = 'none';
     document.getElementById('msgStateOpened').style.display = 'block';
     document.getElementById('tomorrowBanner').style.display = 'block';
+    
     const card = document.getElementById('dailyMessageCard');
     card.classList.remove('envelope-animation');
-    card.classList.add('open-flap'); // Keeps the flap flipped up
-    card.style.padding = '30px 20px';
-    applyLanguage(); // Ensures text matches current lang
+    // Remove the envelope flap effect via CSS variable
+    document.documentElement.style.setProperty('--envelope-flap', 'transparent');
+    card.style.padding = '25px 20px';
 }
 
 function handleMessageClick() {
     const today = new Date().toDateString();
-    if (localStorage.getItem('dua_last_opened_date') === today) return;
+    const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
+
+    if (lastOpenedDate === today) return; // Already opened today
 
     playClickSound();
     playVibration();
 
-    const card = document.getElementById('dailyMessageCard');
-    
-    // 1. Trigger Grey Triangle Move Up (Flap Animation)
-    card.classList.add('open-flap');
+    // 1. Loading sequence
+    document.getElementById('msgStateClosed').style.display = 'none';
+    document.getElementById('msgStateLoading').style.display = 'block';
 
-    // 2. Transition to Star Cluster Loading
     setTimeout(() => {
-        document.getElementById('msgStateClosed').style.display = 'none';
-        document.getElementById('msgStateLoading').style.display = 'block';
+        // 2. Pick random dua
+        const pool = [...sunnahDuas, ...quranicDuas];
+        const randomDua = pool[Math.floor(Math.random() * pool.length)];
+        
+        // 3. Show specific video-style Modal
+        showVideoDuaModal(randomDua);
 
-        setTimeout(() => {
-            // 3. Random Dua selection
-            const pool = [...sunnahDuas, ...quranicDuas, ...ruqyahSelf];
-            const randomDua = pool[Math.floor(Math.random() * pool.length)];
-            
-            // 4. Show Modal
-            showTodayModal(randomDua);
+        // 4. Transform card to result state
+        document.getElementById('msgStateLoading').style.display = 'none';
+        showDailyMessageOpened();
 
-            // 5. Update main UI
-            document.getElementById('msgStateLoading').style.display = 'none';
-            setOpenedView();
-
-            localStorage.setItem('dua_last_opened_date', today);
-        }, 1800); 
-    }, 600); // Small delay to let the flap start moving
+        // 5. Save state
+        localStorage.setItem('dua_last_opened_date', today);
+    }, 1500);
 }
 
-function showTodayModal(dua) {
+function showVideoDuaModal(dua) {
     const modal = document.getElementById('duaModal');
     const modalContent = document.getElementById('duaModalBody');
     const t = translations[currentLang];
     
+    // Construct special UI with blue header
     let contentHtml = `
         <div class="modal-blue-header">
             <button class="share-circle-btn" onclick="toggleSharePopup()">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
-            <h3>${t.todayDuaTitle}</h3>
+            <h3>${t.todayDua}</h3>
             <div style="font-size:24px; cursor:pointer;" onclick="document.getElementById('duaModal').style.display='none'">✕</div>
         </div>
-        <div class="dua-text" style="font-size:1.35rem; font-weight:700; color:var(--text); padding: 10px 5px;">${dua.ar}</div>
+        <div class="dua-text" style="font-size:1.3rem; font-weight:700; color:var(--text); padding-top:10px;">${dua.ar}</div>
     `;
 
-    if (showTranslit && dua.translit) {
-        contentHtml += `<div style="color:var(--text-dim); font-style:italic; font-size:0.95rem; border-top:1px dashed var(--border-color); padding-top:15px; margin-top:15px;">${dua.translit}</div>`;
+    if (showTranslit) {
+        contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
     }
     
-    contentHtml += `<button class="close-modal" style="margin-top:25px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>`;
+    contentHtml += `<button class="close-modal" style="margin-top:20px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>`;
 
     modalContent.innerHTML = contentHtml;
     modal.style.display = 'flex';
@@ -1065,6 +1192,8 @@ document.getElementById('dailyMessageCard').addEventListener('click', handleMess
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
+function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); } }
+function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); }
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
@@ -1082,65 +1211,210 @@ function renderRuqyahDuas(){
         header.append(num,favBtn);
         const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar;
         const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
         card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
-        card.addEventListener('click',()=>{ showGeneralModal(dua); playClickSound(); });
+        if(showTranslit) card.appendChild(tl);
+        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
+        card.addEventListener('click',()=>{ document.querySelectorAll('.dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedDuaIndex=idx; showGeneralDuaModal(dua); playClickSound(); });
         container.appendChild(card);
     });
+    updateMenuFavButton();
 }
 
-function showGeneralModal(dua){
+function renderSunnahDuas(){
+    let startIdx=0, endIdx=0;
+    if(currentWird==='wird1'){ startIdx=0; endIdx=25; }
+    else if(currentWird==='wird2'){ startIdx=25; endIdx=51; }
+    else if(currentWird==='wird3'){ startIdx=51; endIdx=73; }
+    else if(currentWird==='wird4'){ startIdx=73; endIdx=100; }
+    else{ startIdx=100; endIdx=124; }
+    const data=sunnahDuas.slice(startIdx,endIdx);
+    const container=document.getElementById('sunnahListContainer'); container.innerHTML='';
+    data.forEach((dua,idx)=>{
+        const card=document.createElement('div'); card.className='dua-card';
+        const header=document.createElement('div'); header.className='dua-header';
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.';
+        const globalIdx=startIdx+idx;
+        const fav=isFavorited('sunnah',globalIdx);
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small';
+        const strokeColor=getHeartStrokeColor();
+        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`;
+        favBtn.onclick=(e)=>{ e.stopPropagation(); if(fav) removeFavorite('sunnah',globalIdx); else addFavorite('sunnah',globalIdx,dua); playClickSound(); };
+        header.append(num,favBtn);
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar;
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
+        if(showTranslit) card.appendChild(tl);
+        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
+        card.addEventListener('click',()=>{ document.querySelectorAll('#sunnahListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); showGeneralDuaModal(dua); playClickSound(); });
+        container.appendChild(card);
+    });
+    updateMenuFavButton();
+}
+
+function renderQuranicDuas(){
+    let startIdx=0, endIdx=0;
+    if(currentQuranicWird==='quranic1'){ startIdx=0; endIdx=7; }
+    else if(currentQuranicWird==='quranic2'){ startIdx=7; endIdx=13; }
+    else{ startIdx=13; endIdx=20; }
+    const data=quranicDuas.slice(startIdx,endIdx);
+    const container=document.getElementById('quranicListContainer'); container.innerHTML='';
+    data.forEach((dua,idx)=>{
+        const card=document.createElement('div'); card.className='dua-card';
+        const header=document.createElement('div'); header.className='dua-header';
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.';
+        const globalIdx=startIdx+idx;
+        const fav=isFavorited('quranic',globalIdx);
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small';
+        const strokeColor=getHeartStrokeColor();
+        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`;
+        favBtn.onclick=(e)=>{ e.stopPropagation(); if(fav) removeFavorite('quranic',globalIdx); else addFavorite('quranic',globalIdx,dua); playClickSound(); };
+        header.append(num,favBtn);
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=dua.ar;
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
+        if(showTranslit) card.appendChild(tl);
+        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
+        card.addEventListener('click',()=>{ document.querySelectorAll('#quranicListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); showGeneralDuaModal(dua); playClickSound(); });
+        container.appendChild(card);
+    });
+    updateMenuFavButton();
+}
+
+function renderFavorites(){
+    const container=document.getElementById('favoritesListContainer'); container.innerHTML='';
+    if(favoritesList.length===0){ const empty=document.createElement('div'); empty.className='empty-fav'; empty.innerText=translations[currentLang].noFavorites; container.appendChild(empty); return; }
+    favoritesList.forEach((fav,idx)=>{
+        const card=document.createElement('div'); card.className='dua-card';
+        const header=document.createElement('div'); header.className='dua-header';
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.';
+        const favBtn=document.createElement('button'); favBtn.className='fav-btn-small';
+        favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444" stroke="#ff4444" stroke-width="0"/></svg>`;
+        favBtn.onclick=(e)=>{ e.stopPropagation(); removeFavorite(fav.sub,fav.idx); playClickSound(); };
+        header.append(num,favBtn);
+        const arabic=document.createElement('div'); arabic.className='dua-arabic'; arabic.innerText=fav.ar;
+        const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=fav.en;
+        const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=fav.translit;
+        if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
+        if(showTranslit) card.appendChild(tl);
+        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(fav); if(sd.innerText.trim()!=='') card.appendChild(sd); }
+        card.addEventListener('click',()=>{ document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); showGeneralDuaModal(fav); playClickSound(); });
+        container.appendChild(card);
+    });
+    updateMenuFavButton();
+}
+
+function showGeneralDuaModal(dua){
     const modal=document.getElementById('duaModal');
     const modalContent = document.getElementById('duaModalBody');
     const t = translations[currentLang];
-    modalContent.innerHTML = `
+    
+    let contentHtml = `
         <button class="modal-close-x" onclick="document.getElementById('duaModal').style.display='none'">✕</button>
-        <div class="dua-text" style="padding-top:15px;">${dua.ar}</div>
+        <div class="dua-text" id="duaOutput">
+    `;
+    
+    if(currentLang==='ar'){ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div><div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`; }
+    else{ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.en}</div><div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`; }
+    
+    if(showTranslit) contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
+    
+    if(showSource){ 
+        let src=buildSourceInfo(dua); 
+        if(src) contentHtml += `<div style="color:#888; font-size:14px; margin-top:12px; padding-top:8px; border-top:1px dotted var(--border-color);">${src}</div>`; 
+    }
+    
+    contentHtml += `
+        </div>
         <button class="close-modal" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>
     `;
+    
+    modalContent.innerHTML = contentHtml;
     modal.style.display='flex';
 }
 
-function exitSubview(){ 
-    document.getElementById('gridContainer').style.display='grid'; 
-    document.getElementById('messageContainer').style.display='block'; 
-    document.getElementById('ruqyahView').style.display='none'; 
-}
+function showRuqyah(){ ruqyahActive=true; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='flex'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; renderRuqyahDuas(); document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); }
+function showFavorites(){ favoritesActive=true; ruqyahActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; renderFavorites(); }
+function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('quranicView').style.display='none'; renderSunnahDuas(); }
+function showQuranic(){ quranicActive=true; ruqyahActive=false; favoritesActive=false; sunnahActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='flex'; renderQuranicDuas(); }
+function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; }
 
-document.querySelector('.grid-item[data-category="ruqya"]').onclick = () => { document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='flex'; renderRuqyahDuas(); };
-document.getElementById('backFromRuqyah').onclick = exitSubview;
+document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
+document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
+document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
+document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
+document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
 
-checkDailyStatus();
-applyLanguage();
-updateFullTheme();
+document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentRuqyahSub=this.getAttribute('data-sub'); selectedDuaIndex=-1; document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderRuqyahDuas(); playClickSound(); }); });
+document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
+document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentQuranicWird=this.getAttribute('data-wird'); document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderQuranicDuas(); playClickSound(); }); });
 
-function applyLanguage(){
-    const t=translations[currentLang];
-    document.getElementById('msgTitle').innerText=t.msgTitle;
-    document.getElementById('msgSub').innerText=t.msgSub;
-    document.getElementById('msgText').innerText=t.msgText;
-    document.getElementById('msgLink').innerText=t.msgLink;
-    document.getElementById('tomorrowBanner').innerText=t.tomorrowBanner;
-    document.getElementById('msgOpenedQuote').innerText=t.openedQuote;
-}
+document.getElementById('backFromRuqyah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
+document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
+document.getElementById('backFromSunnah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
+document.getElementById('backFromQuranic')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 
-function updateFullTheme(){ 
-    document.documentElement.style.setProperty('--accent',currentAccent); 
-    document.documentElement.style.setProperty('--header-bg',currentAccent); 
-    isDarkMode ? document.body.classList.add('dark-mode') : document.body.classList.remove('dark-mode'); 
-}
+document.getElementById('duaModal')?.addEventListener('click',function(e){ if(e.target === this) this.style.display='none'; });
 
-const colorArray=[{acc:'#cc0000'},{acc:'#800080'},{acc:'#0066cc'},{acc:'#8B4513'},{acc:'#ffcc00'},{acc:'#444444'},{acc:'#228b22'},{acc:'#008080'}];
+let is3Cols=false; document.getElementById('btnGrid')?.addEventListener('click',()=>{ is3Cols=!is3Cols; document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); playClickSound(); });
+document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
+
+const menuToggle=document.getElementById('menuToggleBtn'), unifiedMenu=document.getElementById('unifiedMenu');
+menuToggle?.addEventListener('click',(e)=>{ e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); });
+document.addEventListener('click',(e)=>{ if(menuToggle&&!menuToggle.contains(e.target)&&unifiedMenu&&!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); });
+
+function updateFullTheme(){ document.documentElement.style.setProperty('--accent',currentAccent); document.documentElement.style.setProperty('--header-bg',currentAccent); isDarkMode?document.body.classList.add('dark-mode'):document.body.classList.remove('dark-mode'); const sun=document.getElementById('sunIcon'),moon=document.getElementById('moonIcon'); if(isDarkMode){ sun?.classList.remove('active'); moon?.classList.add('active'); } else { sun?.classList.add('active'); moon?.classList.remove('active'); } localStorage.setItem('dua_accent',currentAccent); localStorage.setItem('dua_darkMode',isDarkMode); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); updateGlobalFavIcon(); }
+function setAccent(color,element){ currentAccent=color; updateFullTheme(); document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active')); if(element) element.classList.add('active'); }
+function toggleDarkMode(){ isDarkMode=!isDarkMode; updateFullTheme(); document.getElementById('themeToggle').checked=isDarkMode; }
+document.getElementById('themeToggle')?.addEventListener('change',toggleDarkMode);
+
+const colorArray=[{acc:'#cc0000',nAr:'أحمر',nEn:'Red'},{acc:'#800080',nAr:'بنفسجي',nEn:'Purple'},{acc:'#0066cc',nAr:'أزرق',nEn:'Blue'},{acc:'#8B4513',nAr:'بني',nEn:'Brown'},{acc:'#ffcc00',nAr:'أصفر',nEn:'Yellow'},{acc:'#444444',nAr:'أسود',nEn:'Black'},{acc:'#808080',nAr:'رمادي',nEn:'Gray'},{acc:'#334155',nAr:'سحابي داكن',nEn:'Midnight Slate'},{acc:'#ff66b2',nAr:'وردي',nEn:'Pink'},{acc:'#228b22',nAr:'أخضر',nEn:'Green'},{acc:'#ff8c00',nAr:'برتقالي',nEn:'Orange'},{acc:'#008080',nAr:'تركوازي',nEn:'Teal'}];
 const colorMenuDiv=document.getElementById('colorMenu');
-colorArray.forEach(c=>{ const dot=document.createElement('div'); dot.className='color-dot'; dot.style.backgroundColor=c.acc; dot.onclick=()=>{ currentAccent=c.acc; updateFullTheme(); }; colorMenuDiv.appendChild(dot); });
+colorArray.forEach(c=>{ const dot=document.createElement('div'); dot.className='color-dot'; dot.style.backgroundColor=c.acc; dot.setAttribute('data-ar',c.nAr); dot.setAttribute('data-en',c.nEn); dot.title=currentLang==='ar'?c.nAr:c.nEn; dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; colorMenuDiv.appendChild(dot); });
+function updateColorTooltips(){ document.querySelectorAll('.color-dot').forEach(dot=>{ dot.title=currentLang==='ar'?dot.getAttribute('data-ar'):dot.getAttribute('data-en'); }); }
+const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); if(savedAccent) currentAccent=savedAccent; if(savedDark!==null) isDarkMode=savedDark==='true'; updateFullTheme(); document.querySelectorAll('.color-dot').forEach(dot=>{ const dc=dot.style.backgroundColor||dot.style.background; if(dc&&(dc===currentAccent||rgbToHex(dc)===currentAccent)) dot.classList.add('active'); }); document.getElementById('themeToggle').checked=isDarkMode;
+function rgbToHex(rgb){ if(!rgb) return ''; const res=rgb.match(/\d+/g); if(!res) return ''; return '#'+res.slice(0,3).map(x=>parseInt(x).toString(16).padStart(2,'0')).join(''); }
 
-function changeIcon(){ 
-    const iconGallery=["https://cdn-icons-png.flaticon.com/128/4354/4354959.png","https://cdn-icons-png.flaticon.com/128/7321/7321058.png","https://cdn-icons-png.flaticon.com/128/3004/3004949.png","https://cdn-icons-png.flaticon.com/128/6152/6152858.png","https://cdn-icons-png.flaticon.com/128/13773/13773984.png"]; 
-    document.getElementById('cycleIcon').src = iconGallery[Math.floor(Math.random()*iconGallery.length)]; 
-}
+const fontSlider=document.getElementById('fontSlider');
+function setDuaFontSize(val){ document.documentElement.style.setProperty('--dua-font-size',val+'px'); localStorage.setItem('dua_font_size',val); }
+fontSlider?.addEventListener('input',e=>setDuaFontSize(e.target.value));
+const savedFont=localStorage.getItem('dua_font_size'); if(savedFont) setDuaFontSize(parseInt(savedFont)); else setDuaFontSize(22); fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
 
-document.getElementById('menuToggleBtn').onclick = (e) => { e.stopPropagation(); document.getElementById('unifiedMenu').classList.toggle('show'); };
-document.getElementById('langToggleBtn').onclick = () => { currentLang = currentLang==='ar' ? 'en' : 'ar'; applyLanguage(); };
+document.getElementById('chkTranslit')?.addEventListener('change',e=>{ showTranslit=e.target.checked; if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
+if(localStorage.getItem('dua_showSource')!==null) showSource=localStorage.getItem('dua_showSource')==='true';
+document.getElementById('chkSource').checked=showSource;
+document.getElementById('chkSource').addEventListener('change',e=>{ showSource=e.target.checked; localStorage.setItem('dua_showSource',showSource); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
 
+document.getElementById('btnCopy')?.addEventListener('click',()=>{ const t=translations[currentLang]; let text=''; if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(text){ navigator.clipboard.writeText(text).then(()=>{ const btn=document.getElementById('btnCopy'); const orig=btn.innerHTML; btn.innerHTML='<span style="font-size:16px">✅</span>'; setTimeout(()=>btn.innerHTML=orig,2000); }).catch(()=>alert(t.copyTooltip)); } playClickSound(); });
+
+document.getElementById('btnShare')?.addEventListener('click',()=>{ toggleSharePopup(); playClickSound(); });
+document.getElementById('btnRefresh')?.addEventListener('click',()=>location.reload());
+
+function updateGlobalFavIcon(){ const sp=document.querySelector('#favSvgIcon path'); if(sp) sp.setAttribute('stroke','white'); }
+function updateMenuFavButton(){ const btn=document.getElementById('btnFav'); const svg=document.getElementById('favSvgIcon'); let isFav=false; if(ruqyahActive&&selectedDuaIndex>=0) isFav=isFavorited(currentRuqyahSub,selectedDuaIndex); else if(favoritesActive&&favoritesList.length>0) isFav=true; else if(sunnahActive&&selectedDuaIndex>=0) isFav=isFavorited('sunnah',selectedDuaIndex); else if(quranicActive&&selectedDuaIndex>=0) isFav=isFavorited('quranic',selectedDuaIndex); if(isFav){ if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'إزالة من المفضلة':'Remove from Favorites'); } else { if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'أضف إلى المفضلة':'Add to Favorites'); } }
+
+function toggleSharePopup(){ const pop=document.getElementById('sharePopup'); pop.classList.toggle('show'); if(pop.classList.contains('show')) buildShareGrid(); setTimeout(()=>{ document.addEventListener('click',function closeShare(e){ if(!pop.contains(e.target)&&!document.getElementById('btnShare').contains(e.target)){ pop.classList.remove('show'); document.removeEventListener('click',closeShare); } }); },100); }
+function buildShareGrid(){ let text=''; if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(!text) return; const shareText=encodeURIComponent(text.substring(0,300)); const pageUrl=window.location.href; const pn={ar:{whatsapp:"واتساب",telegram:"تليجرام",twitter:"تويتر",facebook:"فيسبوك",messenger:"ماسنجر",copy:"نسخ الرابط"},en:{whatsapp:"WhatsApp",telegram:"Telegram",twitter:"X",facebook:"Facebook",messenger:"Messenger",copy:"Copy Link"}}[currentLang]; const icons={whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', telegram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', twitter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', facebook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', messenger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}; const platforms=[{name:pn.whatsapp,icon:icons.whatsapp,url:`https://wa.me/?text=${shareText}`},{name:pn.telegram,icon:icons.telegram,url:`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}`},{name:pn.twitter,icon:icons.twitter,url:`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}`},{name:pn.facebook,icon:icons.facebook,url:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.messenger,icon:icons.messenger,url:`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.copy,icon:icons.copy,url:"",action:()=>navigator.clipboard.writeText(pageUrl)}]; const grid=document.getElementById('shareGrid'); grid.innerHTML=''; platforms.forEach(p=>{ const div=document.createElement('div'); div.className='share-icon'; div.innerHTML=`${p.icon}<span>${p.name}</span>`; div.onclick=()=>{ if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); else if(p.action) p.action(); document.getElementById('sharePopup').classList.remove('show'); }; grid.appendChild(div); }); }
+
+const iconGallery=["https://cdn-icons-png.flaticon.com/128/4354/4354959.png","https://cdn-icons-png.flaticon.com/128/7321/7321058.png","https://cdn-icons-png.flaticon.com/128/3004/3004949.png","https://cdn-icons-png.flaticon.com/128/6152/6152858.png","https://cdn-icons-png.flaticon.com/128/13773/13773984.png"]; let currentIconIdx=4; function changeIcon(){ currentIconIdx=(currentIconIdx+1)%iconGallery.length; document.getElementById('cycleIcon').src=iconGallery[currentIconIdx]; playClickSound(); }
+
+document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub));
+document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentWird));
+document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentQuranicWird));
+if(currentLang==='ar') document.body.classList.add('text-rtl'); else document.body.classList.add('text-ltr');
+
+// Run on init
+applyLanguage();
+checkDailyStatus();
+updateGlobalFavIcon();
+updateMenuFavButton();
+document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block';
 </script>
 </body>
 </html>
