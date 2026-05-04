@@ -330,6 +330,14 @@ body.text-ltr #openedMessageText {
             gap: 8px;
             width: fit-content;
         }
+
+        <!-- Personal Duas / Notebook View -->
+    <div class="personal-view" id="personalView">
+        <button class="back-button" onclick="exitSubview()">رجوع</button>
+        <button class="add-note-btn" id="addPersonalBtn">+ أضف دعاء جديد</button>
+        <div class="dua-list-container" id="personalListContainer"></div>
+    </div>
+        
         /* Extra margin for favorites back button to avoid header */
         .favorites-view .back-button {
             margin-top: 10px;
@@ -828,6 +836,32 @@ body.text-ltr #openedMessageText {
             .grid-item span { font-size: 0.85rem; }
         }
 
+        /* Styling for the Personal Notes section */
+.personal-view { display: none; flex-direction: column; padding: 0 20px 20px 20px; }
+.add-note-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: 700;
+    width: 100%;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+}
+.note-delete-btn {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+        
         /* ========== DARK MODE SCROLLBARS - VERTICAL, HORIZONTAL & MODAL ========== */
         body.dark-mode .dua-list-container,
         body.dark-mode .dua-list-container.horizontal-mode,
@@ -1248,6 +1282,8 @@ const translations = {
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
 let isHorizontalMode = false; // global toggle for dua lists layout
+
+let personalDuas = JSON.parse(localStorage.getItem('my_personal_duas') || '[]');
 
 // Modal navigation state
 let currentModalList = [];
@@ -1687,7 +1723,15 @@ document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('cl
 document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
 document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
+document.querySelector('.grid-item[data-category="personal"]').onclick = () => {
+    document.getElementById('gridContainer').style.display='none';
+    document.getElementById('messageContainer').style.display='none';
+    document.getElementById('personalView').style.display='flex';
+    renderPersonalDuas();
+    playClickSound();
+};
 
+document.getElementById('addPersonalBtn').onclick = addPersonalDua;
 document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentRuqyahSub=this.getAttribute('data-sub'); selectedDuaIndex=-1; document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderRuqyahDuas(); playClickSound(); }); });
 document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
 document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentQuranicWird=this.getAttribute('data-wird'); document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderQuranicDuas(); playClickSound(); }); });
@@ -1712,8 +1756,43 @@ document.getElementById('btnGrid')?.addEventListener('click',()=>{
     if (favoritesActive) renderFavorites();
     playClickSound();
 });
-document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
+document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });  
 
+function renderPersonalDuas() {
+    const container = document.getElementById('personalListContainer');
+    container.innerHTML = '';
+    if(personalDuas.length === 0) {
+        container.innerHTML = '<div class="empty-fav">لم تقم بإضافة أدعية خاصة بعد. اضغط على الزر أعلاه للبدء.</div>';
+        return;
+    }
+    personalDuas.forEach((text, idx) => {
+        const card = document.createElement('div');
+        card.className = 'dua-card';
+        card.innerHTML = `
+            <div class="dua-arabic">${text}</div>
+            <button class="note-delete-btn" onclick="deletePersonalDua(${idx})">حذف</button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function addPersonalDua() {
+    const txt = prompt("اكتب دعاءك الخاص هنا:");
+    if(txt && txt.trim() !== "") {
+        personalDuas.push(txt.trim());
+        localStorage.setItem('my_personal_duas', JSON.stringify(personalDuas));
+        renderPersonalDuas();
+    }
+}
+
+function deletePersonalDua(idx) {
+    if(confirm("هل تريد حذف هذا الدعاء؟")) {
+        personalDuas.splice(idx, 1);
+        localStorage.setItem('my_personal_duas', JSON.stringify(personalDuas));
+        renderPersonalDuas();
+    }
+}
+    
 const menuToggle=document.getElementById('menuToggleBtn'), unifiedMenu=document.getElementById('unifiedMenu');
 menuToggle?.addEventListener('click',(e)=>{ e.stopPropagation(); unifiedMenu.classList.toggle('show'); playClickSound(); });
 document.addEventListener('click',(e)=>{ if(menuToggle&&!menuToggle.contains(e.target)&&unifiedMenu&&!unifiedMenu.contains(e.target)) unifiedMenu.classList.remove('show'); });
