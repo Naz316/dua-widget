@@ -24,10 +24,6 @@
             --heart-stroke-light: #333333;
             --heart-stroke-dark: #ffffff;
             --video-blue: #3b5998;
-            --scrollbar-track-light: #f0f0f0;
-            --scrollbar-thumb-light: #c0c0c0;
-            --scrollbar-track-dark: #2a2a3a;
-            --scrollbar-thumb-dark: #4a4a5a;
         }
         body.dark-mode {
             --widget-bg: #1e1e2f;
@@ -40,8 +36,6 @@
             --popup-border: #444;
             --shadow: 0 8px 20px rgba(0,0,0,0.3);
             --envelope-flap: #555555;
-            --scrollbar-track-light: #2a2a3a;
-            --scrollbar-thumb-light: #4a4a5a;
         }
         body {
             background-color: #f0f2f5;
@@ -755,35 +749,13 @@
             opacity: 0.7;
             transform: scale(1.08);
         }
-        /* Custom scrollbar - clean, no extra arrows */
+        /* Scrollable text wrapper */
         .scrollable-text-wrapper {
             max-height: 280px;
             overflow-y: auto;
             margin: 10px 0;
             padding-right: 8px;
             scrollbar-width: thin;
-        }
-        .scrollable-text-wrapper::-webkit-scrollbar {
-            width: 6px;
-        }
-        .scrollable-text-wrapper::-webkit-scrollbar-track {
-            background: var(--scrollbar-track-light);
-            border-radius: 10px;
-            border: 1px solid rgba(128,128,128,0.2);
-        }
-        .scrollable-text-wrapper::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb-light);
-            border-radius: 10px;
-        }
-        .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-        }
-        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-track {
-            background: var(--scrollbar-track-dark);
-            border-color: rgba(255,255,255,0.1);
-        }
-        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb-dark);
         }
         .dua-text {
             font-size: var(--dua-font-size);
@@ -814,6 +786,46 @@
             .grid-container.grid-3cols { grid-template-columns: repeat(2, 1fr); }
             .grid-item span { font-size: 0.85rem; }
         }
+
+        /* ========== DARK MODE SCROLLBARS - VERTICAL, HORIZONTAL & MODAL ========== */
+        body.dark-mode .dua-list-container,
+        body.dark-mode .dua-list-container.horizontal-mode,
+        body.dark-mode .scrollable-text-wrapper {
+            scrollbar-width: thin;
+            scrollbar-color: #373737 #191919;
+        }
+        body.dark-mode .dua-list-container::-webkit-scrollbar,
+        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar,
+        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        body.dark-mode .dua-list-container::-webkit-scrollbar-track,
+        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-track,
+        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-track {
+            background: #191919 !important;
+            border-radius: 10px;
+        }
+        body.dark-mode .dua-list-container::-webkit-scrollbar-thumb,
+        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-thumb,
+        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb {
+            background: #373737 !important;
+            border-radius: 10px;
+            border: 1px solid #191919;
+            background-clip: padding-box;
+        }
+        body.dark-mode .dua-list-container::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #4a4a5a !important;
+        }
+        /* Hide the ugly up/down buttons */
+        body.dark-mode .dua-list-container::-webkit-scrollbar-button,
+        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-button,
+        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button {
+            display: none;
+        }
+        /* Light mode scrollbars remain browser default (light) - no changes */
     </style>
 <base target="_blank">
 </head>
