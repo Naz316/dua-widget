@@ -341,6 +341,7 @@
             box-shadow: var(--shadow);
             transition: 0.2s;
             position: relative;
+            cursor: pointer;
         }
         .dua-card.selected {
             background: var(--accent-soft);
@@ -819,13 +820,11 @@
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover {
             background: #4a4a5a !important;
         }
-        /* Hide the ugly up/down buttons */
         body.dark-mode .dua-list-container::-webkit-scrollbar-button,
         body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-button,
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button {
             display: none;
         }
-        /* Light mode scrollbars remain browser default (light) - no changes */
     </style>
 <base target="_blank">
 </head>
@@ -918,8 +917,8 @@
                     <div class="dua-text" id="duaOutput"></div>
                 </div>
                 <div class="nav-arrows" id="modalNavArrows">
-                    <button class="nav-arrow" id="prevDuaBtn" aria-label="السابق">↑</button>
-                    <button class="nav-arrow" id="nextDuaBtn" aria-label="التالي">↓</button>
+                    <button class="nav-arrow" id="prevDuaBtn" aria-label="السابق">←</button>
+                    <button class="nav-arrow" id="nextDuaBtn" aria-label="التالي">→</button>
                 </div>
                 <button class="close-modal" id="closeModalBtn">إغلاق</button>
             </div>
@@ -1348,6 +1347,7 @@ function updateModalContent() {
         <div class="nav-arrows" id="modalNavArrows">
     `;
     if (isHorizontalMode) {
+        // In RTL horizontal mode, left arrow means "next" (index+1), right arrow means "previous" (index-1)
         contentHtml += `<button class="nav-arrow" id="prevDuaBtn">←</button>
                         <button class="nav-arrow" id="nextDuaBtn">→</button>`;
     } else {
@@ -1362,10 +1362,20 @@ function updateModalContent() {
     const prevBtn = document.getElementById('prevDuaBtn');
     const nextBtn = document.getElementById('nextDuaBtn');
     if (prevBtn) {
-        prevBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
+        if (isHorizontalMode) {
+            // RTL: left arrow (←) goes to next (forward)
+            prevBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
+        } else {
+            prevBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
+        }
     }
     if (nextBtn) {
-        nextBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
+        if (isHorizontalMode) {
+            // RTL: right arrow (→) goes to previous
+            nextBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
+        } else {
+            nextBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
+        }
     }
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('duaModal').style.display='none';
     document.getElementById('modalCloseX').onclick = () => document.getElementById('duaModal').style.display='none';
@@ -1400,7 +1410,13 @@ function renderRuqyahDuas(){
         card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
-        card.addEventListener('click',()=>{ document.querySelectorAll('.dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedDuaIndex=idx; openModalWithContext('ruqyah', idx, data); playClickSound(); });
+        card.addEventListener('click',()=>{
+            document.querySelectorAll('.dua-card').forEach(c=>c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedDuaIndex=idx;
+            openModalWithContext('ruqyah', idx, data);
+            playClickSound();
+        });
         container.appendChild(card);
     });
     if (isHorizontalMode) {
@@ -1446,7 +1462,12 @@ function renderSunnahDuas(){
         card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
-        card.addEventListener('click',()=>{ document.querySelectorAll('#sunnahListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('sunnah', localIdx, data); playClickSound(); });
+        card.addEventListener('click',()=>{
+            document.querySelectorAll('#sunnahListContainer .dua-card').forEach(c=>c.classList.remove('selected'));
+            card.classList.add('selected');
+            openModalWithContext('sunnah', localIdx, data);
+            playClickSound();
+        });
         container.appendChild(card);
     });
     if (isHorizontalMode) {
@@ -1490,7 +1511,12 @@ function renderQuranicDuas(){
         card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
-        card.addEventListener('click',()=>{ document.querySelectorAll('#quranicListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('quranic', localIdx, data); playClickSound(); });
+        card.addEventListener('click',()=>{
+            document.querySelectorAll('#quranicListContainer .dua-card').forEach(c=>c.classList.remove('selected'));
+            card.classList.add('selected');
+            openModalWithContext('quranic', localIdx, data);
+            playClickSound();
+        });
         container.appendChild(card);
     });
     if (isHorizontalMode) {
@@ -1527,7 +1553,12 @@ function renderFavorites(){
         card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(fav); if(sd.innerText.trim()!=='') card.appendChild(sd); }
-        card.addEventListener('click',()=>{ document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('favorites', idx, favoritesList); playClickSound(); });
+        card.addEventListener('click',()=>{
+            document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected'));
+            card.classList.add('selected');
+            openModalWithContext('favorites', idx, favoritesList);
+            playClickSound();
+        });
         container.appendChild(card);
     });
     if (isHorizontalMode) {
