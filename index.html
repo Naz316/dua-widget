@@ -53,6 +53,19 @@
         body.dark-mode { background-color: #12121a; }
         body.text-rtl .message-card, body.text-rtl .dua-card { direction: rtl; text-align: right; }
         body.text-ltr .message-card, body.text-ltr .dua-card { direction: ltr; text-align: left; }
+        /* --- Paste Step 2 Below --- */
+body.text-rtl #openedMessageText {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: plaintext;
+}
+
+body.text-ltr #openedMessageText {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: plaintext;
+}
+/* --- End of Step 2 --- */
         body.text-rtl .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; direction: ltr; }
         body.text-ltr .menu-popover .menu-section-title { text-align: left; justify-content: flex-start; }
         .grid-item { text-align: center !important; }
@@ -854,7 +867,7 @@
                 <div class="sparkle-loading">✨✨✨</div>
             </div>
             <div id="msgStateOpened" style="display:none; text-align: center; direction: ltr;">
-                <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0; direction: rtl; text-align: right;">
+                <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
                     الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️
                 </p>
             </div>
