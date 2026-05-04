@@ -142,42 +142,69 @@ body.text-ltr #openedMessageText {
         .message-container { padding: 25px 20px; perspective: 1000px; }
         
         /* Message Card Styles */
-        .message-card {
-            background: var(--card-bg);
-            border-radius: 35px;
-            padding: 60px 20px 35px 20px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-        .message-card.envelope-animation {
-            animation: mailSwing 1.2s ease-out forwards;
-        }
-        .message-card.envelope-animation::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 55px;
-            background: var(--envelope-flap);
-            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-            z-index: 2;
-        }
-        @keyframes mailSwing {
-            0% { transform: rotate(0deg); }
-            15% { transform: rotate(12deg); }
-            30% { transform: rotate(-10deg); }
-            45% { transform: rotate(8deg); }
-            60% { transform: rotate(-5deg); }
-            75% { transform: rotate(3deg); }
-            90% { transform: rotate(-1deg); }
-            100% { transform: rotate(0deg); }
-        }
+        /* --- ENVELOPE & STAR ANIMATIONS --- */
+.message-card {
+    background: var(--card-bg);
+    border-radius: 35px;
+    padding: 60px 20px 35px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+/* The Grey Triangle Flap */
+.message-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 55px;
+    background: var(--envelope-flap);
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+}
+
+/* Triggered by JS: Flips the flap up 180 degrees */
+.message-card.open-flap::before {
+    transform: translateY(-55px) scaleY(-1);
+    z-index: 1;
+}
+
+/* GOLDEN STAR CLUSTER */
+.star-loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    position: relative;
+}
+.star-cluster {
+    position: relative;
+    width: 60px; height: 60px;
+}
+.star-shape {
+    position: absolute;
+    background: #EEDD82; 
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: star-pulse 1.5s infinite ease-in-out;
+}
+/* Staggered star delays */
+.star-shape:nth-child(1) { width: 22px; height: 22px; top: 0; left: 19px; animation-delay: 0s; }
+.star-shape:nth-child(2) { width: 16px; height: 16px; top: 25px; left: 0; animation-delay: 0.2s; }
+.star-shape:nth-child(3) { width: 16px; height: 16px; top: 25px; left: 40px; animation-delay: 0.4s; }
+.star-shape:nth-child(4) { width: 12px; height: 12px; top: 48px; left: 24px; animation-delay: 0.6s; }
+.star-shape:nth-child(5) { width: 14px; height: 14px; top: 10px; left: 45px; animation-delay: 0.1s; }
+.star-shape:nth-child(6) { width: 14px; height: 14px; top: 10px; left: -5px; animation-delay: 0.3s; }
+
+@keyframes star-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.3); opacity: 1; }
+}
         .message-card h2 { font-size: 1.6rem; margin-bottom: 4px; color: var(--text); font-weight: 800; }
         .message-card .sub-title { color: var(--text-dim); font-size: 1rem; margin-bottom: 15px; }
         .message-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
@@ -854,25 +881,38 @@ body.text-ltr #openedMessageText {
     </header>
 
     <div class="message-container" id="messageContainer">
-        <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
+    <!-- Tomorrow Banner -->
+    <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
 
-        <div class="message-card envelope-animation" id="dailyMessageCard">
-            <div id="msgStateClosed">
-                <h2 id="msgTitle">رسالتك اليوم</h2>
-                <div class="sub-title" id="msgSub">رسالتك اليوم</div>
-                <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
-                <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
-            </div>
-            <div id="msgStateLoading" style="display:none;">
-                <div class="sparkle-loading">✨✨✨</div>
-            </div>
-            <div id="msgStateOpened" style="display:none; text-align: center; direction: ltr;">
-                <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
-                    الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️
-                </p>
+    <div class="message-card envelope-animation" id="dailyMessageCard">
+        <!-- Stage 1: Closed -->
+        <div id="msgStateClosed">
+            <h2 id="msgTitle">رسالتك اليوم</h2>
+            <div class="sub-title" id="msgSub">رسالتك اليوم</div>
+            <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
+            <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
+        </div>
+
+        <!-- Stage 2: Golden Star Cluster -->
+        <div id="msgStateLoading" style="display:none;">
+            <div class="star-loading-container">
+                <div class="star-cluster">
+                    <div class="star-shape"></div>
+                    <div class="star-shape"></div>
+                    <div class="star-shape"></div>
+                    <div class="star-shape"></div>
+                    <div class="star-shape"></div>
+                    <div class="star-shape"></div>
+                </div>
             </div>
         </div>
+
+        <!-- Stage 3: Opened -->
+        <div id="msgStateOpened" style="display:none;">
+            <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;"></p>
+        </div>
     </div>
+</div>
 
     <div class="grid-container" id="gridContainer">
         <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
@@ -1292,22 +1332,47 @@ function showDailyMessageOpened() {
     card.style.padding = '25px 20px';
 }
 
+function showDailyMessageOpened() {
+    document.getElementById('msgStateClosed').style.display = 'none';
+    document.getElementById('msgStateOpened').style.display = 'block';
+    document.getElementById('tomorrowBanner').style.display = 'block';
+    
+    const card = document.getElementById('dailyMessageCard');
+    card.classList.remove('envelope-animation');
+    card.classList.add('open-flap'); // Keeps flap flipped up
+    card.style.padding = '25px 20px';
+    document.getElementById('openedMessageText').innerText = translations[currentLang].openedMessage;
+}
+
 function handleMessageClick() {
     const today = new Date().toDateString();
-    const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
-    if (lastOpenedDate === today) return;
+    if (localStorage.getItem('dua_last_opened_date') === today) return;
+
     playClickSound();
     playVibration();
-    document.getElementById('msgStateClosed').style.display = 'none';
-    document.getElementById('msgStateLoading').style.display = 'block';
+
+    const card = document.getElementById('dailyMessageCard');
+    
+    // 1. Flip the Flap
+    card.classList.add('open-flap');
+
+    // 2. Delay 0.6s then show Stars
     setTimeout(() => {
-        const pool = [...sunnahDuas, ...quranicDuas];
-        const randomDua = pool[Math.floor(Math.random() * pool.length)];
-        showVideoDuaModal(randomDua);
-        document.getElementById('msgStateLoading').style.display = 'none';
-        showDailyMessageOpened();
-        localStorage.setItem('dua_last_opened_date', today);
-    }, 1500);
+        document.getElementById('msgStateClosed').style.display = 'none';
+        document.getElementById('msgStateLoading').style.display = 'block';
+
+        // 3. Delay 1.8s then show final result
+        setTimeout(() => {
+            const pool = [...ruqyahSelf]; // or your other dua arrays
+            const randomDua = pool[Math.floor(Math.random() * pool.length)];
+            
+            openModalWithContext('daily', 0, [randomDua]);
+            
+            document.getElementById('msgStateLoading').style.display = 'none';
+            showDailyMessageOpened();
+            localStorage.setItem('dua_last_opened_date', today);
+        }, 1800); 
+    }, 600);
 }
 
 function showVideoDuaModal(dua) {
