@@ -290,12 +290,44 @@
             gap: 8px;
             width: fit-content;
         }
+        /* Dua list container - base styles */
         .dua-list-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
             max-height: 500px;
             overflow-y: auto;
+            transition: all 0.2s;
+        }
+        /* Horizontal mode styles - RTL scrolling */
+        .dua-list-container.horizontal-mode {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 0;
+            max-height: none;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            direction: rtl;
+        }
+        .dua-list-container.horizontal-mode .dua-card {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            margin-right: 0;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 0;
+        }
+        .horizontal-pagination {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 8px 0;
+            color: var(--accent);
+            background: var(--card-bg);
+            border-radius: 30px;
+            margin-bottom: 10px;
+            direction: ltr;
         }
         .dua-card {
             background: var(--card-bg);
@@ -693,7 +725,6 @@
             margin-top: 20px;
             margin-bottom: 5px;
         }
-        /* Navigation arrows use accent color */
         .nav-arrow {
             background: transparent !important;
             border: none !important;
@@ -712,7 +743,6 @@
             opacity: 0.7;
             transform: scale(1.08);
         }
-        /* Scrollable text wrapper without custom buttons */
         .scrollable-text-wrapper {
             max-height: 280px;
             overflow-y: auto;
@@ -769,7 +799,7 @@
         <div class="header-icons" style="width:100%; justify-content:space-between; align-items:center;">
             <button class="icon-btn lang-btn" id="langToggleBtn"><img src="https://cdn-icons-png.flaticon.com/128/4570/4570372.png" alt="language"></button>
             <div class="header-center" style="position:absolute; left:50%; transform:translateX(-50%);">
-                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/13773/13773984.png" onclick="changeIcon()" alt="Icon" style="width:50px; height:50px; cursor:pointer; animation:float 3s ease-in-out infinite;">
+                <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/14929/14929861.png" onclick="changeIcon()" alt="Icon" style="width:50px; height:50px; cursor:pointer; animation:float 3s ease-in-out infinite;">
             </div>
             <button class="icon-btn menu-icon" id="menuToggleBtn"><span>☰</span></button>
         </div>
@@ -810,10 +840,12 @@
             <button class="subcategory-btn" data-sub="other" id="otherBtn">ارق غيرك</button>
         </div>
         <button class="back-button" id="backFromRuqyah"><span>←</span> <span id="backText">رجوع</span></button>
+        <div class="horizontal-pagination" id="ruqyahPagination" style="display: none;"></div>
         <div class="dua-list-container" id="duaListContainer"></div>
     </div>
     <div class="favorites-view" id="favoritesView">
         <button class="back-button" id="backFromFavorites"><span>←</span> <span id="favBackText">رجوع</span></button>
+        <div class="horizontal-pagination" id="favoritesPagination" style="display: none;"></div>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
     <div class="sunnah-view" id="sunnahView">
@@ -825,6 +857,7 @@
             <button class="subcategory-btn" data-wird="wird5" id="wird5Btn">الورد الخامس</button>
         </div>
         <button class="back-button" id="backFromSunnah"><span>←</span> <span id="sunnahBackText">رجوع</span></button>
+        <div class="horizontal-pagination" id="sunnahPagination" style="display: none;"></div>
         <div class="dua-list-container" id="sunnahListContainer"></div>
     </div>
     <div class="quranic-view" id="quranicView">
@@ -834,6 +867,7 @@
             <button class="subcategory-btn" data-wird="quranic3" id="quranicWird3Btn">الورد الثالث</button>
         </div>
         <button class="back-button" id="backFromQuranic"><span>←</span> <span id="quranicBackText">رجوع</span></button>
+        <div class="horizontal-pagination" id="quranicPagination" style="display: none;"></div>
         <div class="dua-list-container" id="quranicListContainer"></div>
     </div>
     <div id="sharePopup" class="share-popup">
@@ -1125,6 +1159,7 @@ const translations = {
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
+let isHorizontalMode = false; // global toggle for dua lists layout
 
 // Modal navigation state
 let currentModalList = [];
@@ -1224,6 +1259,31 @@ function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub=
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
+function setupHorizontalScrollListener(containerId, paginationId) {
+    const container = document.getElementById(containerId);
+    const paginationDiv = document.getElementById(paginationId);
+    if (!container || !paginationDiv || !isHorizontalMode) return;
+    const updateCounter = () => {
+        const cards = container.querySelectorAll('.dua-card');
+        if (cards.length === 0) return;
+        const containerRect = container.getBoundingClientRect();
+        let bestIndex = 0;
+        let minDistance = Infinity;
+        for (let i = 0; i < cards.length; i++) {
+            const cardRect = cards[i].getBoundingClientRect();
+            const distance = Math.abs(cardRect.left + cardRect.width/2 - (containerRect.left + containerRect.width/2));
+            if (distance < minDistance) {
+                minDistance = distance;
+                bestIndex = i;
+            }
+        }
+        paginationDiv.innerText = `${bestIndex+1} / ${cards.length}`;
+    };
+    container.addEventListener('scroll', updateCounter);
+    setTimeout(updateCounter, 50);
+    return updateCounter;
+}
+
 function openModalWithContext(view, index, list) {
     currentModalView = view;
     currentModalIndex = index;
@@ -1249,22 +1309,45 @@ function updateModalContent() {
     contentHtml += `
             </div>
         </div>
-        <div class="nav-arrows">
-            <button class="nav-arrow" id="prevDuaBtn">↑</button>
-            <button class="nav-arrow" id="nextDuaBtn">↓</button>
+        <div class="nav-arrows" id="modalNavArrows">
+    `;
+    if (isHorizontalMode) {
+        contentHtml += `<button class="nav-arrow" id="prevDuaBtn">←</button>
+                        <button class="nav-arrow" id="nextDuaBtn">→</button>`;
+    } else {
+        contentHtml += `<button class="nav-arrow" id="prevDuaBtn">↑</button>
+                        <button class="nav-arrow" id="nextDuaBtn">↓</button>`;
+    }
+    contentHtml += `
         </div>
         <button class="close-modal" id="closeModalBtn">${t.closeModal}</button>
     `;
     modalContent.innerHTML = contentHtml;
-    document.getElementById('prevDuaBtn').onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
-    document.getElementById('nextDuaBtn').onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
+    const prevBtn = document.getElementById('prevDuaBtn');
+    const nextBtn = document.getElementById('nextDuaBtn');
+    if (prevBtn) {
+        prevBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
+    }
+    if (nextBtn) {
+        nextBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
+    }
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('duaModal').style.display='none';
     document.getElementById('modalCloseX').onclick = () => document.getElementById('duaModal').style.display='none';
 }
 
 function renderRuqyahDuas(){
     const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther;
-    const container=document.getElementById('duaListContainer'); container.innerHTML='';
+    const container=document.getElementById('duaListContainer');
+    const paginationDiv = document.getElementById('ruqyahPagination');
+    container.innerHTML='';
+    if (isHorizontalMode) {
+        container.classList.add('horizontal-mode');
+        paginationDiv.style.display = 'block';
+        paginationDiv.innerText = `1 / ${data.length}`;
+    } else {
+        container.classList.remove('horizontal-mode');
+        paginationDiv.style.display = 'none';
+    }
     data.forEach((dua,idx)=>{
         const card=document.createElement('div'); card.className='dua-card'; if(idx===selectedDuaIndex) card.classList.add('selected');
         const header=document.createElement('div'); header.className='dua-header';
@@ -1284,6 +1367,9 @@ function renderRuqyahDuas(){
         card.addEventListener('click',()=>{ document.querySelectorAll('.dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedDuaIndex=idx; openModalWithContext('ruqyah', idx, data); playClickSound(); });
         container.appendChild(card);
     });
+    if (isHorizontalMode) {
+        setupHorizontalScrollListener('duaListContainer', 'ruqyahPagination');
+    }
     updateMenuFavButton();
 }
 
@@ -1295,7 +1381,17 @@ function renderSunnahDuas(){
     else if(currentWird==='wird4'){ startIdx=73; endIdx=100; }
     else{ startIdx=100; endIdx=124; }
     const data=sunnahDuas.slice(startIdx,endIdx);
-    const container=document.getElementById('sunnahListContainer'); container.innerHTML='';
+    const container=document.getElementById('sunnahListContainer');
+    const paginationDiv = document.getElementById('sunnahPagination');
+    container.innerHTML='';
+    if (isHorizontalMode) {
+        container.classList.add('horizontal-mode');
+        paginationDiv.style.display = 'block';
+        paginationDiv.innerText = `1 / ${data.length}`;
+    } else {
+        container.classList.remove('horizontal-mode');
+        paginationDiv.style.display = 'none';
+    }
     data.forEach((dua,localIdx)=>{
         const card=document.createElement('div'); card.className='dua-card';
         const header=document.createElement('div'); header.className='dua-header';
@@ -1317,6 +1413,9 @@ function renderSunnahDuas(){
         card.addEventListener('click',()=>{ document.querySelectorAll('#sunnahListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('sunnah', localIdx, data); playClickSound(); });
         container.appendChild(card);
     });
+    if (isHorizontalMode) {
+        setupHorizontalScrollListener('sunnahListContainer', 'sunnahPagination');
+    }
     updateMenuFavButton();
 }
 
@@ -1326,7 +1425,17 @@ function renderQuranicDuas(){
     else if(currentQuranicWird==='quranic2'){ startIdx=7; endIdx=13; }
     else{ startIdx=13; endIdx=20; }
     const data=quranicDuas.slice(startIdx,endIdx);
-    const container=document.getElementById('quranicListContainer'); container.innerHTML='';
+    const container=document.getElementById('quranicListContainer');
+    const paginationDiv = document.getElementById('quranicPagination');
+    container.innerHTML='';
+    if (isHorizontalMode) {
+        container.classList.add('horizontal-mode');
+        paginationDiv.style.display = 'block';
+        paginationDiv.innerText = `1 / ${data.length}`;
+    } else {
+        container.classList.remove('horizontal-mode');
+        paginationDiv.style.display = 'none';
+    }
     data.forEach((dua,localIdx)=>{
         const card=document.createElement('div'); card.className='dua-card';
         const header=document.createElement('div'); header.className='dua-header';
@@ -1348,12 +1457,25 @@ function renderQuranicDuas(){
         card.addEventListener('click',()=>{ document.querySelectorAll('#quranicListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('quranic', localIdx, data); playClickSound(); });
         container.appendChild(card);
     });
+    if (isHorizontalMode) {
+        setupHorizontalScrollListener('quranicListContainer', 'quranicPagination');
+    }
     updateMenuFavButton();
 }
 
 function renderFavorites(){
-    const container=document.getElementById('favoritesListContainer'); container.innerHTML='';
-    if(favoritesList.length===0){ const empty=document.createElement('div'); empty.className='empty-fav'; empty.innerText=translations[currentLang].noFavorites; container.appendChild(empty); return; }
+    const container=document.getElementById('favoritesListContainer');
+    const paginationDiv = document.getElementById('favoritesPagination');
+    container.innerHTML='';
+    if(favoritesList.length===0){ const empty=document.createElement('div'); empty.className='empty-fav'; empty.innerText=translations[currentLang].noFavorites; container.appendChild(empty); if(isHorizontalMode) container.classList.add('horizontal-mode'); else container.classList.remove('horizontal-mode'); paginationDiv.style.display='none'; return; }
+    if (isHorizontalMode) {
+        container.classList.add('horizontal-mode');
+        paginationDiv.style.display = 'block';
+        paginationDiv.innerText = `1 / ${favoritesList.length}`;
+    } else {
+        container.classList.remove('horizontal-mode');
+        paginationDiv.style.display = 'none';
+    }
     favoritesList.forEach((fav,idx)=>{
         const card=document.createElement('div'); card.className='dua-card';
         const header=document.createElement('div'); header.className='dua-header';
@@ -1372,6 +1494,9 @@ function renderFavorites(){
         card.addEventListener('click',()=>{ document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); openModalWithContext('favorites', idx, favoritesList); playClickSound(); });
         container.appendChild(card);
     });
+    if (isHorizontalMode) {
+        setupHorizontalScrollListener('favoritesListContainer', 'favoritesPagination');
+    }
     updateMenuFavButton();
 }
 
@@ -1398,7 +1523,19 @@ document.getElementById('backFromQuranic')?.addEventListener('click',()=>{ exitS
 
 document.getElementById('duaModal')?.addEventListener('click',function(e){ if(e.target === this) this.style.display='none'; });
 
-let is3Cols=false; document.getElementById('btnGrid')?.addEventListener('click',()=>{ is3Cols=!is3Cols; document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols); playClickSound(); });
+let is3Cols=false;
+document.getElementById('btnGrid')?.addEventListener('click',()=>{
+    // toggle main menu grid
+    is3Cols=!is3Cols;
+    document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols);
+    // toggle horizontal mode for dua lists
+    isHorizontalMode = !isHorizontalMode;
+    if (ruqyahActive) renderRuqyahDuas();
+    if (sunnahActive) renderSunnahDuas();
+    if (quranicActive) renderQuranicDuas();
+    if (favoritesActive) renderFavorites();
+    playClickSound();
+});
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
 
 const menuToggle=document.getElementById('menuToggleBtn'), unifiedMenu=document.getElementById('unifiedMenu');
@@ -1438,7 +1575,21 @@ function updateMenuFavButton(){ const btn=document.getElementById('btnFav'); con
 function toggleSharePopup(){ const pop=document.getElementById('sharePopup'); pop.classList.toggle('show'); if(pop.classList.contains('show')) buildShareGrid(); setTimeout(()=>{ document.addEventListener('click',function closeShare(e){ if(!pop.contains(e.target)&&!document.getElementById('btnShare').contains(e.target)){ pop.classList.remove('show'); document.removeEventListener('click',closeShare); } }); },100); }
 function buildShareGrid(){ let text=''; if(currentModalIndex>=0 && currentModalList[currentModalIndex]){ text=currentLang==='ar'?currentModalList[currentModalIndex].ar:currentModalList[currentModalIndex].en; } else if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(!text) return; const shareText=encodeURIComponent(text.substring(0,300)); const pageUrl=window.location.href; const pn={ar:{whatsapp:"واتساب",telegram:"تليجرام",twitter:"تويتر",facebook:"فيسبوك",messenger:"ماسنجر",copy:"نسخ الرابط"},en:{whatsapp:"WhatsApp",telegram:"Telegram",twitter:"X",facebook:"Facebook",messenger:"Messenger",copy:"Copy Link"}}[currentLang]; const icons={whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', telegram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', twitter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', facebook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', messenger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}; const platforms=[{name:pn.whatsapp,icon:icons.whatsapp,url:`https://wa.me/?text=${shareText}`},{name:pn.telegram,icon:icons.telegram,url:`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}`},{name:pn.twitter,icon:icons.twitter,url:`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}`},{name:pn.facebook,icon:icons.facebook,url:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.messenger,icon:icons.messenger,url:`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.copy,icon:icons.copy,url:"",action:()=>navigator.clipboard.writeText(pageUrl)}]; const grid=document.getElementById('shareGrid'); grid.innerHTML=''; platforms.forEach(p=>{ const div=document.createElement('div'); div.className='share-icon'; div.innerHTML=`${p.icon}<span>${p.name}</span>`; div.onclick=()=>{ if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); else if(p.action) p.action(); document.getElementById('sharePopup').classList.remove('show'); }; grid.appendChild(div); }); }
 
-const iconGallery=["https://cdn-icons-png.flaticon.com/128/4354/4354959.png","https://cdn-icons-png.flaticon.com/128/7321/7321058.png","https://cdn-icons-png.flaticon.com/128/3004/3004949.png","https://cdn-icons-png.flaticon.com/128/6152/6152858.png","https://cdn-icons-png.flaticon.com/128/13773/13773984.png"]; let currentIconIdx=4; function changeIcon(){ currentIconIdx=(currentIconIdx+1)%iconGallery.length; document.getElementById('cycleIcon').src=iconGallery[currentIconIdx]; playClickSound(); }
+// Updated icon gallery with new icons
+const iconGallery = [
+    "https://cdn-icons-png.flaticon.com/128/14929/14929861.png",
+    "https://cdn-icons-png.flaticon.com/128/17027/17027861.png",
+    "https://cdn-icons-png.flaticon.com/128/3015/3015735.png",
+    "https://cdn-icons-png.flaticon.com/128/15428/15428976.png",
+    "https://cdn-icons-png.flaticon.com/128/15046/15046509.png"
+];
+let currentIconIdx = 0; // start with first new icon
+document.getElementById('cycleIcon').src = iconGallery[0];
+function changeIcon(){ 
+    currentIconIdx = (currentIconIdx + 1) % iconGallery.length; 
+    document.getElementById('cycleIcon').src = iconGallery[currentIconIdx]; 
+    playClickSound(); 
+}
 
 document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub));
 document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentWird));
