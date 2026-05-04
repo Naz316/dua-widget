@@ -24,6 +24,8 @@
             --heart-stroke-light: #333333;
             --heart-stroke-dark: #ffffff;
             --video-blue: #3b5998;
+            --scroll-control-bg: rgba(200,200,200,0.5);
+            --scroll-control-hover: var(--accent);
         }
         body.dark-mode {
             --widget-bg: #1e1e2f;
@@ -36,6 +38,8 @@
             --popup-border: #444;
             --shadow: 0 8px 20px rgba(0,0,0,0.3);
             --envelope-flap: #555555;
+            --scroll-control-bg: rgba(60,60,80,0.7);
+            --scroll-control-hover: var(--accent);
         }
         body {
             background-color: #f0f2f5;
@@ -290,6 +294,10 @@
             gap: 8px;
             width: fit-content;
         }
+        /* Extra margin for favorites back button to avoid header */
+        .favorites-view .back-button {
+            margin-top: 10px;
+        }
         /* Dua list container - base styles */
         .dua-list-container {
             display: flex;
@@ -351,10 +359,13 @@
             align-items: center;
             margin-bottom: 8px;
         }
+        /* Force number format: "1." not ".1" */
         .dua-number {
             font-weight: bold;
             color: var(--accent);
             font-size: 0.9rem;
+            direction: ltr;
+            unicode-bidi: embed;
         }
         .fav-btn-small {
             background: none;
@@ -743,29 +754,69 @@
             opacity: 0.7;
             transform: scale(1.08);
         }
+        /* Custom scrollbar with arrows */
         .scrollable-text-wrapper {
+            position: relative;
             max-height: 280px;
             overflow-y: auto;
             margin: 10px 0;
-            padding-right: 8px;
+            padding-right: 35px;
             scrollbar-width: thin;
         }
         .scrollable-text-wrapper::-webkit-scrollbar {
-            width: 4px;
+            width: 6px;
         }
         .scrollable-text-wrapper::-webkit-scrollbar-track {
-            background: rgba(128,128,128,0.2);
+            background: var(--scroll-control-bg);
             border-radius: 10px;
         }
         .scrollable-text-wrapper::-webkit-scrollbar-thumb {
             background: var(--accent);
             border-radius: 10px;
         }
+        .custom-scroll-buttons {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: var(--scroll-control-bg);
+            border-radius: 30px;
+            padding: 12px 6px;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+        .custom-scroll-buttons button {
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--text);
+            cursor: pointer;
+            transition: 0.2s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .custom-scroll-buttons button:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+        body.dark-mode .custom-scroll-buttons button {
+            color: #ddd;
+        }
         .dua-text {
             font-size: var(--dua-font-size);
             line-height: 1.8;
             font-family: 'Amiri', serif;
             text-align: left;
+            padding-right: 5px;
         }
         body.text-rtl .dua-text {
             text-align: right;
@@ -819,8 +870,9 @@
                 <div class="sparkle-loading">✨✨✨</div>
             </div>
             <div id="msgStateOpened" style="display:none; text-align: center; direction: ltr;">
+                <!-- Heart moved to the very end after the word دعاه -->
                 <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
-                   ❤️ الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه 
+                    الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️
                 </p>
             </div>
         </div>
@@ -880,6 +932,10 @@
                 <button class="modal-close-x" id="modalCloseX">✕</button>
                 <div class="scrollable-text-wrapper" id="scrollableDuaWrapper">
                     <div class="dua-text" id="duaOutput"></div>
+                    <div class="custom-scroll-buttons" id="customScrollButtons">
+                        <button id="scrollUpBtn" class="scroll-up-btn">↑</button>
+                        <button id="scrollDownBtn" class="scroll-down-btn">↓</button>
+                    </div>
                 </div>
                 <div class="nav-arrows" id="modalNavArrows">
                     <button class="nav-arrow" id="prevDuaBtn" aria-label="السابق">↑</button>
@@ -1290,6 +1346,17 @@ function openModalWithContext(view, index, list) {
     currentModalList = list;
     updateModalContent();
     document.getElementById('duaModal').style.display = 'flex';
+    // attach scroll buttons event listeners
+    setTimeout(() => {
+        const wrapper = document.getElementById('scrollableDuaWrapper');
+        const upBtn = document.getElementById('scrollUpBtn');
+        const downBtn = document.getElementById('scrollDownBtn');
+        if (upBtn && downBtn && wrapper) {
+            const step = 70;
+            upBtn.onclick = (e) => { e.stopPropagation(); wrapper.scrollBy({ top: -step, behavior: 'smooth' }); playClickSound(); };
+            downBtn.onclick = (e) => { e.stopPropagation(); wrapper.scrollBy({ top: step, behavior: 'smooth' }); playClickSound(); };
+        }
+    }, 50);
 }
 
 function updateModalContent() {
@@ -1307,6 +1374,10 @@ function updateModalContent() {
     if(showTranslit) contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
     if(showSource){ let src=buildSourceInfo(dua); if(src) contentHtml += `<div style="color:#888; font-size:14px; margin-top:12px; padding-top:8px; border-top:1px dotted var(--border-color);">${src}</div>`; }
     contentHtml += `
+            </div>
+            <div class="custom-scroll-buttons" id="customScrollButtons">
+                <button id="scrollUpBtn" class="scroll-up-btn">↑</button>
+                <button id="scrollDownBtn" class="scroll-down-btn">↓</button>
             </div>
         </div>
         <div class="nav-arrows" id="modalNavArrows">
@@ -1333,6 +1404,17 @@ function updateModalContent() {
     }
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('duaModal').style.display='none';
     document.getElementById('modalCloseX').onclick = () => document.getElementById('duaModal').style.display='none';
+    // re-attach scroll buttons after content update
+    setTimeout(() => {
+        const wrapper = document.getElementById('scrollableDuaWrapper');
+        const upBtn = document.getElementById('scrollUpBtn');
+        const downBtn = document.getElementById('scrollDownBtn');
+        if (upBtn && downBtn && wrapper) {
+            const step = 70;
+            upBtn.onclick = (e) => { e.stopPropagation(); wrapper.scrollBy({ top: -step, behavior: 'smooth' }); playClickSound(); };
+            downBtn.onclick = (e) => { e.stopPropagation(); wrapper.scrollBy({ top: step, behavior: 'smooth' }); playClickSound(); };
+        }
+    }, 50);
 }
 
 function renderRuqyahDuas(){
@@ -1351,7 +1433,7 @@ function renderRuqyahDuas(){
     data.forEach((dua,idx)=>{
         const card=document.createElement('div'); card.className='dua-card'; if(idx===selectedDuaIndex) card.classList.add('selected');
         const header=document.createElement('div'); header.className='dua-header';
-        const num=document.createElement('div'); num.className='dua-number'; num.innerText=(idx+1)+'.';
+        const num=document.createElement('div'); num.className='dua-number'; num.innerText = (idx+1) + '.';
         const fav=isFavorited(currentRuqyahSub,idx); const favBtn=document.createElement('button'); favBtn.className='fav-btn-small';
         const strokeColor=getHeartStrokeColor();
         favBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav?'#ff4444':'none'}" stroke="${fav?'#ff4444':strokeColor}" stroke-width="1.5"/></svg>`;
