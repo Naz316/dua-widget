@@ -295,25 +295,6 @@ body.text-ltr #openedMessageText {
             flex-direction: column;
             padding: 0 20px 20px 20px;
         }
-
-        .personal-list-container.horizontal-mode {
-            display: flex;
-            flex-direction: row;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 0;
-            max-height: none;
-            padding-bottom: 10px;
-            scrollbar-width: thin;
-            direction: rtl;
-        }
-        .personal-list-container.horizontal-mode .personal-card {
-            flex: 0 0 100%;
-            scroll-snap-align: start;
-            margin-right: 0;
-            border-left: 4px solid var(--accent);
-            margin-bottom: 0;
-        }
        .subcategory-buttons {
             display: flex;
             gap: 15px;
@@ -891,8 +872,283 @@ body.text-ltr #openedMessageText {
         body.dark-mode .dua-list-container::-webkit-scrollbar-button,
         body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-button,
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button {
-            display: none;
+            display: none;    
         }
+        /* ===== PERSONAL DUAS STYLES (from my-duas.html) ===== */
+.personal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+    margin-top: 15px; /* ADD THIS - pushes below header */
+}
+
+.plus-icon-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.plus-icon-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.personal-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    gap: 28px;
+    background: var(--card-bg);
+    border-radius: 35px;
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+}
+
+.personal-empty-state img {
+    width: 110px;
+    height: 110px;
+    opacity: 0.8;
+}
+
+.personal-empty-text {
+    color: var(--text-dim); /* GRAY COLOR - already uses text-dim variable */
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 260px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.personal-add-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 60px;
+    padding: 14px 28px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+    margin-top: 10px;
+}
+
+.personal-add-btn:hover {
+    transform: scale(1.02);
+    filter: brightness(1.05);
+}
+
+.personal-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+    transition: all 0.2s;
+    margin-top: 5px;
+}
+
+/* Horizontal mode for personal duas */
+.personal-list-container.horizontal-mode {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    max-height: none;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    direction: rtl;
+}
+
+.personal-list-container.horizontal-mode .personal-card {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    margin-bottom: 0;
+}
+
+/* Personal Card with Number */
+.personal-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 18px;
+    border-left: 4px solid var(--accent);
+    box-shadow: var(--shadow);
+    transition: 0.2s;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.personal-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.personal-card-number {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 0.9rem;
+    direction: ltr;
+    min-width: 24px;
+}
+
+.personal-card-content {
+    flex: 1;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    font-family: 'Amiri', serif;
+}
+
+.personal-delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    color: var(--text-dim);
+}
+
+.personal-delete-btn:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    transform: scale(1.05);
+}
+
+.personal-delete-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+}
+
+/* Modal styles */
+.personal-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.personal-modal-card {
+    background: var(--card-bg);
+    border-radius: 32px;
+    width: 100%;
+    max-width: 380px;
+    padding: 24px 20px 30px;
+    text-align: center;
+    color: var(--text);
+    border: 1px solid var(--border-color);
+}
+
+.personal-modal-card textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: var(--widget-bg);
+    color: var(--text);
+    font-family: 'Tajawal', monospace;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 120px;
+    margin: 20px 0;
+}
+
+.personal-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.personal-modal-actions button {
+    padding: 12px 22px;
+    border-radius: 40px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.personal-save-btn {
+    background: var(--accent);
+    color: white;
+}
+
+.personal-cancel-btn {
+    background: var(--text-dim);
+    color: white;
+    opacity: 0.8;
+}
+
+/* Dark mode scrollbar for personal list */
+body.dark-mode .personal-list-container {
+    scrollbar-width: thin;
+    scrollbar-color: #373737 #191919;
+}
+
+body.dark-mode .personal-list-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.dark-mode .personal-list-container::-webkit-scrollbar-track {
+    background: #191919 !important;
+    border-radius: 10px;
+}
+
+body.dark-mode .personal-list-container::-webkit-scrollbar-thumb {
+    background: #373737 !important;
+    border-radius: 10px;
+    border: 1px solid #191919;
+    background-clip: padding-box;
+}
+
+body.dark-mode .personal-list-container::-webkit-scrollbar-thumb:hover {
+    background: #4a4a5a !important;
+}
+
+body.dark-mode .personal-list-container::-webkit-scrollbar-button {
+    display: none;
+}
     </style>
 <base target="_blank">
 </head>
@@ -987,31 +1243,39 @@ body.text-ltr #openedMessageText {
         <div class="horizontal-pagination" id="quranicPagination" style="display: none;"></div>
         <div class="dua-list-container" id="quranicListContainer"></div>
     </div>
-    <!-- Personal View (My Duas) -->
-    <div class="personal-view" id="personalView" style="display:none; flex-direction:column; padding:0 20px 20px 20px;">
-        <div class="personal-header">
-    <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
-    <button class="plus-icon-btn" id="addPersonalDuaBtn">+</button>
+    <!-- Personal View (My Duas) - Updated Design -->
+<div class="personal-view" id="personalView">
+    <div class="personal-header">
+        <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
+        <button class="plus-icon-btn" id="addPersonalDuaBtn" aria-label="إضافة دعاء">+</button>
+    </div>
+    <div id="personalEmptyState" class="personal-empty-state">
+        <div style="background: var(--widget-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: center;">
+            <!-- SVG Prayer Hands Icon in Square -->
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+        </div>
+        <div class="personal-empty-text" id="personalEmptyText">لم تقم بإضافة أي طلبات دعاء حتى الآن</div>
+        <button class="personal-add-btn" id="emptyStateAddBtn">أضف طلب دعاء</button>
+    </div>
+    <div id="personalPagination" class="horizontal-pagination" style="display: none;"></div>
+    <div id="personalListContainer" class="personal-list-container" style="display: none;"></div>
 </div>
-        <div id="personalEmptyState" class="personal-empty-state" style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:40px 20px; gap:20px;">
-            <img src="https://cdn-icons-png.flaticon.com/128/84/84660.png" width="100" alt="prayer">
-            <div class="personal-empty-text" id="personalEmptyText">لم تقم بإضافة أي طلبات دعاء حتى الآن</div>
-            <button class="personal-add-btn" id="emptyStateAddBtn" style="background:var(--accent); color:white; padding:12px 25px; border-radius:30px; border:none; cursor:pointer;">أضف طلب دعاء</button>
-        </div>
-        <div id="personalListContainer" class="personal-list-container" style="display:none; flex-direction:column; gap:12px; max-height:500px; overflow-y:auto;"></div>
-    </div>
-
-    <!-- Personal Add Modal -->
-    <div id="personalAddModal" class="personal-modal">
-        <div class="personal-modal-card">
-            <h3 id="personalModalTitle">أضف دعاء جديد</h3>
-            <textarea id="personalDuaInput" rows="4" placeholder="اكتب دعاءك هنا..."></textarea>
-            <div class="personal-modal-actions" style="display:flex; gap:10px; justify-content:center;">
-                <button id="personalSaveDuaBtn" class="personal-save-btn" style="background:var(--accent); color:white; padding:10px 20px; border-radius:20px; border:none; cursor:pointer;">حفظ</button>
-                <button id="personalCancelModalBtn" class="personal-cancel-btn" style="background:#666; color:white; padding:10px 20px; border-radius:20px; border:none; cursor:pointer;">إلغاء</button>
-            </div>
+   <!-- Personal Add Modal -->
+<div id="personalAddModal" class="personal-modal">
+    <div class="personal-modal-card">
+        <h3 id="personalModalTitle">أضف دعاء جديد</h3>
+        <textarea id="personalDuaInput" rows="4" placeholder="اكتب دعاءك هنا..."></textarea>
+        <div class="personal-modal-actions">
+            <button id="personalSaveDuaBtn" class="personal-save-btn">حفظ</button>
+            <button id="personalCancelModalBtn" class="personal-cancel-btn">إلغاء</button>
         </div>
     </div>
+</div>
     <div id="sharePopup" class="share-popup">
         <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
         <div class="share-grid" id="shareGrid"></div>
@@ -1065,40 +1329,111 @@ body.text-ltr #openedMessageText {
 // Add these variables at the top of your <script> section
 let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
 
-// Add these functions inside your script
+// ===== PERSONAL DUAS FUNCTIONS (Updated with numbers + horizontal mode) =====
+
 function renderPersonalView() {
     const emptyDiv = document.getElementById('personalEmptyState');
     const listDiv = document.getElementById('personalListContainer');
+    const paginationDiv = document.getElementById('personalPagination');
     
     if (personalDuas.length === 0) { 
         emptyDiv.style.display = 'flex'; 
         listDiv.style.display = 'none'; 
+        paginationDiv.style.display = 'none';
     } else { 
         emptyDiv.style.display = 'none'; 
         listDiv.style.display = 'flex'; 
         listDiv.innerHTML = ''; 
         
-        // This adds the horizontal scrolling mode
-        if (isHorizontalMode) listDiv.classList.add('horizontal-mode');
-        else listDiv.classList.remove('horizontal-mode');
-
+        // Handle horizontal mode
+        if (isHorizontalMode) {
+            listDiv.classList.add('horizontal-mode');
+            paginationDiv.style.display = 'block';
+            paginationDiv.innerText = `1 / ${personalDuas.length}`;
+        } else {
+            listDiv.classList.remove('horizontal-mode');
+            paginationDiv.style.display = 'none';
+        }
+        
         personalDuas.forEach((item, idx) => {
-            const card = document.createElement('div'); card.className = 'personal-card dua-card';
-            // Here is the numbering logic
-            card.innerHTML = `
-                <div class="dua-header">
-                    <div class="dua-number">${idx + 1}.</div>
-                    <button class="personal-delete-btn" onclick="event.stopPropagation(); deleteDua(${idx})">✕</button>
-                </div>
-                <div class="personal-card-content">${item.text}</div>`;
+            const card = document.createElement('div'); 
+            card.className = 'personal-card';
+            
+            // Create header with number
+            const header = document.createElement('div');
+            header.className = 'personal-card-header';
+            
+            const number = document.createElement('div');
+            number.className = 'personal-card-number';
+            number.innerText = (idx + 1) + '.';
+            
+            const content = document.createElement('div');
+            content.className = 'personal-card-content';
+            content.innerText = item.text;
+            
+            const delBtn = document.createElement('button'); 
+            delBtn.className = 'personal-delete-btn';
+            delBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+            delBtn.onclick = (e) => { 
+                e.stopPropagation();
+                personalDuas.splice(idx, 1); 
+                localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+                renderPersonalView();
+                playClickSound();
+            };
+            
+            header.appendChild(number);
+            card.appendChild(header);
+            card.appendChild(content);
+            card.appendChild(delBtn);
             listDiv.appendChild(card);
-        }); 
+        });
+        
+        // Setup horizontal scroll listener
+        if (isHorizontalMode) {
+            setupPersonalHorizontalScroll();
+        }
     }
 }
-function deleteDua(idx) { 
-    personalDuas.splice(idx, 1); 
-    localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
-    renderPersonalView(); 
+
+function setupPersonalHorizontalScroll() {
+    const container = document.getElementById('personalListContainer');
+    const paginationDiv = document.getElementById('personalPagination');
+    if (!container || !paginationDiv) return;
+    
+    const updateCounter = () => {
+        const cards = container.querySelectorAll('.personal-card');
+        if (cards.length === 0) return;
+        const containerRect = container.getBoundingClientRect();
+        let bestIndex = 0;
+        let minDistance = Infinity;
+        for (let i = 0; i < cards.length; i++) {
+            const cardRect = cards[i].getBoundingClientRect();
+            const distance = Math.abs(cardRect.left + cardRect.width/2 - (containerRect.left + containerRect.width/2));
+            if (distance < minDistance) {
+                minDistance = distance;
+                bestIndex = i;
+            }
+        }
+        paginationDiv.innerText = `${bestIndex+1} / ${cards.length}`;
+    };
+    container.addEventListener('scroll', updateCounter);
+    setTimeout(updateCounter, 50);
+}
+
+function showPersonalView() {
+    ruqyahActive = false;
+    favoritesActive = false;
+    sunnahActive = false;
+    quranicActive = false;
+    document.getElementById('gridContainer').style.display = 'none';
+    document.getElementById('messageContainer').style.display = 'none';
+    document.getElementById('ruqyahView').style.display = 'none';
+    document.getElementById('favoritesView').style.display = 'none';
+    document.getElementById('sunnahView').style.display = 'none';
+    document.getElementById('quranicView').style.display = 'none';
+    document.getElementById('personalView').style.display = 'flex';
+    renderPersonalView();
 }
 
 function showPersonalView() {
@@ -1340,8 +1675,8 @@ const quranicDuas = [
 
 // =============================== APPLICATION LOGIC ===============================
 const translations = {
-    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", todayDua:"دعاؤك اليوم", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
-    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", todayDua:"Your Dua Today", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
+    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", personalEmptyText: "لم تقم بإضافة أي طلبات دعاء حتى الآن", addDua: "أضف طلب دعاء", personalModalTitle: "أضف دعاء جديد", save: "حفظ", cancel: "إلغاء", personalBackText: "رجوع", todayDua:"دعاؤك اليوم", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
+    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", personalEmptyText: "You haven't added any prayer requests yet", addDua: "Add a Dua", personalModalTitle: "Add New Dua", save: "Save", cancel: "Cancel", personalBackText: "Back", todayDua:"Your Dua Today", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
 };
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
@@ -1785,18 +2120,36 @@ document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('cl
 document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
 document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
+// Personal Duas Event Listeners
 document.querySelector('.grid-item[data-category="personal"]')?.addEventListener('click', () => { showPersonalView(); playClickSound(); });
 document.getElementById('backFromPersonal')?.addEventListener('click', () => { exitSubview(); playClickSound(); });
-document.getElementById('addPersonalDuaBtn')?.addEventListener('click', () => document.getElementById('personalAddModal').style.display = 'flex');
-document.getElementById('emptyStateAddBtn')?.addEventListener('click', () => document.getElementById('personalAddModal').style.display = 'flex');
+document.getElementById('addPersonalDuaBtn')?.addEventListener('click', openAddPersonalModal);
+document.getElementById('emptyStateAddBtn')?.addEventListener('click', openAddPersonalModal);
 document.getElementById('personalCancelModalBtn')?.addEventListener('click', () => document.getElementById('personalAddModal').style.display = 'none');
-document.getElementById('personalSaveDuaBtn')?.addEventListener('click', () => {
+document.getElementById('personalSaveDuaBtn')?.addEventListener('click', addPersonalDuaFromInput);
+
+function openAddPersonalModal() {
+    document.getElementById('personalAddModal').style.display = 'flex';
+    document.getElementById('personalDuaInput').value = '';
+}
+
+function addPersonalDuaFromInput() {
     const text = document.getElementById('personalDuaInput').value.trim();
-    if(text) { 
-        personalDuas.push({text}); 
+    if (text) { 
+        personalDuas.push({ id: Date.now(), text }); 
         localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
-        renderPersonalView(); 
+        renderPersonalView();
+        playClickSound();
         document.getElementById('personalAddModal').style.display = 'none'; 
+    } else {
+        playVibration();
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('personalAddModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('personalAddModal')) {
+        document.getElementById('personalAddModal').style.display = 'none';
     }
 });
     
@@ -1822,7 +2175,7 @@ document.getElementById('btnGrid')?.addEventListener('click',()=>{
     if (sunnahActive) renderSunnahDuas();
     if (quranicActive) renderQuranicDuas();
     if (favoritesActive) renderFavorites();
-    if (personalActive) renderPersonalView();
+    if (document.getElementById('personalView').style.display === 'flex') renderPersonalView(); // ADD THIS LINE
     playClickSound();
 });
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
