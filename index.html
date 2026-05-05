@@ -295,6 +295,25 @@ body.text-ltr #openedMessageText {
             flex-direction: column;
             padding: 0 20px 20px 20px;
         }
+
+        .personal-list-container.horizontal-mode {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 0;
+            max-height: none;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            direction: rtl;
+        }
+        .personal-list-container.horizontal-mode .personal-card {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            margin-right: 0;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 0;
+        }
        .subcategory-buttons {
             display: flex;
             gap: 15px;
@@ -970,10 +989,10 @@ body.text-ltr #openedMessageText {
     </div>
     <!-- Personal View (My Duas) -->
     <div class="personal-view" id="personalView" style="display:none; flex-direction:column; padding:0 20px 20px 20px;">
-        <div class="personal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
-            <button class="plus-icon-btn" id="addPersonalDuaBtn" style="background:var(--accent); border:none; border-radius:50%; width:44px; height:44px; color:white; font-size:28px; cursor:pointer;">+</button>
-        </div>
+        <div class="personal-header">
+    <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
+    <button class="plus-icon-btn" id="addPersonalDuaBtn">+</button>
+</div>
         <div id="personalEmptyState" class="personal-empty-state" style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:40px 20px; gap:20px;">
             <img src="https://cdn-icons-png.flaticon.com/128/84/84660.png" width="100" alt="prayer">
             <div class="personal-empty-text" id="personalEmptyText">لم تقم بإضافة أي طلبات دعاء حتى الآن</div>
@@ -1050,6 +1069,7 @@ let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
 function renderPersonalView() {
     const emptyDiv = document.getElementById('personalEmptyState');
     const listDiv = document.getElementById('personalListContainer');
+    
     if (personalDuas.length === 0) { 
         emptyDiv.style.display = 'flex'; 
         listDiv.style.display = 'none'; 
@@ -1057,10 +1077,20 @@ function renderPersonalView() {
         emptyDiv.style.display = 'none'; 
         listDiv.style.display = 'flex'; 
         listDiv.innerHTML = ''; 
+        
+        // This adds the horizontal scrolling mode
+        if (isHorizontalMode) listDiv.classList.add('horizontal-mode');
+        else listDiv.classList.remove('horizontal-mode');
+
         personalDuas.forEach((item, idx) => {
-            const card = document.createElement('div'); card.className = 'personal-card';
-            card.innerHTML = `<div class="personal-card-content">${item.text}</div>
-            <button class="personal-delete-btn" onclick="deleteDua(${idx})">✕</button>`;
+            const card = document.createElement('div'); card.className = 'personal-card dua-card';
+            // Here is the numbering logic
+            card.innerHTML = `
+                <div class="dua-header">
+                    <div class="dua-number">${idx + 1}.</div>
+                    <button class="personal-delete-btn" onclick="event.stopPropagation(); deleteDua(${idx})">✕</button>
+                </div>
+                <div class="personal-card-content">${item.text}</div>`;
             listDiv.appendChild(card);
         }); 
     }
@@ -1792,6 +1822,7 @@ document.getElementById('btnGrid')?.addEventListener('click',()=>{
     if (sunnahActive) renderSunnahDuas();
     if (quranicActive) renderQuranicDuas();
     if (favoritesActive) renderFavorites();
+    if (personalActive) renderPersonalView();
     playClickSound();
 });
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
