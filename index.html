@@ -971,7 +971,9 @@ body.text-ltr #openedMessageText {
         <div class="dua-list-container" id="sunnahListContainer"></div>
     </div>
     <div class="quranic-view" id="quranicView">
-    <!-- Personal Duas View (أدعيتي) -->
+</div>
+
+        <!-- Personal Duas View (أدعيتي) -->
 <div class="personal-view" id="personalView">
     <div class="personal-header">
         <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
@@ -983,7 +985,7 @@ body.text-ltr #openedMessageText {
         <button class="personal-add-btn" id="emptyStateAddBtn">أضف طلب دعاء</button>
     </div>
     <div id="personalListContainer" class="personal-list-container" style="display: none;"></div>
-</div>
+    
         <div class="subcategory-buttons" id="quranicSubButtons">
             <button class="subcategory-btn" data-wird="quranic1" id="quranicWird1Btn">الورد الأول</button>
             <button class="subcategory-btn" data-wird="quranic2" id="quranicWird2Btn">الورد الثاني</button>
@@ -1013,7 +1015,7 @@ body.text-ltr #openedMessageText {
         </div>
     </div>
 </div>
-</div>   <!-- end of duaModal -->
+<!-- end of duaModal -->
 
 <!-- ========== INSERT PERSONAL MODAL HERE ========== -->
 <div id="personalAddModal" class="personal-modal">
@@ -1737,13 +1739,25 @@ function showRuqyah(){ ruqyahActive=true; favoritesActive=false; sunnahActive=fa
 function showFavorites(){ favoritesActive=true; ruqyahActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; renderFavorites(); }
 function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('quranicView').style.display='none'; renderSunnahDuas(); }
 function showQuranic(){ quranicActive=true; ruqyahActive=false; favoritesActive=false; sunnahActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='flex'; renderQuranicDuas(); }
-function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; }
+function showPersonalView() {
+    ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false;
+    document.getElementById('gridContainer').style.display='none';
+    document.getElementById('messageContainer').style.display='none';
+    document.getElementById('ruqyahView').style.display='none';
+    document.getElementById('favoritesView').style.display='none';
+    document.getElementById('sunnahView').style.display='none';
+    document.getElementById('quranicView').style.display='none';
+    document.getElementById('personalView').style.display='flex';
+    renderPersonalView();
+}
+function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; }
 
 document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
 document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
+document.querySelector('.grid-item[data-category="personal"]').addEventListener('click', showPersonalView);    
 
 document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentRuqyahSub=this.getAttribute('data-sub'); selectedDuaIndex=-1; document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderRuqyahDuas(); playClickSound(); }); });
 document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
