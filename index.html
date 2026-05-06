@@ -1103,9 +1103,35 @@ body.text-rtl .personal-card .personal-card-content {
 
 .personal-card-header {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
     margin-bottom: 8px;
+    width: 100%;
+}
+
+.personal-card-number {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 0.9rem;
+    direction: ltr;
+    min-width: 24px;
+    order: 1;
+}
+
+.personal-fav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    order: 2;
 }
 
 .personal-card-number {
@@ -1472,33 +1498,37 @@ function renderPersonalView() {
             
             // Create header with number and heart icon
             const header = document.createElement('div');
-            header.className = 'personal-card-header';
-            
-            const number = document.createElement('div');
-            number.className = 'personal-card-number';
-            number.innerText = (idx + 1) + '.';
-            
-            // Heart icon (like dua cards)
-            const favBtn = document.createElement('button');
-            favBtn.className = 'personal-fav-btn';
-            const strokeColor = getHeartStrokeColor();
-            favBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="${strokeColor}" stroke-width="1.5"/></svg>`;
-            
-            header.appendChild(number);
-            header.appendChild(favBtn);
+header.className = 'personal-card-header';
+header.style.flexDirection = 'row';
+header.style.justifyContent = 'space-between';
+header.style.alignItems = 'center';
+
+const number = document.createElement('div');
+number.className = 'personal-card-number';
+number.innerText = (idx + 1) + '.';
+number.style.order = '1'; // Left side
+
+const favBtn = document.createElement('button');
+favBtn.className = 'personal-fav-btn';
+favBtn.style.order = '2'; // Right side
+// ...
+header.appendChild(number);
+header.appendChild(favBtn);
             
             const content = document.createElement('div');
 content.className = 'personal-card-content';
-// Apply language priority styling like ruqya/sunnah blocks
-if (currentLang === 'ar') {
-    // Arabic main language = accent color, other language = grey
-    content.innerHTML = `<span class="main-lang" style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</span>`;
+// Split text by newlines to detect dual language
+const lines = item.text.split('\n').filter(l => l.trim());
+if (lines.length >= 2 && currentLang === 'ar') {
+    // Arabic main = accent color, English/other = grey
+    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(lines[0])}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px;">${escapeHtml(lines.slice(1).join('\n'))}</div>`;
+} else if (lines.length >= 2 && currentLang !== 'ar') {
+    // English main = accent color, Arabic = grey
+    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(lines[0])}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Amiri', serif;">${escapeHtml(lines.slice(1).join('\n'))}</div>`;
 } else {
-    // English/other main language = accent color, Arabic = grey  
-    content.innerHTML = `<span class="main-lang" style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</span>`;
+    // Single language - use accent color
+    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</div>`;
 }
-content.style.color = 'var(--accent)';
-content.style.fontWeight = '700';
             
             // Actions row with delete button
             const actions = document.createElement('div');
@@ -1544,28 +1574,38 @@ function openPersonalDuaModal(idx) {
     const modalContent = modal.querySelector('.modal-content');
     const t = translations[currentLang];
     
-    // Determine colors based on active language (same logic as ruqya/sunnah/quranic)
-    const mainColor = 'var(--accent)';
-    const secondaryColor = 'var(--text-dim)';
-    
-    // Build modal content with proper language priority like other blocks
-    let contentHtml = `
-        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
-        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-            <div class="dua-text" id="personalDuaText">
-                <div class="personal-main-text" style="color: ${mainColor}; font-weight: 700; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif;">${escapeHtml(item.text)}</div>
-            </div>
+    // Split text for dual language handling
+const lines = item.text.split('\n').filter(l => l.trim());
+let mainText, secondaryText;
+if (lines.length >= 2) {
+    mainText = lines[0];
+    secondaryText = lines.slice(1).join('\n');
+} else {
+    mainText = item.text;
+    secondaryText = '';
+}
+
+const mainColor = 'var(--accent)';
+const secondaryColor = 'var(--text-dim)';
+
+// Build modal content with proper language priority like other blocks
+let contentHtml = `
+    <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
+    <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
+        <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
+            <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif;">${escapeHtml(mainText)}</div>
+            ${secondaryText ? `<div style="color: ${secondaryColor}; font-weight: 400; margin-top: 10px; font-size: calc(var(--dua-font-size) * 0.85); line-height: 1.6; ${currentLang !== 'ar' ? "font-family: 'Amiri', serif;" : ''}">${escapeHtml(secondaryText)}</div>` : ''}
         </div>
-        <div class="nav-arrows" id="personalModalNavArrows">
-    `;
-    
+    </div>
+    <div class="nav-arrows" id="personalModalNavArrows">
+`;
     if (isHorizontalMode) {
-        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">←</button>
-                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">→</button>`;
-    } else {
-        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
-                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
-    }
+    contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">←</button>
+                    <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">→</button>`;
+} else {
+    contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
+                    <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
+}
     
     contentHtml += `
         </div>
@@ -1581,10 +1621,9 @@ function openPersonalDuaModal(idx) {
 function navigatePersonalModal(currentIdx, direction) {
     let newIdx;
     if (isHorizontalMode) {
-        // In horizontal mode: ← goes to next (higher index), → goes to previous (lower index)
-        newIdx = direction === 'prev' ? currentIdx + 1 : currentIdx - 1;
+        // ← arrow = next (higher index), → arrow = prev (lower index) in RTL
+        newIdx = direction === 'next' ? currentIdx + 1 : currentIdx - 1;
     } else {
-        // In vertical mode: ↑ goes to previous, ↓ goes to next
         newIdx = direction === 'prev' ? currentIdx - 1 : currentIdx + 1;
     }
     
