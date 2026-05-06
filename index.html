@@ -1517,13 +1517,47 @@ const favBtn = document.createElement('button');
 favBtn.className = 'personal-fav-btn';
 favBtn.style.order = '2'; // Right side
 const strokeColor = getHeartStrokeColor();
-const isFav = item.favorited || false;
+// Use the global favorites system instead of local favorited property
+const personalSub = 'personal';
+const isFav = isFavorited(personalSub, idx);
 favBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${isFav ? '#ff4444' : 'none'}" stroke="${isFav ? '#ff4444' : strokeColor}" stroke-width="1.5"/></svg>`;
 favBtn.onclick = (e) => {
     e.stopPropagation();
-    item.favorited = !item.favorited;
-    localStorage.setItem('personal_duas', JSON.stringify(personalDuas));
-    renderPersonalView();
+    // Detect Arabic vs English text for the dua object
+    const lines = item.text.split('\n').filter(l => l.trim());
+    let arText, enText;
+    if (lines.length >= 2) {
+        const firstHasArabic = /[\u0600-\u06FF]/.test(lines[0]);
+        if (firstHasArabic) {
+            arText = lines[0];
+            enText = lines.slice(1).join('\n');
+        } else {
+            enText = lines[0];
+            arText = lines.slice(1).join('\n');
+        }
+    } else {
+        const hasArabic = /[\u0600-\u06FF]/.test(item.text);
+        if (hasArabic) {
+            arText = item.text;
+            enText = '';
+        } else {
+            enText = item.text;
+            arText = '';
+        }
+    }
+    
+    const duaObj = {
+        ar: arText || item.text,
+        en: enText || item.text,
+        translit: '',
+        source: 'Personal Dua'
+    };
+    
+    if (isFav) {
+        removeFavorite(personalSub, idx);
+    } else {
+        addFavorite(personalSub, idx, duaObj);
+    }
     playClickSound();
 };
 header.appendChild(number);
@@ -2145,8 +2179,7 @@ document.getElementById('dailyMessageCard').addEventListener('click', handleMess
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
-function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); } }
-function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); }
+function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); } }function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); }
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
@@ -2466,7 +2499,7 @@ function openAddPersonalModal() {
 function addPersonalDuaFromInput() {
     const text = document.getElementById('personalDuaInput').value.trim();
     if (text) { 
-        personalDuas.push({ id: Date.now(), text, favorited: false }); 
+        personalDuas.push({ id: Date.now(), text }); 
         localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
         renderPersonalView();
         playClickSound();
