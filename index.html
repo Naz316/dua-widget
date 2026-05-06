@@ -1533,15 +1533,43 @@ header.appendChild(favBtn);
 content.className = 'personal-card-content';
 // Split text by newlines to detect dual language
 const lines = item.text.split('\n').filter(l => l.trim());
-if (lines.length >= 2 && currentLang === 'ar') {
-    // Arabic main = accent color, English/other = grey
-    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(lines[0])}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px;">${escapeHtml(lines.slice(1).join('\n'))}</div>`;
-} else if (lines.length >= 2 && currentLang !== 'ar') {
-    // English main = accent color, Arabic = grey
-    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(lines[0])}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Amiri', serif;">${escapeHtml(lines.slice(1).join('\n'))}</div>`;
+let cardArabic, cardEnglish;
+
+if (lines.length >= 2) {
+    const firstHasArabic = /[\u0600-\u06FF]/.test(lines[0]);
+    if (firstHasArabic) {
+        cardArabic = lines[0];
+        cardEnglish = lines.slice(1).join('\n');
+    } else {
+        cardEnglish = lines[0];
+        cardArabic = lines.slice(1).join('\n');
+    }
 } else {
-    // Single language - use accent color
-    content.innerHTML = `<div style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</div>`;
+    const hasArabic = /[\u0600-\u06FF]/.test(item.text);
+    if (hasArabic) {
+        cardArabic = item.text;
+        cardEnglish = '';
+    } else {
+        cardEnglish = item.text;
+        cardArabic = '';
+    }
+}
+
+// Language priority for card preview
+if (currentLang === 'ar') {
+    // Arabic mode: Arabic on top (accent), English below (dim)
+    if (cardArabic && cardEnglish) {
+        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Amiri', serif;">${escapeHtml(cardArabic)}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Inter', sans-serif;">${escapeHtml(cardEnglish)}</div>`;
+    } else {
+        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Amiri', serif;">${escapeHtml(cardArabic || cardEnglish)}</div>`;
+    }
+} else {
+    // English mode: English on top (accent), Arabic below (dim)
+    if (cardEnglish && cardArabic) {
+        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Inter', sans-serif;">${escapeHtml(cardEnglish)}</div><div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Amiri', serif;">${escapeHtml(cardArabic)}</div>`;
+    } else {
+        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: ${cardEnglish ? "'Inter', sans-serif" : "'Amiri', serif"};">${escapeHtml(cardEnglish || cardArabic)}</div>`;
+    }
 }
             
             // Actions row with delete button
@@ -1589,42 +1617,71 @@ function openPersonalDuaModal(idx) {
     const t = translations[currentLang];
     
     // Split text for dual language handling
-const lines = item.text.split('\n').filter(l => l.trim());
-let mainText, secondaryText;
-if (lines.length >= 2) {
-    mainText = lines[0];
-    secondaryText = lines.slice(1).join('\n');
-} else {
-    mainText = item.text;
-    secondaryText = '';
-}
+    const lines = item.text.split('\n').filter(l => l.trim());
+    let arabicText, englishText;
+    
+    // Detect which line is Arabic (contains Arabic characters) and which is English
+    if (lines.length >= 2) {
+        // Check if first line contains Arabic characters
+        const hasArabic = /[\u0600-\u06FF]/.test(lines[0]);
+        if (hasArabic) {
+            arabicText = lines[0];
+            englishText = lines.slice(1).join('\n');
+        } else {
+            englishText = lines[0];
+            arabicText = lines.slice(1).join('\n');
+        }
+    } else {
+        // Single line - determine if Arabic or English
+        const hasArabic = /[\u0600-\u06FF]/.test(item.text);
+        if (hasArabic) {
+            arabicText = item.text;
+            englishText = '';
+        } else {
+            englishText = item.text;
+            arabicText = '';
+        }
+    }
 
-const mainColor = 'var(--accent)';
-const secondaryColor = 'var(--text-dim)';
+    // Language priority: Arabic mode = Arabic on top (accent), English below (dim)
+    // English mode = English on top (accent), Arabic below (dim)
+    let firstText, secondText, firstIsArabic;
+    if (currentLang === 'ar') {
+        firstText = arabicText;
+        secondText = englishText;
+        firstIsArabic = true;
+    } else {
+        firstText = englishText;
+        secondText = arabicText;
+        firstIsArabic = false;
+    }
 
-// Build modal content with proper language priority like other blocks
-let contentHtml = `
-    <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
-    <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-        <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
-            <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif;">${escapeHtml(mainText)}</div>
-            ${secondaryText ? `<div style="color: ${secondaryColor}; font-weight: 400; margin-top: 10px; font-size: calc(var(--dua-font-size) * 0.85); line-height: 1.6; ${currentLang !== 'ar' ? "font-family: 'Amiri', serif;" : ''}">${escapeHtml(secondaryText)}</div>` : ''}
+    const mainColor = 'var(--accent)';
+    const secondaryColor = 'var(--text-dim)';
+
+    // Build modal content with proper language priority like other blocks
+    let contentHtml = `
+        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
+        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
+            <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
+                <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; ${firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(firstText)}</div>
+                ${secondText ? `<div style="color: ${secondaryColor}; font-weight: 400; margin-top: 10px; font-size: calc(var(--dua-font-size) * 0.85); line-height: 1.6; ${!firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(secondText)}</div>` : ''}
+            </div>
         </div>
-    </div>
-    <div class="nav-arrows" id="personalModalNavArrows">
-`;
+        <div class="nav-arrows" id="personalModalNavArrows">
+    `;
     if (isHorizontalMode) {
-    contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">←</button>
-                    <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">→</button>`;
-} else {
-    contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
-                    <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
-}
+        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">←</button>
+                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">→</button>`;
+    } else {
+        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
+                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
+    }
     
     contentHtml += `
         </div>
         <div class="personal-modal-actions" style="margin-top: 15px;">
-            <button class="personal-save-btn" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal || 'إغلاق'}</button>
+            <button class="personal-save-btn" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal}</button>
         </div>
     `;
     
