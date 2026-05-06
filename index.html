@@ -1482,11 +1482,11 @@ function openPersonalDuaModal(idx) {
     const t = translations[currentLang];
     
     // Build modal content similar to main dua modal
-    let contentHtml = `
+        let contentHtml = `
         <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
             <div class="dua-text" style="font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif; text-align: right;">
-                <div style="font-weight:700; color: ${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${item.text}</div>
+                <div style="font-weight:700; color: var(--accent); margin-bottom:15px;">${item.text}</div>
             </div>
         </div>
         <div class="nav-arrows" id="personalModalNavArrows">
