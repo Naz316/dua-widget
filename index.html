@@ -1043,10 +1043,29 @@ body.text-ltr #openedMessageText {
     white-space: pre-wrap;
     font-size: 16px;
     line-height: 1.5;
-    color: var(--text);
     font-family: 'Amiri', serif;
     flex: 1;
     width: 100%;
+}
+
+/* Personal Dua Language Priority - matches ruqya/sunnah/quranic blocks */
+body.text-rtl .personal-card .personal-card-content {
+    color: var(--accent) !important;
+    font-weight: 700;
+}
+body.text-ltr .personal-card .personal-card-content {
+    color: var(--text-dim) !important;
+    font-weight: 400;
+}
+
+/* When English/main language is active (LTR mode) - main text gets accent */
+body.text-ltr .personal-card .personal-card-content {
+    color: var(--accent) !important;
+    font-weight: 700;
+}
+body.text-rtl .personal-card .personal-card-content {
+    color: var(--text-dim) !important;
+    font-weight: 400;
 }
 .personal-card-actions {
     display: flex;
@@ -1142,6 +1161,35 @@ body.text-ltr #openedMessageText {
 .personal-modal .modal-close-x:hover { background: var(--accent-soft); color: var(--accent); }
 body.text-rtl .personal-modal .modal-close-x { right: auto; left: 12px; }
 .personal-modal .scrollable-text-wrapper { max-height: 280px; overflow-y: auto; margin: 10px 0; padding-right: 8px; scrollbar-width: thin; }
+
+/* Personal Modal Dua Text - matches accent color priority like ruqya/sunnah/quranic */
+.personal-modal .dua-text {
+    font-size: var(--dua-font-size);
+    line-height: 1.8;
+    font-family: 'Amiri', serif;
+    text-align: left;
+}
+
+/* RTL mode: Arabic is main language = accent color */
+body.text-rtl .personal-modal .dua-text {
+    text-align: right;
+    color: var(--accent) !important;
+    font-weight: 700;
+}
+
+/* LTR mode: English/other is main language = accent color */
+body.text-ltr .personal-modal .dua-text {
+    text-align: left;
+    color: var(--accent) !important;
+    font-weight: 700;
+}
+
+/* Secondary language in personal modal = grey/dim */
+body.text-rtl .personal-modal .dua-text .secondary-lang,
+body.text-ltr .personal-modal .dua-text .secondary-lang {
+    color: var(--text-dim) !important;
+    font-weight: 400;
+}
 .personal-save-btn { background: var(--accent); color: white; }
 .personal-cancel-btn { background: var(--text-dim); color: white; opacity: 0.8; }
 
@@ -1385,6 +1433,13 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
 // Add these variables at the top of your <script> section
 let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
 
+// Helper to escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.innerText = text;
+    return div.innerHTML;
+}
+
 // ===== PERSONAL DUAS FUNCTIONS (Updated with numbers + horizontal mode) =====
 
 function renderPersonalView() {
@@ -1433,8 +1488,17 @@ function renderPersonalView() {
             header.appendChild(favBtn);
             
             const content = document.createElement('div');
-            content.className = 'personal-card-content';
-            content.innerText = item.text;
+content.className = 'personal-card-content';
+// Apply language priority styling like ruqya/sunnah blocks
+if (currentLang === 'ar') {
+    // Arabic main language = accent color, other language = grey
+    content.innerHTML = `<span class="main-lang" style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</span>`;
+} else {
+    // English/other main language = accent color, Arabic = grey  
+    content.innerHTML = `<span class="main-lang" style="color: var(--accent); font-weight: 700;">${escapeHtml(item.text)}</span>`;
+}
+content.style.color = 'var(--accent)';
+content.style.fontWeight = '700';
             
             // Actions row with delete button
             const actions = document.createElement('div');
@@ -1480,12 +1544,16 @@ function openPersonalDuaModal(idx) {
     const modalContent = modal.querySelector('.modal-content');
     const t = translations[currentLang];
     
-    // Build modal content similar to main dua modal
+    // Determine colors based on active language (same logic as ruqya/sunnah/quranic)
+    const mainColor = 'var(--accent)';
+    const secondaryColor = 'var(--text-dim)';
+    
+    // Build modal content with proper language priority like other blocks
     let contentHtml = `
         <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-            <div class="dua-text" style="font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif; text-align: right;">
-                <div style="font-weight:700; color: ${isDarkMode ? 'var(--accent)' : '#1a1a1a'}; margin-bottom:15px;">${item.text}</div>
+            <div class="dua-text" id="personalDuaText">
+                <div class="personal-main-text" style="color: ${mainColor}; font-weight: 700; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif;">${escapeHtml(item.text)}</div>
             </div>
         </div>
         <div class="nav-arrows" id="personalModalNavArrows">
@@ -1806,8 +1874,8 @@ const quranicDuas = [
 
 // =============================== APPLICATION LOGIC ===============================
 const translations = {
-    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", personalEmptyText: "لم تقم بإضافة أي طلبات دعاء حتى الآن", addDua: "أضف طلب دعاء", personalModalTitle: "أضف دعاء جديد", save: "حفظ", cancel: "إلغاء", personalBackText: "رجوع", todayDua:"دعاؤك اليوم", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
-    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", personalEmptyText: "You haven't added any prayer requests yet", addDua: "Add a Dua", personalModalTitle: "Add New Dua", save: "Save", cancel: "Cancel", personalBackText: "Back", todayDua:"Your Dua Today", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
+    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", personalEmptyText: "لم تقم بإضافة أي طلبات دعاء حتى الآن", addDua: "أضف طلب دعاء", personalModalTitle: "أضف دعاء جديد", save: "حفظ", cancel: "إلغاء", personalBackText: "رجوع", todayDua:"دعاؤك اليوم", personalMainLang: "النص الرئيسي", personalSecondaryLang: "النص الثانوي", personalMainLang: "النص الرئيسي", personalSecondaryLang: "النص الثانوي", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
+    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", personalEmptyText: "You haven't added any prayer requests yet", addDua: "Add a Dua", personalModalTitle: "Add New Dua", save: "Save", cancel: "Cancel", personalBackText: "Back", todayDua:"Your Dua Today", personalMainLang: "Main Text", personalSecondaryLang: "Secondary Text", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
 };
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
@@ -1847,11 +1915,12 @@ function updateFullTheme(){
     localStorage.setItem('dua_accent', currentAccent);
     localStorage.setItem('dua_darkMode', isDarkMode);
     if(ruqyahActive) renderRuqyahDuas();
-    if(favoritesActive) renderFavorites();
-    if(sunnahActive) renderSunnahDuas();
-    if(quranicActive) renderQuranicDuas();
-    updateGlobalFavIcon();
-}
+   if(favoritesActive) renderFavorites();
+   if(sunnahActive) renderSunnahDuas();
+   if(quranicActive) renderQuranicDuas();
+   if(document.getElementById('personalView').style.display === 'flex') renderPersonalView();
+   updateGlobalFavIcon();
+ }
 
 function playClickSound(){ const chk=document.getElementById('chkClick'); if(!chk||!chk.checked) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value=800; gain.gain.setValueAtTime(0.1,now); gain.gain.exponentialRampToValueAtTime(0.00001,now+0.12); osc.start(); osc.stop(now+0.1); }catch(e){} }
 function playVibration(){ const chk=document.getElementById('chkVibrate'); if(chk&&chk.checked&&navigator.vibrate) navigator.vibrate(60); }
@@ -1871,7 +1940,7 @@ function applyLanguage(){
     document.getElementById('closeModalBtn').innerText=t.closeModal;
     document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip); document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip); document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
     if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
-    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas();
+    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView();
     updateGlobalFavIcon();
     document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub));
     document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentWird));
