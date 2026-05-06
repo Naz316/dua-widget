@@ -1216,8 +1216,10 @@ body.text-ltr .personal-modal .dua-text .secondary-lang {
     color: var(--text-dim) !important;
     font-weight: 400;
 }
-.personal-save-btn { background: var(--accent); color: white; }
-.personal-cancel-btn { background: var(--text-dim); color: white; opacity: 0.8; }
+.personal-save-btn { background: var(--accent); color: white; padding: 12px 35px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; display: inline-block; }
+.personal-save-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+.personal-cancel-btn { background: var(--text-dim); color: white; opacity: 0.8; padding: 12px 35px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; display: inline-block; }
+.personal-cancel-btn:hover { opacity: 1; transform: scale(1.02); }
 
 /* Dark mode scrollbar for personal list */
 body.dark-mode .personal-list-container {
@@ -1712,11 +1714,9 @@ function openPersonalDuaModal(idx) {
                         <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
     }
     
-    contentHtml += `
+        contentHtml += `
         </div>
-        <div class="personal-modal-actions" style="margin-top: 15px;">
-            <button class="personal-save-btn" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal}</button>
-        </div>
+        <button class="close-modal" style="margin-top: 20px;" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal}</button>
     `;
     
     modalContent.innerHTML = contentHtml;
