@@ -1183,8 +1183,8 @@ body.text-rtl .personal-card .personal-card-content {
 /* Modal styles */
 .personal-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
 .personal-modal .modal-content { background: var(--card-bg); padding: 40px 25px; border-radius: 30px; width: 100%; max-width: 380px; text-align: center; color: var(--text); position: relative; }
-.personal-modal .modal-close-x { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 28px; font-weight: bold; cursor: pointer; color: var(--text-dim); transition: 0.2s; line-height: 1; padding: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-.personal-modal .modal-close-x:hover { background: var(--accent-soft); color: var(--accent); }
+.personal-modal .modal-close-x { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 28px; font-weight: bold; cursor: pointer; color: var(--text-dim); transition: 0.2s; line-height: 1; padding: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10; }
+.personal-modal .modal-close-x:hover { background: var(--accent-soft); color: var(--accent); transform: scale(1.1); }
 body.text-rtl .personal-modal .modal-close-x { right: auto; left: 12px; }
 .personal-modal .scrollable-text-wrapper { max-height: 280px; overflow-y: auto; margin: 10px 0; padding-right: 8px; scrollbar-width: thin; }
 
@@ -1695,7 +1695,7 @@ function openPersonalDuaModal(idx) {
 
     // Build modal content with proper language priority like other blocks
     let contentHtml = `
-        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
+        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'" aria-label="Close">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
             <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
                 <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; ${firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(firstText)}</div>
@@ -2478,7 +2478,7 @@ function openAddPersonalModal() {
     
     // Reset to add mode
     modalContent.innerHTML = `
-        <button class="modal-close-x" id="personalModalCloseX">✕</button>
+        <button class="modal-close-x" id="personalModalCloseX" aria-label="Close">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
             <h3 id="personalModalTitle" style="margin-bottom: 15px; color: var(--text);">${t.personalModalTitle}</h3>
             <textarea id="personalDuaInput" rows="6" placeholder="${currentLang === 'ar' ? 'اكتب دعاءك هنا...' : 'Write your dua here...'}" style="width: 100%; min-height: 120px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px;"></textarea>
