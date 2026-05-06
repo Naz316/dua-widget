@@ -121,6 +121,23 @@ body.text-ltr #openedMessageText {
         .icon-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
         .icon-btn img { width: auto; height: auto; max-width: 24px; max-height: 24px; filter: invert(1); display: block; }
         .lang-btn img { max-width: 28px; max-height: 28px; }
+        /* Language button active state - Arabic active */
+.lang-btn.active-lang-ar {
+    background: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.3);
+}
+.lang-btn.active-lang-ar img {
+    filter: brightness(0) invert(1) !important;
+}
+
+/* Language button active state - English active */
+.lang-btn.active-lang-en {
+    background: rgba(255,255,255,0.15) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+.lang-btn.active-lang-en img {
+    filter: invert(1) !important;
+}
         .menu-icon span { font-size: 26px; font-weight: bold; color: white; line-height: 1; }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -303,14 +320,14 @@ body.text-ltr #openedMessageText {
             direction: ltr;
         } /* <--- MAKE SURE THERE IS A CLOSING BRACE HERE */
 
-        /* Now, place these here, OUTSIDE the subcategory-buttons */
+        /* Now, place these here, OUTSIDE the subcategory-buttons 
         .personal-card { background: var(--card-bg); border-radius: 20px; padding: 18px; border-left: 4px solid var(--accent); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .personal-card-content { word-break: break-word; white-space: pre-wrap; font-size: 16px; font-family: 'Amiri', serif; color: var(--text); }
         .personal-delete-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 20px; }
         .personal-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
         .personal-modal-card { background: var(--card-bg); border-radius: 30px; padding: 25px; width: 90%; max-width: 400px; text-align: center; }
         .personal-modal-card textarea { width: 100%; min-height: 120px; margin: 15px 0; border: 1px solid var(--border-color); border-radius: 15px; padding: 10px; background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; 
-        }
+        }*/
         body.text-rtl .subcategory-buttons {
             direction: rtl;
         }
@@ -324,7 +341,7 @@ body.text-ltr #openedMessageText {
             color: var(--text);
             transition: 0.2s;
         }
-        .subcategory-btn.active { background: var(--accent); color: white; }
+        .subcategory-btn.active {      background: var(--accent);      color: white !important;      font-weight: bold;     text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .back-button {
             background: var(--accent);
             color: white;
@@ -747,25 +764,33 @@ body.text-ltr #openedMessageText {
             position: relative;
         }
         .modal-close-x {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: none;
-            border: none;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: var(--text-dim);
-            transition: 0.2s;
-            line-height: 1;
-            padding: 0;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 32px;  /* INCREASED from 28px */
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: 0.2s;
+    line-height: 1;
+    padding: 0;
+    width: 44px;      /* INCREASED from 36px */
+    height: 44px;     /* INCREASED from 36px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.modal-close-x:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+body.text-rtl .modal-close-x {
+    right: auto;
+    left: 12px;
+}
         .modal-close-x:hover {
             background: var(--accent-soft);
             color: var(--accent);
@@ -844,12 +869,60 @@ body.text-ltr #openedMessageText {
             scrollbar-width: thin;
             scrollbar-color: #373737 #191919;
         }
-        body.dark-mode .dua-list-container::-webkit-scrollbar,
-        body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar,
-        body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+        /* ========== DARK MODE SCROLLBARS - SAME WIDTH AS LIGHT MODE ========== */
+body.dark-mode .dua-list-container,
+body.dark-mode .dua-list-container.horizontal-mode,
+body.dark-mode .scrollable-text-wrapper,
+body.dark-mode .personal-list-container,
+body.dark-mode .personal-modal .scrollable-text-wrapper {
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: #888 #f1f1f1;  /* Same colors as light mode */
+}
+
+body.dark-mode .dua-list-container::-webkit-scrollbar,
+body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar,
+body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar,
+body.dark-mode .personal-list-container::-webkit-scrollbar,
+body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar {
+    width: 8px;   /* SAME as light mode */
+    height: 8px;  /* SAME as light mode */
+}
+
+body.dark-mode .dua-list-container::-webkit-scrollbar-track,
+body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-track,
+body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-track,
+body.dark-mode .personal-list-container::-webkit-scrollbar-track,
+body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;  /* Light track like light mode */
+    border-radius: 10px;
+}
+
+body.dark-mode .dua-list-container::-webkit-scrollbar-thumb,
+body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-thumb,
+body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb,
+body.dark-mode .personal-list-container::-webkit-scrollbar-thumb,
+body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-thumb {
+    background: #888 !important;  /* Same grey as light mode */
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;  /* Same border style */
+    background-clip: padding-box;
+}
+
+body.dark-mode .dua-list-container::-webkit-scrollbar-thumb:hover,
+body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-thumb:hover,
+body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover,
+body.dark-mode .personal-list-container::-webkit-scrollbar-thumb:hover,
+body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;  /* Same hover as light mode */
+}
+
+body.dark-mode .dua-list-container::-webkit-scrollbar-button,
+body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-button,
+body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button,
+body.dark-mode .personal-list-container::-webkit-scrollbar-button,
+body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-button {
+    display: none;  /* Same as light mode */
+}
         body.dark-mode .dua-list-container::-webkit-scrollbar-track,
         body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-track,
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-track {
@@ -874,7 +947,6 @@ body.text-ltr #openedMessageText {
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button {
             display: none;    
         }
-        /* ===== PERSONAL DUAS STYLES (from my-duas.html) ===== */
 .personal-header {
     display: flex;
     justify-content: space-between;
@@ -1201,6 +1273,42 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-thumb
 body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-button {
     display: none;
 }
+
+/* Personal card language styling */
+.personal-arabic-text {
+    font-family: 'Amiri', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+}
+.personal-english-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: color 0.3s;
+}
+
+/* When Arabic is active */
+body.text-rtl .personal-arabic-text {
+    color: var(--accent) !important;
+    font-weight: bold;
+}
+body.text-rtl .personal-english-text {
+    color: var(--text-dim) !important;
+    font-weight: normal;
+}
+
+/* When English is active */
+body.text-ltr .personal-english-text {
+    color: var(--accent) !important;
+    font-weight: bold;
+}
+body.text-ltr .personal-arabic-text {
+    color: var(--text-dim) !important;
+    font-weight: normal;
+}
+        
     </style>
 <base target="_blank">
 </head>
@@ -1385,6 +1493,24 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
 // Add these variables at the top of your <script> section
 let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
 
+// Migration: Convert old format to new bilingual format
+function migratePersonalDuas() {
+    personalDuas = personalDuas.map(item => {
+        if (typeof item === 'string' || item.text) {
+            // Old format: convert to new
+            const oldText = typeof item === 'string' ? item : item.text;
+            return {
+                id: item.id || Date.now(),
+                ar: oldText,
+                en: oldText  // Default: same text for both until user edits
+            };
+        }
+        return item;
+    });
+    localStorage.setItem('personal_duas', JSON.stringify(personalDuas));
+}
+migratePersonalDuas();
+
 // ===== PERSONAL DUAS FUNCTIONS (Updated with numbers + horizontal mode) =====
 
 function renderPersonalView() {
@@ -1401,7 +1527,6 @@ function renderPersonalView() {
         listDiv.style.display = 'flex'; 
         listDiv.innerHTML = ''; 
         
-        // Handle horizontal mode
         if (isHorizontalMode) {
             listDiv.classList.add('horizontal-mode');
             paginationDiv.style.display = 'block';
@@ -1415,7 +1540,6 @@ function renderPersonalView() {
             const card = document.createElement('div'); 
             card.className = 'personal-card';
             
-            // Create header with number and heart icon
             const header = document.createElement('div');
             header.className = 'personal-card-header';
             
@@ -1423,7 +1547,6 @@ function renderPersonalView() {
             number.className = 'personal-card-number';
             number.innerText = (idx + 1) + '.';
             
-            // Heart icon (like dua cards)
             const favBtn = document.createElement('button');
             favBtn.className = 'personal-fav-btn';
             const strokeColor = getHeartStrokeColor();
@@ -1432,9 +1555,80 @@ function renderPersonalView() {
             header.appendChild(number);
             header.appendChild(favBtn);
             
+            // ✅ BILINGUAL CONTENT
             const content = document.createElement('div');
             content.className = 'personal-card-content';
-            content.innerText = item.text;
+            
+            // Arabic text (active language = accent color)
+            const arText = document.createElement('div');
+            arText.className = 'personal-arabic-text';
+            arText.innerText = item.ar || item.text || '';
+            arText.style.fontFamily = "'Amiri', serif";
+            arText.style.fontSize = "18px";
+            arText.style.lineHeight = "1.6";
+            arText.style.marginBottom = "8px";
+            
+            // English text (inactive language = grey)
+            const enText = document.createElement('div');
+            enText.className = 'personal-english-text';
+            enText.innerText = item.en || item.text || '';
+            enText.style.fontFamily = "'Inter', sans-serif";
+            enText.style.fontSize = "14px";
+            enText.style.lineHeight = "1.5";
+            enText.style.color = "var(--text-dim)";
+            
+            // Apply active language styling
+            if (currentLang === 'ar') {
+                arText.style.color = 'var(--accent)';  // Yellow/accent for active
+                arText.style.fontWeight = 'bold';
+                enText.style.color = 'var(--text-dim)'; // Grey for inactive
+                enText.style.fontWeight = 'normal';
+            } else {
+                enText.style.color = 'var(--accent)';  // Yellow/accent for active
+                enText.style.fontWeight = 'bold';
+                arText.style.color = 'var(--text-dim)'; // Grey for inactive
+                arText.style.fontWeight = 'normal';
+            }
+            
+            content.appendChild(arText);
+            content.appendChild(enText);
+            
+            // Actions
+            const actions = document.createElement('div');
+            actions.className = 'personal-card-actions';
+            
+            const delBtn = document.createElement('button'); 
+            delBtn.className = 'personal-delete-btn';
+            delBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+            delBtn.onclick = (e) => { 
+                e.stopPropagation();
+                personalDuas.splice(idx, 1); 
+                localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+                renderPersonalView();
+                playClickSound();
+            };
+            
+            actions.appendChild(delBtn);
+            
+            card.appendChild(header);
+            card.appendChild(content);
+            card.appendChild(actions);
+            
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.personal-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                openPersonalDuaModal(idx);
+                playClickSound();
+            });
+            
+            listDiv.appendChild(card);
+        });
+        
+        if (isHorizontalMode) {
+            setupPersonalHorizontalScroll();
+        }
+    }
+}
             
             // Actions row with delete button
             const actions = document.createElement('div');
@@ -1480,7 +1674,41 @@ function openPersonalDuaModal(idx) {
     const modalContent = modal.querySelector('.modal-content');
     const t = translations[currentLang];
     
-    // Build modal content similar to main dua modal
+    let contentHtml = `
+        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
+        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
+            <div class="dua-text" style="font-size: var(--dua-font-size); line-height: 1.8; font-family: 'Amiri', serif; text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
+                <!-- Arabic Text -->
+                <div class="personal-modal-ar" style="font-weight:700; color: ${currentLang === 'ar' ? 'var(--accent)' : 'var(--text-dim)'}; margin-bottom:15px; font-family: 'Amiri', serif;">
+                    ${item.ar || item.text || ''}
+                </div>
+                <!-- English Text -->
+                <div class="personal-modal-en" style="font-weight:${currentLang === 'en' ? '700' : '400'}; color: ${currentLang === 'en' ? 'var(--accent)' : 'var(--text-dim)'}; margin-bottom:15px; font-family: 'Inter', sans-serif; font-size: 16px;">
+                    ${item.en || item.text || ''}
+                </div>
+            </div>
+        </div>
+        <div class="nav-arrows" id="personalModalNavArrows">
+    `;
+    
+    if (isHorizontalMode) {
+        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">←</button>
+                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">→</button>`;
+    } else {
+        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
+                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
+    }
+    
+    contentHtml += `
+        </div>
+        <div class="personal-modal-actions" style="margin-top: 15px;">
+            <button class="personal-save-btn" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal || 'إغلاق'}</button>
+        </div>
+    `;
+    
+    modalContent.innerHTML = contentHtml;
+    modal.style.display = 'flex';
+}
     let contentHtml = `
         <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
@@ -1878,6 +2106,18 @@ function applyLanguage(){
     document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentQuranicWird));
 }
 
+    
+    // Update language button active state
+    const langBtn = document.getElementById('langToggleBtn');
+    if (langBtn) {
+        langBtn.classList.remove('active-lang-ar', 'active-lang-en');
+        if (currentLang === 'ar') {
+            langBtn.classList.add('active-lang-ar');
+        } else {
+            langBtn.classList.add('active-lang-en');
+        }
+    }
+
 function checkDailyStatus() {
     const today = new Date().toDateString();
     const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
@@ -2264,12 +2504,20 @@ function openAddPersonalModal() {
     const modalContent = modal.querySelector('.modal-content');
     const t = translations[currentLang];
     
-    // Reset to add mode
     modalContent.innerHTML = `
         <button class="modal-close-x" id="personalModalCloseX">✕</button>
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
             <h3 id="personalModalTitle" style="margin-bottom: 15px; color: var(--text);">${t.personalModalTitle || 'أضف دعاء جديد'}</h3>
-            <textarea id="personalDuaInput" rows="6" placeholder="اكتب دعاءك هنا..." style="width: 100%; min-height: 120px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px;"></textarea>
+            
+            <!-- Arabic Input -->
+            <label style="display:block; color:var(--accent); font-weight:bold; margin-bottom:5px; text-align:right; font-family:'Tajawal',sans-serif;">العربية</label>
+            <textarea id="personalDuaInputAr" rows="4" placeholder="اكتب الدعاء بالعربية..." 
+                style="width: 100%; min-height: 80px; padding: 14px; border-radius: 20px; border: 2px solid var(--accent); background: var(--widget-bg); color: var(--text); font-family: 'Amiri', serif; font-size: 18px; resize: vertical; margin-bottom: 15px; text-align: right; direction: rtl;"></textarea>
+            
+            <!-- English Input -->
+            <label style="display:block; color:var(--text-dim); font-weight:bold; margin-bottom:5px; text-align:left; font-family:'Inter',sans-serif;">English</label>
+            <textarea id="personalDuaInputEn" rows="4" placeholder="Write the dua in English..." 
+                style="width: 100%; min-height: 80px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px; text-align: left; direction: ltr;"></textarea>
         </div>
         <div class="personal-modal-actions" style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
             <button id="personalSaveDuaBtn" class="personal-save-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--accent); color: white; transition: 0.2s;">${t.save || 'حفظ'}</button>
@@ -2277,7 +2525,6 @@ function openAddPersonalModal() {
         </div>
     `;
     
-    // Re-attach event listeners
     document.getElementById('personalSaveDuaBtn')?.addEventListener('click', addPersonalDuaFromInput);
     document.getElementById('personalCancelModalBtn')?.addEventListener('click', () => modal.style.display = 'none');
     
@@ -2285,9 +2532,15 @@ function openAddPersonalModal() {
 }
 
 function addPersonalDuaFromInput() {
-    const text = document.getElementById('personalDuaInput').value.trim();
-    if (text) { 
-        personalDuas.push({ id: Date.now(), text }); 
+    const arText = document.getElementById('personalDuaInputAr').value.trim();
+    const enText = document.getElementById('personalDuaInputEn').value.trim();
+    
+    if (arText || enText) { 
+        personalDuas.push({ 
+            id: Date.now(), 
+            ar: arText || enText || '',  // Fallback: use other language if empty
+            en: enText || arText || ''   // Fallback: use other language if empty
+        }); 
         localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
         renderPersonalView();
         playClickSound();
