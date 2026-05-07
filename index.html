@@ -2162,20 +2162,39 @@ function showVideoDuaModal(dua) {
     const modal = document.getElementById('duaModal');
     const modalContent = document.getElementById('duaModalBody');
     const t = translations[currentLang];
+    
+    // Store dua data for copy/share functions
+    modalContent.dataset.duaAr = dua.ar || '';
+    modalContent.dataset.duaEn = dua.en || '';
+    modalContent.dataset.duaTranslit = dua.translit || '';
+    
     let contentHtml = `
         <div class="modal-blue-header">
-            <button class="share-circle-btn" onclick="toggleSharePopup()">
+            <button class="share-circle-btn" onclick="toggleSharePopup()" title="${t.shareTooltip}">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
             <h3>${t.todayDua}</h3>
             <div style="font-size:24px; cursor:pointer;" onclick="document.getElementById('duaModal').style.display='none'">✕</div>
         </div>
-        <div class="dua-text" style="font-size:1.3rem; font-weight:700; color:var(--text); padding-top:10px;">${dua.ar}</div>
+        <div class="scrollable-text-wrapper" id="dailyDuaScrollable" style="max-height:320px; overflow-y:auto; margin:10px 0;">
+            <div class="dua-text" style="font-size:1.3rem; font-weight:700; color:var(--text); padding-top:10px; text-align:right; direction:rtl;">${dua.ar}</div>
+            <div style="color:var(--text-dim); margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-color); text-align:left; direction:ltr; font-family:'Inter',sans-serif; line-height:1.6;">${dua.en}</div>
     `;
-    if (showTranslit) {
-        contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
+    if (showTranslit && dua.translit) {
+        contentHtml += `<div style="color:var(--text-dim); font-style:italic; margin-top:10px; padding-top:10px; border-top:1px dotted var(--border-color); direction:ltr; text-align:left;">${dua.translit}</div>`;
     }
-    contentHtml += `<button class="close-modal" style="margin-top:20px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>`;
+    contentHtml += `
+        </div>
+        <div style="display:flex; gap:15px; justify-content:center; align-items:center; margin-top:15px;">
+            <button class="action-btn" onclick="copyDailyDuaAll()" title="${t.copyTooltip}" style="width:44px; height:44px; border-radius:50%;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            </button>
+            <button class="action-btn" onclick="toggleSharePopup()" title="${t.shareTooltip}" style="width:44px; height:44px; border-radius:50%;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+        <button class="close-modal" style="margin-top:15px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>
+    `;
     modalContent.innerHTML = contentHtml;
     modal.style.display = 'flex';
 }
@@ -2587,6 +2606,28 @@ document.getElementById('btnRefresh')?.addEventListener('click',()=>location.rel
 
 function updateGlobalFavIcon(){ const sp=document.querySelector('#favSvgIcon path'); if(sp) sp.setAttribute('stroke','white'); }
 function updateMenuFavButton(){ const btn=document.getElementById('btnFav'); const svg=document.getElementById('favSvgIcon'); let isFav=false; if(ruqyahActive&&selectedDuaIndex>=0) isFav=isFavorited(currentRuqyahSub,selectedDuaIndex); else if(favoritesActive&&favoritesList.length>0) isFav=true; else if(sunnahActive&&selectedDuaIndex>=0) isFav=isFavorited('sunnah',selectedDuaIndex); else if(quranicActive&&selectedDuaIndex>=0) isFav=isFavorited('quranic',selectedDuaIndex); if(isFav){ if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'إزالة من المفضلة':'Remove from Favorites'); } else { if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'أضف إلى المفضلة':'Add to Favorites'); } }
+
+function copyDailyDuaAll() {
+    const modalContent = document.getElementById('duaModalBody');
+    const ar = modalContent.dataset.duaAr || '';
+    const en = modalContent.dataset.duaEn || '';
+    const translit = modalContent.dataset.duaTranslit || '';
+    
+    let fullText = '';
+    if (ar) fullText += ar + '\n\n';
+    if (en) fullText += en + '\n\n';
+    if (translit) fullText += translit + '\n\n';
+    fullText += '— ' + (currentLang === 'ar' ? 'دعاؤك اليوم' : 'Your Dua Today');
+    
+    navigator.clipboard.writeText(fullText.trim()).then(() => {
+        const btn = event.currentTarget;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span style="font-size:20px">✅</span>';
+        setTimeout(() => btn.innerHTML = orig, 2000);
+    }).catch(() => {
+        alert(currentLang === 'ar' ? 'فشل النسخ' : 'Copy failed');
+    });
+}
 
 function toggleSharePopup(){ const pop=document.getElementById('sharePopup'); pop.classList.toggle('show'); if(pop.classList.contains('show')) buildShareGrid(); setTimeout(()=>{ document.addEventListener('click',function closeShare(e){ if(!pop.contains(e.target)&&!document.getElementById('btnShare').contains(e.target)){ pop.classList.remove('show'); document.removeEventListener('click',closeShare); } }); },100); }
 function buildShareGrid(){ let text=''; if(currentModalIndex>=0 && currentModalList[currentModalIndex]){ text=currentLang==='ar'?currentModalList[currentModalIndex].ar:currentModalList[currentModalIndex].en; } else if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(!text) return; const shareText=encodeURIComponent(text.substring(0,300)); const pageUrl=window.location.href; const pn={ar:{whatsapp:"واتساب",telegram:"تليجرام",twitter:"تويتر",facebook:"فيسبوك",messenger:"ماسنجر",copy:"نسخ الرابط"},en:{whatsapp:"WhatsApp",telegram:"Telegram",twitter:"X",facebook:"Facebook",messenger:"Messenger",copy:"Copy Link"}}[currentLang]; const icons={whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', telegram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', twitter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', facebook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', messenger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}; const platforms=[{name:pn.whatsapp,icon:icons.whatsapp,url:`https://wa.me/?text=${shareText}`},{name:pn.telegram,icon:icons.telegram,url:`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}`},{name:pn.twitter,icon:icons.twitter,url:`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}`},{name:pn.facebook,icon:icons.facebook,url:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.messenger,icon:icons.messenger,url:`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.copy,icon:icons.copy,url:"",action:()=>navigator.clipboard.writeText(pageUrl)}]; const grid=document.getElementById('shareGrid'); grid.innerHTML=''; platforms.forEach(p=>{ const div=document.createElement('div'); div.className='share-icon'; div.innerHTML=`${p.icon}<span>${p.name}</span>`; div.onclick=()=>{ if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); else if(p.action) p.action(); document.getElementById('sharePopup').classList.remove('show'); }; grid.appendChild(div); }); }
