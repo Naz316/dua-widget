@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>DUA-WIDGET</title>
+    <title>الدعاء · الرقية الشرعية · الأذكار · القرآن</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -142,85 +142,42 @@ body.text-ltr #openedMessageText {
         .message-container { padding: 25px 20px; perspective: 1000px; }
         
         /* Message Card Styles */
-    /* --- ENVELOPE & STAR ANIMATIONS --- */
-.message-card {
-    background: var(--card-bg);
-    border-radius: 35px;
-    padding: 60px 20px 35px 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.3s;
-}
-
-/* The Grey Triangle Flap */
-.message-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 55px;
-    background: var(--envelope-flap);
-    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-    z-index: 2;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: top;
-}
-
-/* Triggered by JS: Flips the flap up 180 degrees */
-.message-card.open-flap::before {
-    transform: translateY(-55px) scaleY(-1);
-    z-index: 1;
-}
-
-/* ===== SWING ON PAGE LOAD ===== */
-.message-card.envelope-animation {
-    animation: mailSwing 1.2s ease-out forwards;
-}
-
-@keyframes mailSwing {
-    0% { transform: rotate(0deg); }
-    15% { transform: rotate(12deg); }
-    30% { transform: rotate(-10deg); }
-    45% { transform: rotate(8deg); }
-    60% { transform: rotate(-5deg); }
-    75% { transform: rotate(3deg); }
-    90% { transform: rotate(-1deg); }
-    100% { transform: rotate(0deg); }
-}
-
-/* GOLDEN STAR CLUSTER */
-.star-loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    position: relative;
-}
-.star-cluster {
-    position: relative;
-    width: 60px; height: 60px;
-}
-.star-shape {
-    position: absolute;
-    background: #EEDD82; 
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    animation: star-pulse 1.5s infinite ease-in-out;
-}
-/* Staggered star delays */
-.star-shape:nth-child(1) { width: 22px; height: 22px; top: 0; left: 19px; animation-delay: 0s; }
-.star-shape:nth-child(2) { width: 16px; height: 16px; top: 25px; left: 0; animation-delay: 0.2s; }
-.star-shape:nth-child(3) { width: 16px; height: 16px; top: 25px; left: 40px; animation-delay: 0.4s; }
-.star-shape:nth-child(4) { width: 12px; height: 12px; top: 48px; left: 24px; animation-delay: 0.6s; }
-.star-shape:nth-child(5) { width: 14px; height: 14px; top: 10px; left: 45px; animation-delay: 0.1s; }
-.star-shape:nth-child(6) { width: 14px; height: 14px; top: 10px; left: -5px; animation-delay: 0.3s; }
-
-@keyframes star-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.3); opacity: 1; }
-}
+        .message-card {
+            background: var(--card-bg);
+            border-radius: 35px;
+            padding: 60px 20px 35px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .message-card.envelope-animation {
+            animation: mailSwing 1.2s ease-out forwards;
+        }
+        .message-card.envelope-animation::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 55px;
+            background: var(--envelope-flap);
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+            z-index: 2;
+        }
+        @keyframes mailSwing {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(12deg); }
+            30% { transform: rotate(-10deg); }
+            45% { transform: rotate(8deg); }
+            60% { transform: rotate(-5deg); }
+            75% { transform: rotate(3deg); }
+            90% { transform: rotate(-1deg); }
+            100% { transform: rotate(0deg); }
+        }
         .message-card h2 { font-size: 1.6rem; margin-bottom: 4px; color: var(--text); font-weight: 800; }
         .message-card .sub-title { color: var(--text-dim); font-size: 1rem; margin-bottom: 15px; }
         .message-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
@@ -306,26 +263,17 @@ body.text-ltr #openedMessageText {
         .grid-item.active img { filter: none !important; }
         .grid-item img { width: 70px; height: 70px; margin-bottom: 12px; object-fit: contain; }
         .grid-item span { font-weight: 700; font-size: 1rem; color: var(--text); }
-        .ruqyah-view, .favorites-view, .sunnah-view, .quranic-view, .personal-view {
+        .ruqyah-view, .favorites-view, .sunnah-view, .quranic-view {
             display: none;
             flex-direction: column;
             padding: 0 20px 20px 20px;
         }
-       .subcategory-buttons {
+        .subcategory-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             margin: 10px 0 15px 0;
             direction: ltr;
-        } /* <--- MAKE SURE THERE IS A CLOSING BRACE HERE */
-
-        /* Now, place these here, OUTSIDE the subcategory-buttons */
-        .personal-card { background: var(--card-bg); border-radius: 20px; padding: 18px; border-left: 4px solid var(--accent); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .personal-card-content { word-break: break-word; white-space: pre-wrap; font-size: 16px; font-family: 'Amiri', serif; color: var(--text); }
-        .personal-delete-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 20px; }
-        .personal-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
-        .personal-modal-card { background: var(--card-bg); border-radius: 30px; padding: 25px; width: 90%; max-width: 400px; text-align: center; }
-        .personal-modal-card textarea { width: 100%; min-height: 120px; margin: 15px 0; border: 1px solid var(--border-color); border-radius: 15px; padding: 10px; background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; 
         }
         body.text-rtl .subcategory-buttons {
             direction: rtl;
@@ -888,411 +836,8 @@ body.text-ltr #openedMessageText {
         body.dark-mode .dua-list-container::-webkit-scrollbar-button,
         body.dark-mode .dua-list-container.horizontal-mode::-webkit-scrollbar-button,
         body.dark-mode .scrollable-text-wrapper::-webkit-scrollbar-button {
-            display: none;    
+            display: none;
         }
-        /* ===== PERSONAL DUAS STYLES (from my-duas.html) ===== */
-.personal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    width: 100%;
-    margin-top: 15px;
-    flex-direction: row;
-    gap: 10px;
-}
-.personal-header .back-button {
-    margin-bottom: 0;
-    margin-top: 0;
-}
-
-.plus-icon-btn {
-    background: var(--accent);
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.plus-icon-btn:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-.personal-empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    gap: 28px;
-    background: var(--card-bg);
-    border-radius: 35px;
-    border: 1px solid var(--border-color);
-    margin-top: 20px;
-}
-
-.personal-empty-state img {
-    width: 110px;
-    height: 110px;
-    opacity: 0.8;
-}
-
-.personal-empty-text {
-    color: var(--text-dim); /* GRAY COLOR - already uses text-dim variable */
-    font-size: 1rem;
-    font-weight: 500;
-    max-width: 260px;
-    margin: 0 auto;
-    line-height: 1.5;
-}
-
-.personal-add-btn {
-    background: var(--accent);
-    border: none;
-    border-radius: 60px;
-    padding: 14px 28px;
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.2s;
-    margin-top: 10px;
-}
-
-.personal-add-btn:hover {
-    transform: scale(1.02);
-    filter: brightness(1.05);
-}
-
-.personal-list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 500px;
-    overflow-y: auto;
-    transition: all 0.2s;
-    margin-top: 5px;
-}
-
-/* Horizontal mode for personal duas */
-.personal-list-container.horizontal-mode {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 0;
-    max-height: none;
-    padding-bottom: 10px;
-    scrollbar-width: thin;
-    direction: rtl;
-}
-
-.personal-list-container.horizontal-mode .personal-card {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    margin-bottom: 0;
-}
-
-/* Personal Card with Number */
-.personal-card {
-    background: var(--card-bg);
-    border-radius: 20px;
-    padding: 16px;
-    border-left: 4px solid var(--accent);
-    box-shadow: var(--shadow);
-    transition: 0.2s;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-}
-.personal-card.selected {
-    background: var(--accent-soft);
-    transform: scale(0.98);
-    transition: 0.1s;
-    border-left: 4px solid var(--accent);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-.personal-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    width: 100%;
-}
-.personal-card-number {
-    font-weight: bold;
-    color: var(--accent);
-    font-size: 0.9rem;
-    direction: ltr;
-    min-width: 24px;
-}
-.personal-fav-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: transform 0.2s;
-}
-.personal-fav-btn:hover { transform: scale(1.15); }
-.personal-fav-btn svg { width: 22px; height: 22px; }
-.personal-card-content {
-    word-break: break-word;
-    white-space: pre-wrap;
-    font-size: 16px;
-    line-height: 1.5;
-    font-family: 'Amiri', serif;
-    flex: 1;
-    width: 100%;
-}
-
-/* Personal Dua Language Priority - matches ruqya/sunnah/quranic blocks */
-body.text-rtl .personal-card .personal-card-content {
-    color: var(--accent) !important;
-    font-weight: 700;
-}
-body.text-ltr .personal-card .personal-card-content {
-    color: var(--text-dim) !important;
-    font-weight: 400;
-}
-
-/* When English/main language is active (LTR mode) - main text gets accent */
-body.text-ltr .personal-card .personal-card-content {
-    color: var(--accent) !important;
-    font-weight: 700;
-}
-body.text-rtl .personal-card .personal-card-content {
-    color: var(--text-dim) !important;
-    font-weight: 400;
-}
-.personal-card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border-color);
-}
-.personal-delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-    color: var(--text-dim);
-}
-.personal-delete-btn:hover {
-    background: var(--accent-soft);
-    color: var(--accent);
-    transform: scale(1.05);
-}
-.personal-delete-btn svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
-}
-
-.personal-card-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    width: 100%;
-}
-
-.personal-card-number {
-    font-weight: bold;
-    color: var(--accent);
-    font-size: 0.9rem;
-    direction: ltr;
-    min-width: 24px;
-    order: 1;
-}
-
-.personal-fav-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: transform 0.2s;
-    order: 2;
-}
-
-.personal-card-number {
-    font-weight: bold;
-    color: var(--accent);
-    font-size: 0.9rem;
-    direction: ltr;
-    min-width: 24px;
-}
-
-.personal-card-content {
-    flex: 1;
-    word-break: break-word;
-    white-space: pre-wrap;
-    font-size: 16px;
-    line-height: 1.5;
-    color: var(--text);
-    font-family: 'Amiri', serif;
-}
-
-.personal-delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-    color: var(--text-dim);
-}
-
-.personal-delete-btn:hover {
-    background: var(--accent-soft);
-    color: var(--accent);
-    transform: scale(1.05);
-}
-
-.personal-delete-btn svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
-}
-
-/* Modal styles */
-.personal-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-.personal-modal .modal-content { background: var(--card-bg); padding: 40px 25px; border-radius: 30px; width: 100%; max-width: 380px; text-align: center; color: var(--text); position: relative; }
-.personal-modal .modal-close-x { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 28px; font-weight: bold; cursor: pointer; color: var(--text-dim); transition: 0.2s; line-height: 1; padding: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10; }
-.personal-modal .modal-close-x:hover { background: var(--accent-soft); color: var(--accent); transform: scale(1.1); }
-body.text-rtl .personal-modal .modal-close-x { right: auto; left: 12px; }
-.personal-modal .scrollable-text-wrapper { max-height: 280px; overflow-y: auto; margin: 10px 0; padding-right: 8px; scrollbar-width: thin; }
-
-/* Personal Modal Dua Text - matches accent color priority like ruqya/sunnah/quranic */
-.personal-modal .dua-text {
-    font-size: var(--dua-font-size);
-    line-height: 1.8;
-    font-family: 'Amiri', serif;
-    text-align: left;
-}
-
-/* RTL mode: Arabic is main language = accent color */
-body.text-rtl .personal-modal .dua-text {
-    text-align: right;
-    color: var(--accent) !important;
-    font-weight: 700;
-}
-
-/* LTR mode: English/other is main language = accent color */
-body.text-ltr .personal-modal .dua-text {
-    text-align: left;
-    color: var(--accent) !important;
-    font-weight: 700;
-}
-
-/* Secondary language in personal modal = grey/dim */
-body.text-rtl .personal-modal .dua-text .secondary-lang,
-body.text-ltr .personal-modal .dua-text .secondary-lang {
-    color: var(--text-dim) !important;
-    font-weight: 400;
-}
-.personal-save-btn { background: var(--accent); color: white; padding: 12px 35px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; display: inline-block; }
-.personal-save-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
-.personal-cancel-btn { background: var(--text-dim); color: white; opacity: 0.8; padding: 12px 35px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; display: inline-block; }
-.personal-cancel-btn:hover { opacity: 1; transform: scale(1.02); }
-
-/* Dark mode scrollbar for personal list */
-body.dark-mode .personal-list-container {
-    scrollbar-width: thin;
-    scrollbar-color: #373737 #191919;
-}
-
-body.dark-mode .personal-list-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-body.dark-mode .personal-list-container::-webkit-scrollbar-track {
-    background: #191919 !important;
-    border-radius: 10px;
-}
-
-body.dark-mode .personal-list-container::-webkit-scrollbar-thumb {
-    background: #373737 !important;
-    border-radius: 10px;
-    border: 1px solid #191919;
-    background-clip: padding-box;
-}
-
-body.dark-mode .personal-list-container::-webkit-scrollbar-thumb:hover {
-    background: #4a4a5a !important;
-}
-
-body.dark-mode .personal-list-container::-webkit-scrollbar-button {
-    display: none;
-}
-
-/* Dark mode scrollbar for personal modal */
-body.dark-mode .personal-modal .scrollable-text-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: #373737 #191919;
-}
-body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-track {
-    background: #191919 !important;
-    border-radius: 10px;
-}
-body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-thumb {
-    background: #373737 !important;
-    border-radius: 10px;
-    border: 1px solid #191919;
-    background-clip: padding-box;
-}
-body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #4a4a5a !important;
-}
-body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-button {
-    display: none;
-}
     </style>
 <base target="_blank">
 </head>
@@ -1309,38 +854,25 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
     </header>
 
     <div class="message-container" id="messageContainer">
-    <!-- Tomorrow Banner -->
-    <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
+        <div class="tomorrow-banner" id="tomorrowBanner">رسالة جديدة ستكون غداً في انتظارك هنا</div>
 
-    <div class="message-card envelope-animation" id="dailyMessageCard">
-        <!-- Stage 1: Closed -->
-        <div id="msgStateClosed">
-            <h2 id="msgTitle">رسالتك اليوم</h2>
-            <div class="sub-title" id="msgSub">رسالتك اليوم</div>
-            <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
-            <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
-        </div>
-
-        <!-- Stage 2: Golden Star Cluster -->
-        <div id="msgStateLoading" style="display:none;">
-            <div class="star-loading-container">
-                <div class="star-cluster">
-                    <div class="star-shape"></div>
-                    <div class="star-shape"></div>
-                    <div class="star-shape"></div>
-                    <div class="star-shape"></div>
-                    <div class="star-shape"></div>
-                    <div class="star-shape"></div>
-                </div>
+        <div class="message-card envelope-animation" id="dailyMessageCard">
+            <div id="msgStateClosed">
+                <h2 id="msgTitle">رسالتك اليوم</h2>
+                <div class="sub-title" id="msgSub">رسالتك اليوم</div>
+                <p id="msgText">قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها</p>
+                <div class="open-link" id="msgLink">اضغط هنا لتفتحها</div>
+            </div>
+            <div id="msgStateLoading" style="display:none;">
+                <div class="sparkle-loading">✨✨✨</div>
+            </div>
+            <div id="msgStateOpened" style="display:none; text-align: center; direction: ltr;">
+                <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+                    الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️
+                </p>
             </div>
         </div>
-
-        <!-- Stage 3: Opened -->
-        <div id="msgStateOpened" style="display:none;">
-            <p id="openedMessageText" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;"></p>
-        </div>
     </div>
-</div>
 
     <div class="grid-container" id="gridContainer">
         <div class="grid-item" data-category="ruqya"><img src="https://cdn-icons-png.flaticon.com/128/5228/5228125.png" alt="ruqya"><span id="labelRuqya">الرقية الشرعية</span></div>
@@ -1350,7 +882,6 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
         <div class="grid-item" data-category="favorites"><img src="https://cdn-icons-png.flaticon.com/128/17003/17003566.png" alt="favorites"><span id="labelFavorites">المفضلة</span></div>
         <div class="grid-item" data-category="sunnah"><img src="https://cdn-icons-png.flaticon.com/128/4447/4447135.png" alt="sunnah"><span id="labelSunnah">دعاء من السنة</span></div>
     </div>
-    
     <div class="ruqyah-view" id="ruqyahView">
         <div class="subcategory-buttons">
             <button class="subcategory-btn" data-sub="self" id="selfBtn">ارق نفسك</button>
@@ -1387,47 +918,10 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
         <div class="horizontal-pagination" id="quranicPagination" style="display: none;"></div>
         <div class="dua-list-container" id="quranicListContainer"></div>
     </div>
-    <!-- Personal View (My Duas) - Updated Design -->
-<div class="personal-view" id="personalView">
-    <div class="personal-header">
-        <button class="back-button" id="backFromPersonal"><span>←</span> <span id="personalBackText">رجوع</span></button>
-        <button class="plus-icon-btn" id="addPersonalDuaBtn" aria-label="إضافة دعاء">+</button>
-    </div>
-    <div id="personalEmptyState" class="personal-empty-state">
-        <div style="background: var(--widget-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: center;">
-        <img src="https://cdn-icons-png.flaticon.com/128/84/84660.png" width="80" height="80" alt="Prayer Hands" style="opacity: 0.6;">
-            <!-- SVG Prayer Hands Icon in Square 
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>-->
-            </svg>
-        </div>
-        <div class="personal-empty-text" id="personalEmptyText"></div>
-        <button class="personal-add-btn" id="emptyStateAddBtn"></button>
-    </div>
-    <div id="personalPagination" class="horizontal-pagination" style="display: none;"></div>
-    <div id="personalListContainer" class="personal-list-container" style="display: none;"></div>
-</div>
-   <!-- Personal Add Modal -->
-<div id="personalAddModal" class="personal-modal">
-    <div class="modal-content">
-        <button class="modal-close-x" id="personalModalCloseX">✕</button>
-        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-            <h3 id="personalModalTitle" style="margin-bottom: 15px; color: var(--text);">أضف دعاء جديد</h3>
-            <textarea id="personalDuaInput" rows="6" placeholder="اكتب دعاءك هنا..." style="width: 100%; min-height: 120px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px;"></textarea>
-        </div>
-        <div class="personal-modal-actions" style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
-            <button id="personalSaveDuaBtn" class="personal-save-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--accent); color: white; transition: 0.2s;">حفظ</button>
-            <button id="personalCancelModalBtn" class="personal-cancel-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--text-dim); color: white; opacity: 0.8; transition: 0.2s;">إلغاء</button>
-        </div>
-    </div>
-</div>
     <div id="sharePopup" class="share-popup">
-    <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
-    <div class="share-grid" id="shareGrid" style="min-height: 200px;"></div>
-</div>
+        <div class="share-popup-title" id="shareTitle">مشاركة الدعاء</div>
+        <div class="share-grid" id="shareGrid"></div>
+    </div>
     <div id="duaModal">
         <div class="modal-content">
             <div id="duaModalBody">
@@ -1459,10 +953,11 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
     <hr class="menu-divider">
     <div class="settings-rows">
         <div class="setting-row"><div class="setting-label"><span>🔊</span><span id="set1">صوت النقرة</span></div><label class="switch"><input type="checkbox" id="chkClick" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>🌐</span><span id="setLang">اللغة الثانية</span></div><label class="switch"><input type="checkbox" id="chkLang" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>📳</span><span id="set2">اهتزاز</span></div><label class="switch"><input type="checkbox" id="chkVibrate" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><div class="setting-label"><span>🔄</span><span id="set3">تحويل تلقائي</span></div><label class="switch"><input type="checkbox" id="chkAuto" checked><span class="slider"></span></label></div>
         <div class="setting-row"><div class="setting-label"><span>🔤</span><span id="setTranslit">الترجمة الصوتية</span></div><label class="switch"><input type="checkbox" id="chkTranslit" checked><span class="slider"></span></label></div>
         <div class="setting-row"><div class="setting-label"><span>📖</span><span id="setSource">المصدر</span></div><label class="switch"><input type="checkbox" id="chkSource" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">حجم الخط</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
+        <div class="setting-row"><div class="setting-label"><span>📏</span><span id="set4">حجم الخط (الدعاء فقط)</span></div><input type="range" min="16" max="36" value="22" class="font-slider" id="fontSlider"></div>
         <div class="action-btns">
             <button class="action-btn" id="btnCopy" data-tooltip="نسخ النص"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
             <button class="action-btn" id="btnShare" data-tooltip="مشاركة"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg></button>
@@ -1473,332 +968,6 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
 </div>
 <script>
 // =============================== RUQYAH DATA (24 self + 24 others) ===============================
-// Add these variables at the top of your <script> section
-let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
-
-// Helper to escape HTML to prevent XSS
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.innerText = text;
-    return div.innerHTML;
-}
-
-// ===== PERSONAL DUAS FUNCTIONS (Updated with numbers + horizontal mode) =====
-
-function renderPersonalView() {
-    const t = translations[currentLang];
-    const emptyDiv = document.getElementById('personalEmptyState');
-    const listDiv = document.getElementById('personalListContainer');
-    const paginationDiv = document.getElementById('personalPagination');
-    
-    // Update empty state texts
-    document.getElementById('personalEmptyText').innerText = t.personalEmptyText;
-    document.getElementById('emptyStateAddBtn').innerText = t.addDua;
-    
-    if (personalDuas.length === 0) { 
-        emptyDiv.style.display = 'flex'; 
-        listDiv.style.display = 'none'; 
-        paginationDiv.style.display = 'none';
-    } else { 
-        emptyDiv.style.display = 'none'; 
-        listDiv.style.display = 'flex'; 
-        listDiv.innerHTML = ''; 
-        
-        // Handle horizontal mode
-        if (isHorizontalMode) {
-            listDiv.classList.add('horizontal-mode');
-            paginationDiv.style.display = 'block';
-            paginationDiv.innerText = `1 / ${personalDuas.length}`;
-        } else {
-            listDiv.classList.remove('horizontal-mode');
-            paginationDiv.style.display = 'none';
-        }
-        
-        personalDuas.forEach((item, idx) => {
-            const card = document.createElement('div'); 
-            card.className = 'personal-card';
-            
-            // Create header with number and heart icon
-            const header = document.createElement('div');
-header.className = 'personal-card-header';
-header.style.flexDirection = 'row';
-header.style.justifyContent = 'space-between';
-header.style.alignItems = 'center';
-
-const number = document.createElement('div');
-number.className = 'personal-card-number';
-number.innerText = (idx + 1) + '.';
-number.style.order = '1'; // Left side
-
-const favBtn = document.createElement('button');
-favBtn.className = 'personal-fav-btn';
-favBtn.style.order = '2'; // Right side
-const strokeColor = getHeartStrokeColor();
-// Use the global favorites system instead of local favorited property
-const personalSub = 'personal';
-const isFav = isFavorited(personalSub, idx);
-favBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${isFav ? '#ff4444' : 'none'}" stroke="${isFav ? '#ff4444' : strokeColor}" stroke-width="1.5"/></svg>`;
-favBtn.onclick = (e) => {
-    e.stopPropagation();
-    // Detect Arabic vs English text for the dua object
-    const lines = item.text.split('\n').filter(l => l.trim());
-    let arText, enText;
-    if (lines.length >= 2) {
-        const firstHasArabic = /[\u0600-\u06FF]/.test(lines[0]);
-        if (firstHasArabic) {
-            arText = lines[0];
-            enText = lines.slice(1).join('\n');
-        } else {
-            enText = lines[0];
-            arText = lines.slice(1).join('\n');
-        }
-    } else {
-        const hasArabic = /[\u0600-\u06FF]/.test(item.text);
-        if (hasArabic) {
-            arText = item.text;
-            enText = '';
-        } else {
-            enText = item.text;
-            arText = '';
-        }
-    }
-    
-    const duaObj = {
-        ar: arText || item.text,
-        en: enText || item.text,
-        translit: '',
-        source: 'Personal Dua'
-    };
-    
-    if (isFav) {
-        removeFavorite(personalSub, idx);
-    } else {
-        addFavorite(personalSub, idx, duaObj);
-    }
-    playClickSound();
-};
-header.appendChild(number);
-header.appendChild(favBtn);
-            
-            const content = document.createElement('div');
-content.className = 'personal-card-content';
-// Split text by newlines to detect dual language
-const lines = item.text.split('\n').filter(l => l.trim());
-let cardArabic, cardEnglish;
-
-if (lines.length >= 2) {
-    const firstHasArabic = /[\u0600-\u06FF]/.test(lines[0]);
-    if (firstHasArabic) {
-        cardArabic = lines[0];
-        cardEnglish = lines.slice(1).join('\n');
-    } else {
-        cardEnglish = lines[0];
-        cardArabic = lines.slice(1).join('\n');
-    }
-} else {
-    const hasArabic = /[\u0600-\u06FF]/.test(item.text);
-    if (hasArabic) {
-        cardArabic = item.text;
-        cardEnglish = '';
-    } else {
-        cardEnglish = item.text;
-        cardArabic = '';
-    }
-}
-
-// Language priority for card preview
-if (currentLang === 'ar') {
-    // Arabic mode: Arabic on top (accent), English below (dim)
-    if (cardArabic && cardEnglish) {
-        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Amiri', serif;">${escapeHtml(cardArabic)}</div>${showSecondaryLang ? `<div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Inter', sans-serif;">${escapeHtml(cardEnglish)}</div>` : ''}`;
-    } else {
-        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Amiri', serif;">${escapeHtml(cardArabic || cardEnglish)}</div>`;
-    }
-} else {
-    // English mode: English on top (accent), Arabic below (dim)
-    if (cardEnglish && cardArabic) {
-        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: 'Inter', sans-serif;">${escapeHtml(cardEnglish)}</div>${showSecondaryLang ? `<div style="color: var(--text-dim); font-weight: 400; margin-top: 8px; font-family: 'Amiri', serif;">${escapeHtml(cardArabic)}</div>` : ''}`;
-    } else {
-        content.innerHTML = `<div style="color: var(--accent); font-weight: 700; font-family: ${cardEnglish ? "'Inter', sans-serif" : "'Amiri', serif"};">${escapeHtml(cardEnglish || cardArabic)}</div>`;
-    }
-}
-            
-            // Actions row with delete button
-            const actions = document.createElement('div');
-            actions.className = 'personal-card-actions';
-            
-            const delBtn = document.createElement('button'); 
-            delBtn.className = 'personal-delete-btn';
-            delBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
-            delBtn.onclick = (e) => { 
-                e.stopPropagation();
-                personalDuas.splice(idx, 1); 
-                localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
-                renderPersonalView();
-                playClickSound();
-            };
-            
-            actions.appendChild(delBtn);
-            
-            card.appendChild(header);
-            card.appendChild(content);
-            card.appendChild(actions);
-            
-            // Click to open modal popup (like dua cards)
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.personal-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                openPersonalDuaModal(idx);
-                playClickSound();
-            });
-            
-            listDiv.appendChild(card);
-        });
-        
-        // Setup horizontal scroll listener
-        if (isHorizontalMode) {
-            setupPersonalHorizontalScroll();
-        }
-    }
-}
-function openPersonalDuaModal(idx) {
-    const item = personalDuas[idx];
-    const modal = document.getElementById('personalAddModal');
-    const modalContent = modal.querySelector('.modal-content');
-    const t = translations[currentLang];
-    
-    // Split text for dual language handling
-    const lines = item.text.split('\n').filter(l => l.trim());
-    let arabicText, englishText;
-    
-    // Detect which line is Arabic (contains Arabic characters) and which is English
-    if (lines.length >= 2) {
-        // Check if first line contains Arabic characters
-        const hasArabic = /[\u0600-\u06FF]/.test(lines[0]);
-        if (hasArabic) {
-            arabicText = lines[0];
-            englishText = lines.slice(1).join('\n');
-        } else {
-            englishText = lines[0];
-            arabicText = lines.slice(1).join('\n');
-        }
-    } else {
-        // Single line - determine if Arabic or English
-        const hasArabic = /[\u0600-\u06FF]/.test(item.text);
-        if (hasArabic) {
-            arabicText = item.text;
-            englishText = '';
-        } else {
-            englishText = item.text;
-            arabicText = '';
-        }
-    }
-
-    // Language priority: Arabic mode = Arabic on top (accent), English below (dim)
-    // English mode = English on top (accent), Arabic below (dim)
-    let firstText, secondText, firstIsArabic;
-    if (currentLang === 'ar') {
-        firstText = arabicText;
-        secondText = englishText;
-        firstIsArabic = true;
-    } else {
-        firstText = englishText;
-        secondText = arabicText;
-        firstIsArabic = false;
-    }
-
-    const mainColor = 'var(--accent)';
-    const secondaryColor = 'var(--text-dim)';
-
-    // Build modal content with proper language priority like other blocks
-    let contentHtml = `
-        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'" aria-label="Close">✕</button>
-        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-            <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
-                <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; ${firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(firstText)}</div>
-                ${(showSecondaryLang && secondText) ? `<div style="color: ${secondaryColor}; font-weight: 400; margin-top: 10px; font-size: calc(var(--dua-font-size) * 0.85); line-height: 1.6; ${!firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(secondText)}</div>` : ''}
-            </div>
-        </div>
-        <div class="nav-arrows" id="personalModalNavArrows">
-    `;
-    if (isHorizontalMode) {
-        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">←</button>
-                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">→</button>`;
-    } else {
-        contentHtml += `<button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'prev')">↑</button>
-                        <button class="nav-arrow" onclick="navigatePersonalModal(${idx}, 'next')">↓</button>`;
-    }
-    
-        contentHtml += `
-        </div>
-        <button class="close-modal" style="margin-top: 20px;" onclick="document.getElementById('personalAddModal').style.display='none'">${t.closeModal}</button>
-    `;
-    
-    modalContent.innerHTML = contentHtml;
-    modal.style.display = 'flex';
-}
-
-function navigatePersonalModal(currentIdx, direction) {
-    let newIdx;
-    if (isHorizontalMode) {
-        // ← arrow = next (higher index), → arrow = prev (lower index) in RTL
-        newIdx = direction === 'next' ? currentIdx + 1 : currentIdx - 1;
-    } else {
-        newIdx = direction === 'prev' ? currentIdx - 1 : currentIdx + 1;
-    }
-    
-    if (newIdx >= 0 && newIdx < personalDuas.length) {
-        openPersonalDuaModal(newIdx);
-        playClickSound();
-    } else {
-    }
-}    
-function setupPersonalHorizontalScroll() {
-    const container = document.getElementById('personalListContainer');
-    const paginationDiv = document.getElementById('personalPagination');
-    if (!container || !paginationDiv) return;
-    
-    const updateCounter = () => {
-        const cards = container.querySelectorAll('.personal-card');
-        if (cards.length === 0) return;
-        const containerRect = container.getBoundingClientRect();
-        let bestIndex = 0;
-        let minDistance = Infinity;
-        for (let i = 0; i < cards.length; i++) {
-            const cardRect = cards[i].getBoundingClientRect();
-            const distance = Math.abs(cardRect.left + cardRect.width/2 - (containerRect.left + containerRect.width/2));
-            if (distance < minDistance) {
-                minDistance = distance;
-                bestIndex = i;
-            }
-        }
-        paginationDiv.innerText = `${bestIndex+1} / ${cards.length}`;
-    };
-    container.addEventListener('scroll', updateCounter);
-    setTimeout(updateCounter, 50);
-}
-
-function showPersonalView() {
-    ruqyahActive = false;
-    favoritesActive = false;
-    sunnahActive = false;
-    quranicActive = false;
-    document.getElementById('gridContainer').style.display = 'none';
-    document.getElementById('messageContainer').style.display = 'none';
-    document.getElementById('ruqyahView').style.display = 'none';
-    document.getElementById('favoritesView').style.display = 'none';
-    document.getElementById('sunnahView').style.display = 'none';
-    document.getElementById('quranicView').style.display = 'none';
-    document.getElementById('personalView').style.display = 'flex';
-    renderPersonalView();
-}
-
-function showPersonalView() {
-    document.getElementById('gridContainer').style.display = 'none';
-    document.getElementById('messageContainer').style.display = 'none';
-    document.getElementById('personalView').style.display = 'flex';
-    renderPersonalView();
-}
 const ruqyahSelf = [
     { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ. (مرة واحدة)", translit: "A‘ūdhu billāhi s-samī‘i l-‘alīmi mina sh-shayṭāni r-rajīmi min hamzihi, wa nafkhihi, wa nafthihi. (Marrah wāḥidah)", en: "I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing (of evil poetry). (Once)", source: "Sunan Abī Dāwūd (775), ṣaḥīḥ isnād.", tafsir: "Hamzihi = what the devil casts into a person’s heart at the time of death. Nafkhihi = pride that the devil casts into a person’s soul. Nafthihi = blameworthy, forbidden poetry." },
     { ar: "{بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)} (سبع مرات)", translit: "Bismillāhi r-raḥmāni r-raḥīm. Alḥamdu lillāhi rabbi l-‘ālamīn. Ar-raḥmāni r-raḥīm. Māliki yawmi d-dīn. Iyyāka na‘budu wa iyyāka nasta‘īn. Ihdina ṣ-ṣirāṭa l-mustaqīm. Ṣirāṭa lladhīna an‘amta ‘alayhim ghayri l-maghḍūbi ‘alayhim wa la ḍ-ḍāllīn. (Sab‘a marrāt)", en: "In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of the worlds. The Most Gracious, the Most Merciful. Master of the Day of Judgment. You alone we worship, and You alone we ask for help. Guide us to the straight path. The path of those upon whom You have bestowed favor, not of those who have evoked Your anger or of those who are astray. (7 times)", source: "Ṣaḥīḥ al-Bukhārī (5749), Ṣaḥīḥ Muslim (2201)." },
@@ -2032,13 +1201,12 @@ const quranicDuas = [
 
 // =============================== APPLICATION LOGIC ===============================
 const translations = {
-    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", setLang:"اللغة الثانية", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", personalEmptyText: "لم تقم بإضافة أي طلبات دعاء حتى الآن", addDua: "أضف طلب دعاء", personalModalTitle: "أضف دعاء جديد", save: "حفظ", cancel: "إلغاء", personalBackText: "رجوع", todayDua:"دعاؤك اليوم", personalMainLang: "النص الرئيسي", personalSecondaryLang: "النص الثانوي", personalMainLang: "النص الرئيسي", personalSecondaryLang: "النص الثانوي", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
-    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", setLang:"Secondary Language", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", personalEmptyText: "You haven't added any prayer requests yet", addDua: "Add a Dua", personalModalTitle: "Add New Dua", save: "Save", cancel: "Cancel", personalBackText: "Back", todayDua:"Your Dua Today", personalMainLang: "Main Text", personalSecondaryLang: "Secondary Text", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
+    ar: { msgTitle:"رسالتك اليوم", msgSub:"رسالتك اليوم", msgText:"قد يكون وراء هذا الدعاء رسالة كُتبت لك وأنت اليوم أشد ما تحتاجها", msgLink:"اضغط هنا لتفتحها", ruqya:"الرقية الشرعية", wird:"ورد الدعاء", quranic:"دعاء من القرآن", personal:"أدعيتي", favorites:"المفضلة", sunnah:"دعاء من السنة", menuColors:"الألوان", menuSettings:"الإعدادات", set1:"صوت النقرة", set2:"اهتزاز", set3:"تحويل تلقائي", set4:"حجم الخط", setTranslit:"الترجمة الصوتية", setSource:"المصدر", copyTooltip:"نسخ النص", shareTooltip:"مشاركة", favTooltipAdd:"أضف إلى المفضلة", favTooltipRemove:"إزالة من المفضلة", refreshTooltip:"تحديث", shareTitle:"مشاركة الدعاء", closeModal:"إغلاق", whatsapp:"واتساب", twitter:"تويتر", facebook:"فيسبوك", telegram:"تليجرام", messenger:"ماسنجر", copyLink:"نسخ الرابط", gridTooltip:"تخطيط الشبكة", selfBtn:"ارق نفسك", otherBtn:"ارق غيرك", back:"رجوع", noFavorites:"لا توجد أدعية مفضلة", wird1Btn:"الورد الأول", wird2Btn:"الورد الثاني", wird3Btn:"الورد الثالث", wird4Btn:"الورد الرابع", wird5Btn:"الورد الخامس", quranicWird1:"الورد الأول", quranicWird2:"الورد الثاني", quranicWird3:"الورد الثالث", todayDua:"دعاؤك اليوم", tomorrowBanner:"رسالة جديدة ستكون غداً في انتظارك هنا", openedMessage:"الدعاء هو باب من أبواب الرحمة، به ترفع الحاجات وتطمئن القلوب، هو عبادة لا تحتاج مكاناً ولا زماناً، يكفي أن ترفع قلبك قبل يديك، فالله قريب يجيب من دعاه ❤️" },
+    en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", wird:"Daily Wird", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", set2:"Vibration", set3:"Auto Transfer", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", todayDua:"Your Dua Today", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
 };
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
-let showSecondaryLang = true;
 let isHorizontalMode = false; // global toggle for dua lists layout
 
 // Modal navigation state
@@ -2074,14 +1242,14 @@ function updateFullTheme(){
     localStorage.setItem('dua_accent', currentAccent);
     localStorage.setItem('dua_darkMode', isDarkMode);
     if(ruqyahActive) renderRuqyahDuas();
-   if(favoritesActive) renderFavorites();
-   if(sunnahActive) renderSunnahDuas();
-   if(quranicActive) renderQuranicDuas();
-   if(document.getElementById('personalView').style.display === 'flex') renderPersonalView();
-   updateGlobalFavIcon();
- }
+    if(favoritesActive) renderFavorites();
+    if(sunnahActive) renderSunnahDuas();
+    if(quranicActive) renderQuranicDuas();
+    updateGlobalFavIcon();
+}
 
 function playClickSound(){ const chk=document.getElementById('chkClick'); if(!chk||!chk.checked) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value=800; gain.gain.setValueAtTime(0.1,now); gain.gain.exponentialRampToValueAtTime(0.00001,now+0.12); osc.start(); osc.stop(now+0.1); }catch(e){} }
+function playVibration(){ const chk=document.getElementById('chkVibrate'); if(chk&&chk.checked&&navigator.vibrate) navigator.vibrate(60); }
 
 function applyLanguage(){
     const t=translations[currentLang];
@@ -2091,14 +1259,14 @@ function applyLanguage(){
     document.getElementById('openedMessageText').innerText = t.openedMessage;
     document.getElementById('labelRuqya').innerText=t.ruqya; document.getElementById('labelWird').innerText=t.wird; document.getElementById('labelQuranic').innerText=t.quranic; document.getElementById('labelPersonal').innerText=t.personal; document.getElementById('labelFavorites').innerText=t.favorites; document.getElementById('labelSunnah').innerText=t.sunnah;
     document.getElementById('menuTitleColors').innerText=t.menuColors; document.getElementById('menuTitleSettings').innerText=t.menuSettings;
-    document.getElementById('set1').innerText=t.set1; document.getElementById('setLang').innerText=t.setLang; document.getElementById('set4').innerText=t.set4; document.getElementById('setTranslit').innerText=t.setTranslit; document.getElementById('setSource').innerText=t.setSource;
+    document.getElementById('set1').innerText=t.set1; document.getElementById('set2').innerText=t.set2; document.getElementById('set3').innerText=t.set3; document.getElementById('set4').innerText=t.set4; document.getElementById('setTranslit').innerText=t.setTranslit; document.getElementById('setSource').innerText=t.setSource;
     document.getElementById('shareTitle').innerText=t.shareTitle; document.getElementById('selfBtn').innerText=t.selfBtn; document.getElementById('otherBtn').innerText=t.otherBtn; document.getElementById('wird1Btn').innerText=t.wird1Btn; document.getElementById('wird2Btn').innerText=t.wird2Btn; document.getElementById('wird3Btn').innerText=t.wird3Btn; document.getElementById('wird4Btn').innerText=t.wird4Btn; document.getElementById('wird5Btn').innerText=t.wird5Btn;
     document.getElementById('quranicWird1Btn').innerText=t.quranicWird1; document.getElementById('quranicWird2Btn').innerText=t.quranicWird2; document.getElementById('quranicWird3Btn').innerText=t.quranicWird3;
     document.getElementById('backText').innerText=t.back; document.getElementById('favBackText').innerText=t.back; document.getElementById('sunnahBackText').innerText=t.back; document.getElementById('quranicBackText').innerText=t.back;
-    document.getElementById('personalBackText').innerText=t.back;document.getElementById('closeModalBtn').innerText=t.closeModal;
+    document.getElementById('closeModalBtn').innerText=t.closeModal;
     document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip); document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip); document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
     if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
-    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView();
+    if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas();
     updateGlobalFavIcon();
     document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub));
     document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-wird')===currentWird));
@@ -2120,76 +1288,46 @@ function showDailyMessageOpened() {
     
     const card = document.getElementById('dailyMessageCard');
     card.classList.remove('envelope-animation');
-    card.classList.add('open-flap'); // Keeps flap flipped up
+    document.documentElement.style.setProperty('--envelope-flap', 'transparent');
     card.style.padding = '25px 20px';
-    document.getElementById('openedMessageText').innerText = translations[currentLang].openedMessage;
 }
 
 function handleMessageClick() {
     const today = new Date().toDateString();
-   if (localStorage.getItem('dua_last_opened_date') === today) return;
-
+    const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
+    if (lastOpenedDate === today) return;
     playClickSound();
-
-    const card = document.getElementById('dailyMessageCard');
-    
-    // 1. Flip the Flap
-    card.classList.add('open-flap');
-
-    // 2. Delay 0.6s then show Stars
+    playVibration();
+    document.getElementById('msgStateClosed').style.display = 'none';
+    document.getElementById('msgStateLoading').style.display = 'block';
     setTimeout(() => {
-        document.getElementById('msgStateClosed').style.display = 'none';
-        document.getElementById('msgStateLoading').style.display = 'block';
-
-        // 3. Delay 1.8s then show final result
-        setTimeout(() => {
-            const pool = [...ruqyahSelf]; // or your other dua arrays
-            const randomDua = pool[Math.floor(Math.random() * pool.length)];
-            
-            showVideoDuaModal(randomDua);
-            
-            document.getElementById('msgStateLoading').style.display = 'none';
-            showDailyMessageOpened();
-            localStorage.setItem('dua_last_opened_date', today);
-        }, 1800); 
-    }, 600);
+        const pool = [...sunnahDuas, ...quranicDuas];
+        const randomDua = pool[Math.floor(Math.random() * pool.length)];
+        showVideoDuaModal(randomDua);
+        document.getElementById('msgStateLoading').style.display = 'none';
+        showDailyMessageOpened();
+        localStorage.setItem('dua_last_opened_date', today);
+    }, 1500);
 }
 
 function showVideoDuaModal(dua) {
     const modal = document.getElementById('duaModal');
     const modalContent = document.getElementById('duaModalBody');
     const t = translations[currentLang];
-    
-    // Store dua data for copy/share functions
-    modalContent.dataset.duaAr = dua.ar || '';
-    modalContent.dataset.duaEn = dua.en || '';
-    modalContent.dataset.duaTranslit = dua.translit || '';
-    
     let contentHtml = `
-        <div class="modal-blue-header" style="justify-content: space-between; padding: 18px 20px;">
-    <div style="font-size:24px; cursor:pointer; width:38px; height:38px; display:flex; align-items:center; justify-content:center;" onclick="document.getElementById('duaModal').style.display='none'">✕</div>
-    <h3 style="margin:0; font-family:'Amiri',serif; font-size:1.4rem;">${t.todayDua}</h3>
-    <div style="display:flex; gap:10px;">
-        <button class="share-circle-btn" onclick="copyDailyDuaAll()" title="${t.copyTooltip}" style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-        </button>
-        <button class="share-circle-btn" onclick="event.stopPropagation(); toggleSharePopup();" title="${t.shareTooltip}" style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
-        </button>
-    </div>
-</div>
-        <div class="scrollable-text-wrapper" id="dailyDuaScrollable" style="max-height:320px; overflow-y:auto; margin:10px 0;">
-            <div class="dua-text" style="font-size:1.3rem; font-weight:700; color:var(--text); padding-top:10px; text-align:right; direction:rtl;">${dua.ar}</div>
-            ${showSecondaryLang ? `<div style="color:var(--text-dim); margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-color); text-align:left; direction:ltr; font-family:'Inter',sans-serif; line-height:1.6;">${dua.en}</div>` : ''}
-    `;
-    if (showTranslit && dua.translit) {
-        contentHtml += `<div style="color:var(--text-dim); font-style:italic; margin-top:10px; padding-top:10px; border-top:1px dotted var(--border-color); direction:ltr; text-align:left;">${dua.translit}</div>`;
-    }
-    contentHtml += `
+        <div class="modal-blue-header">
+            <button class="share-circle-btn" onclick="toggleSharePopup()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+            <h3>${t.todayDua}</h3>
+            <div style="font-size:24px; cursor:pointer;" onclick="document.getElementById('duaModal').style.display='none'">✕</div>
         </div>
-        
-        <button class="close-modal" style="margin-top:15px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>
+        <div class="dua-text" style="font-size:1.3rem; font-weight:700; color:var(--text); padding-top:10px;">${dua.ar}</div>
     `;
+    if (showTranslit) {
+        contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
+    }
+    contentHtml += `<button class="close-modal" style="margin-top:20px;" onclick="document.getElementById('duaModal').style.display='none'">${t.closeModal}</button>`;
     modalContent.innerHTML = contentHtml;
     modal.style.display = 'flex';
 }
@@ -2198,7 +1336,8 @@ document.getElementById('dailyMessageCard').addEventListener('click', handleMess
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
-function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); } }function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); }
+function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); } }
+function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); }
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
@@ -2245,8 +1384,8 @@ function updateModalContent() {
         <div class="scrollable-text-wrapper" id="scrollableDuaWrapper">
             <div class="dua-text" id="duaOutput">
     `;
-    if(currentLang==='ar'){ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div>`; if(showSecondaryLang) contentHtml += `<div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`; }
-else{ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.en}</div>`; if(showSecondaryLang) contentHtml += `<div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`; }
+    if(currentLang==='ar'){ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.ar}</div><div style="color:var(--text-dim); margin-bottom:10px;">${dua.en}</div>`; }
+    else{ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--accent)':'#1a1a1a'}; margin-bottom:15px;">${dua.en}</div><div style="color:var(--text-dim); margin-bottom:10px; font-family:'Amiri',serif;">${dua.ar}</div>`; }
     if(showTranslit) contentHtml += `<div style="color:var(--text-dim); font-style:italic; border-top:1px dashed var(--border-color); padding-top:10px; margin-top:10px;">${dua.translit}</div>`;
     if(showSource){ let src=buildSourceInfo(dua); if(src) contentHtml += `<div style="color:#888; font-size:14px; margin-top:12px; padding-top:8px; border-top:1px dotted var(--border-color);">${src}</div>`; }
     contentHtml += `
@@ -2270,16 +1409,16 @@ else{ contentHtml += `<div style="font-weight:700; color:${isDarkMode?'var(--acc
     const nextBtn = document.getElementById('nextDuaBtn');
     if (prevBtn) {
         if (isHorizontalMode) {
-            prevBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playClickSound(); };
+            prevBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
         } else {
-            prevBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playClickSound(); };
+            prevBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
         }
     }
     if (nextBtn) {
         if (isHorizontalMode) {
-            nextBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playClickSound(); };
+            nextBtn.onclick = () => { if(currentModalIndex > 0) { currentModalIndex--; updateModalContent(); } else playVibration(); playClickSound(); };
         } else {
-            nextBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playClickSound(); };
+            nextBtn.onclick = () => { if(currentModalIndex < currentModalList.length-1) { currentModalIndex++; updateModalContent(); } else playVibration(); playClickSound(); };
         }
     }
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('duaModal').style.display='none';
@@ -2312,14 +1451,7 @@ function renderRuqyahDuas(){
         const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
         const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
         if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
-        card.appendChild(header);
-if(currentLang==='ar'){ 
-    card.appendChild(arabic); 
-    if(showSecondaryLang) card.appendChild(trans); 
-} else { 
-    card.appendChild(trans); 
-    if(showSecondaryLang) card.appendChild(arabic); 
-}
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
         card.addEventListener('click',()=>{
@@ -2371,14 +1503,7 @@ function renderSunnahDuas(){
         const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
         const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
         if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
-        card.appendChild(header);
-if(currentLang==='ar'){ 
-    card.appendChild(arabic); 
-    if(showSecondaryLang) card.appendChild(trans); 
-} else { 
-    card.appendChild(trans); 
-    if(showSecondaryLang) card.appendChild(arabic); 
-}
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
         card.addEventListener('click',()=>{
@@ -2427,14 +1552,7 @@ function renderQuranicDuas(){
         const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=dua.en;
         const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=dua.translit;
         if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
-        card.appendChild(header);
-if(currentLang==='ar'){ 
-    card.appendChild(arabic); 
-    if(showSecondaryLang) card.appendChild(trans); 
-} else { 
-    card.appendChild(trans); 
-    if(showSecondaryLang) card.appendChild(arabic); 
-}
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
         card.addEventListener('click',()=>{
@@ -2476,14 +1594,7 @@ function renderFavorites(){
         const trans=document.createElement('div'); trans.className='dua-translation'; trans.innerText=fav.en;
         const tl=document.createElement('div'); tl.className='dua-transliteration'; tl.innerText=fav.translit;
         if(currentLang==='ar'){ arabic.classList.add('dua-main-lang'); trans.classList.add('dua-secondary-lang'); } else { trans.classList.add('dua-main-lang'); arabic.classList.add('dua-secondary-lang'); }
-        card.appendChild(header);
-if(currentLang==='ar'){ 
-    card.appendChild(arabic); 
-    if(showSecondaryLang) card.appendChild(trans); 
-} else { 
-    card.appendChild(trans); 
-    if(showSecondaryLang) card.appendChild(arabic); 
-}
+        card.append(header); if(currentLang==='ar') card.append(arabic,trans); else card.append(trans,arabic);
         if(showTranslit) card.appendChild(tl);
         if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(fav); if(sd.innerText.trim()!=='') card.appendChild(sd); }
         card.addEventListener('click',()=>{
@@ -2500,75 +1611,18 @@ if(currentLang==='ar'){
     updateMenuFavButton();
 }
 
-function showRuqyah(){ ruqyahActive=true; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='flex'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderRuqyahDuas(); document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); }
-function showFavorites(){ favoritesActive=true; ruqyahActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderFavorites(); }
-function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderSunnahDuas(); }
-function showQuranic(){ quranicActive=true; ruqyahActive=false; favoritesActive=false; sunnahActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='flex'; document.getElementById('personalView').style.display='none'; renderQuranicDuas(); }
-function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none';  document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; }
+function showRuqyah(){ ruqyahActive=true; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='flex'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; renderRuqyahDuas(); document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); }
+function showFavorites(){ favoritesActive=true; ruqyahActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; renderFavorites(); }
+function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('quranicView').style.display='none'; renderSunnahDuas(); }
+function showQuranic(){ quranicActive=true; ruqyahActive=false; favoritesActive=false; sunnahActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='flex'; renderQuranicDuas(); }
+function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; }
+
 document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
 document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
-// Personal Duas Event Listeners
-document.querySelector('.grid-item[data-category="personal"]')?.addEventListener('click', () => { showPersonalView(); playClickSound(); });
-document.getElementById('backFromPersonal')?.addEventListener('click', () => { exitSubview(); playClickSound(); });
-document.getElementById('addPersonalDuaBtn')?.addEventListener('click', openAddPersonalModal);
-document.getElementById('emptyStateAddBtn')?.addEventListener('click', openAddPersonalModal);
-document.getElementById('personalCancelModalBtn')?.addEventListener('click', () => document.getElementById('personalAddModal').style.display = 'none');
-document.getElementById('personalSaveDuaBtn')?.addEventListener('click', addPersonalDuaFromInput);
 
-function openAddPersonalModal() {
-    const modal = document.getElementById('personalAddModal');
-    const modalContent = modal.querySelector('.modal-content');
-    const t = translations[currentLang];
-    
-    // Reset to add mode
-    modalContent.innerHTML = `
-        <button class="modal-close-x" id="personalModalCloseX" aria-label="Close">✕</button>
-        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
-            <h3 id="personalModalTitle" style="margin-bottom: 15px; color: var(--text);">${t.personalModalTitle}</h3>
-            <textarea id="personalDuaInput" rows="6" placeholder="${currentLang === 'ar' ? 'اكتب دعاءك هنا...' : 'Write your dua here...'}" style="width: 100%; min-height: 120px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px;"></textarea>
-        </div>
-        <div class="personal-modal-actions" style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
-            <button id="personalSaveDuaBtn" class="personal-save-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--accent); color: white; transition: 0.2s;">${t.save}</button>
-            <button id="personalCancelModalBtn" class="personal-cancel-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--text-dim); color: white; opacity: 0.8; transition: 0.2s;">${t.cancel}</button>
-        </div>
-    `;
-    
-    // Re-attach event listeners
-    document.getElementById('personalSaveDuaBtn')?.addEventListener('click', addPersonalDuaFromInput);
-    document.getElementById('personalCancelModalBtn')?.addEventListener('click', () => modal.style.display = 'none');
-    
-    modal.style.display = 'flex';
-}
-
-function addPersonalDuaFromInput() {
-    const text = document.getElementById('personalDuaInput').value.trim();
-    if (text) { 
-        personalDuas.push({ id: Date.now(), text }); 
-        localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
-        renderPersonalView();
-        playClickSound();
-        document.getElementById('personalAddModal').style.display = 'none'; 
-    } else {
-    }
-}
-
-// Close modal when clicking outside
-document.getElementById('personalAddModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('personalAddModal')) {
-        document.getElementById('personalAddModal').style.display = 'none';
-    }
-});
-
-// Handle personal modal close X button
-document.addEventListener('click', (e) => {
-    if (e.target && e.target.id === 'personalModalCloseX') {
-        document.getElementById('personalAddModal').style.display = 'none';
-    }
-});
-    
 document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentRuqyahSub=this.getAttribute('data-sub'); selectedDuaIndex=-1; document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderRuqyahDuas(); playClickSound(); }); });
 document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
 document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentQuranicWird=this.getAttribute('data-wird'); document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderQuranicDuas(); playClickSound(); }); });
@@ -2591,7 +1645,6 @@ document.getElementById('btnGrid')?.addEventListener('click',()=>{
     if (sunnahActive) renderSunnahDuas();
     if (quranicActive) renderQuranicDuas();
     if (favoritesActive) renderFavorites();
-    if (document.getElementById('personalView').style.display === 'flex') renderPersonalView(); // ADD THIS LINE
     playClickSound();
 });
 document.getElementById('langToggleBtn')?.addEventListener('click',()=>{ currentLang=currentLang==='ar'?'en':'ar'; document.documentElement.setAttribute('lang',currentLang); document.documentElement.dir='ltr'; if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); } applyLanguage(); playClickSound(); });
@@ -2617,7 +1670,6 @@ fontSlider?.addEventListener('input',e=>setDuaFontSize(e.target.value));
 const savedFont=localStorage.getItem('dua_font_size'); if(savedFont) setDuaFontSize(parseInt(savedFont)); else setDuaFontSize(22); fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
 
 document.getElementById('chkTranslit')?.addEventListener('change',e=>{ showTranslit=e.target.checked; if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
-document.getElementById('chkLang')?.addEventListener('change',e=>{ showSecondaryLang=e.target.checked; if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); playClickSound(); });
 if(localStorage.getItem('dua_showSource')!==null) showSource=localStorage.getItem('dua_showSource')==='true';
 document.getElementById('chkSource').checked=showSource;
 document.getElementById('chkSource').addEventListener('change',e=>{ showSource=e.target.checked; localStorage.setItem('dua_showSource',showSource); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
@@ -2630,47 +1682,8 @@ document.getElementById('btnRefresh')?.addEventListener('click',()=>location.rel
 function updateGlobalFavIcon(){ const sp=document.querySelector('#favSvgIcon path'); if(sp) sp.setAttribute('stroke','white'); }
 function updateMenuFavButton(){ const btn=document.getElementById('btnFav'); const svg=document.getElementById('favSvgIcon'); let isFav=false; if(ruqyahActive&&selectedDuaIndex>=0) isFav=isFavorited(currentRuqyahSub,selectedDuaIndex); else if(favoritesActive&&favoritesList.length>0) isFav=true; else if(sunnahActive&&selectedDuaIndex>=0) isFav=isFavorited('sunnah',selectedDuaIndex); else if(quranicActive&&selectedDuaIndex>=0) isFav=isFavorited('quranic',selectedDuaIndex); if(isFav){ if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'إزالة من المفضلة':'Remove from Favorites'); } else { if(svg) svg.innerHTML='<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="white" stroke-width="1.5"/>'; btn?.setAttribute('data-tooltip',currentLang==='ar'?'أضف إلى المفضلة':'Add to Favorites'); } }
 
-function copyDailyDuaAll() {
-    const modalContent = document.getElementById('duaModalBody');
-    const ar = modalContent.dataset.duaAr || '';
-    const en = modalContent.dataset.duaEn || '';
-    const translit = modalContent.dataset.duaTranslit || '';
-    
-    let fullText = '';
-    if (ar) fullText += ar + '\n\n';
-    if (en) fullText += en + '\n\n';
-    if (translit) fullText += translit + '\n\n';
-    fullText += '— ' + (currentLang === 'ar' ? 'دعاؤك اليوم' : 'Your Dua Today');
-    
-    navigator.clipboard.writeText(fullText.trim()).then(() => {
-        const btn = event.currentTarget;
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<span style="font-size:20px">✅</span>';
-        setTimeout(() => btn.innerHTML = orig, 2000);
-    }).catch(() => {
-        alert(currentLang === 'ar' ? 'فشل النسخ' : 'Copy failed');
-    });
-}
-
-function toggleSharePopup(){ 
-    const pop=document.getElementById('sharePopup'); 
-    pop.classList.toggle('show'); 
-    if(pop.classList.contains('show')) {
-        setTimeout(() => buildShareGrid(), 50); // slight delay ensures DOM is ready
-    }
-}
-
-// Close share popup when clicking outside
-document.addEventListener('click', function(e) {
-    const pop = document.getElementById('sharePopup');
-    const btnShare = document.getElementById('btnShare');
-    if (pop && pop.classList.contains('show')) {
-        if (!pop.contains(e.target) && !btnShare.contains(e.target)) {
-            pop.classList.remove('show');
-        }
-    }
-});
-function buildShareGrid(){ let text=''; if(currentModalIndex>=0 && currentModalList[currentModalIndex]){ text=currentLang==='ar'?currentModalList[currentModalIndex].ar:currentModalList[currentModalIndex].en; } else if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(!text) text = currentLang === 'ar' ? 'دعاء من تطبيق الأدعية' : 'A dua from the Dua App'; const shareText=encodeURIComponent(text.substring(0,300)); const pageUrl=window.location.href; const pn={ar:{whatsapp:"واتساب",telegram:"تليجرام",twitter:"تويتر",facebook:"فيسبوك",messenger:"ماسنجر",copy:"نسخ الرابط"},en:{whatsapp:"WhatsApp",telegram:"Telegram",twitter:"X",facebook:"Facebook",messenger:"Messenger",copy:"Copy Link"}}[currentLang]; const icons={whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', telegram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', twitter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', facebook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', messenger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}; const platforms=[{name:pn.whatsapp,icon:icons.whatsapp,url:`https://wa.me/?text=${shareText}`},{name:pn.telegram,icon:icons.telegram,url:`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}`},{name:pn.twitter,icon:icons.twitter,url:`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}`},{name:pn.facebook,icon:icons.facebook,url:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.messenger,icon:icons.messenger,url:`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.copy,icon:icons.copy,url:"",action:()=>navigator.clipboard.writeText(pageUrl)}]; const grid=document.getElementById('shareGrid'); grid.innerHTML=''; platforms.forEach(p=>{ const div=document.createElement('div'); div.className='share-icon'; div.innerHTML=`${p.icon}<span>${p.name}</span>`; div.onclick=()=>{ if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); else if(p.action) p.action(); document.getElementById('sharePopup').classList.remove('show'); }; grid.appendChild(div); }); }
+function toggleSharePopup(){ const pop=document.getElementById('sharePopup'); pop.classList.toggle('show'); if(pop.classList.contains('show')) buildShareGrid(); setTimeout(()=>{ document.addEventListener('click',function closeShare(e){ if(!pop.contains(e.target)&&!document.getElementById('btnShare').contains(e.target)){ pop.classList.remove('show'); document.removeEventListener('click',closeShare); } }); },100); }
+function buildShareGrid(){ let text=''; if(currentModalIndex>=0 && currentModalList[currentModalIndex]){ text=currentLang==='ar'?currentModalList[currentModalIndex].ar:currentModalList[currentModalIndex].en; } else if(ruqyahActive&&selectedDuaIndex>=0){ const data=currentRuqyahSub==='self'?ruqyahSelf:ruqyahOther; text=currentLang==='ar'?data[selectedDuaIndex].ar:data[selectedDuaIndex].en; } else if(favoritesActive&&favoritesList.length>0){ text=currentLang==='ar'?favoritesList[0].ar:favoritesList[0].en; } else if(sunnahActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?sunnahDuas[selectedDuaIndex].ar:sunnahDuas[selectedDuaIndex].en; } else if(quranicActive&&selectedDuaIndex>=0){ text=currentLang==='ar'?quranicDuas[selectedDuaIndex].ar:quranicDuas[selectedDuaIndex].en; } if(!text) return; const shareText=encodeURIComponent(text.substring(0,300)); const pageUrl=window.location.href; const pn={ar:{whatsapp:"واتساب",telegram:"تليجرام",twitter:"تويتر",facebook:"فيسبوك",messenger:"ماسنجر",copy:"نسخ الرابط"},en:{whatsapp:"WhatsApp",telegram:"Telegram",twitter:"X",facebook:"Facebook",messenger:"Messenger",copy:"Copy Link"}}[currentLang]; const icons={whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>', telegram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', twitter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>', facebook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>', messenger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>', copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}; const platforms=[{name:pn.whatsapp,icon:icons.whatsapp,url:`https://wa.me/?text=${shareText}`},{name:pn.telegram,icon:icons.telegram,url:`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}`},{name:pn.twitter,icon:icons.twitter,url:`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}`},{name:pn.facebook,icon:icons.facebook,url:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.messenger,icon:icons.messenger,url:`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}`},{name:pn.copy,icon:icons.copy,url:"",action:()=>navigator.clipboard.writeText(pageUrl)}]; const grid=document.getElementById('shareGrid'); grid.innerHTML=''; platforms.forEach(p=>{ const div=document.createElement('div'); div.className='share-icon'; div.innerHTML=`${p.icon}<span>${p.name}</span>`; div.onclick=()=>{ if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); else if(p.action) p.action(); document.getElementById('sharePopup').classList.remove('show'); }; grid.appendChild(div); }); }
 
 // Updated icon gallery with new icons
 const iconGallery = [
