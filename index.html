@@ -2548,8 +2548,8 @@ if(currentLang==='ar'){
         if(showTranslit) card.appendChild(tl);
         // Category emoji label
         const categoryEmojis = {
-            'quranic': '🧡ﷲ',
-            'sunnah': '💚ﷺ',
+            'quranic': 'ﷲ🧡',
+            'sunnah': 'ﷺ💚',
             'ruqyah': '📿😵',
             'wird': '📔🕋',
             'personal': '📖🤲'
@@ -2561,7 +2561,14 @@ if(currentLang==='ar'){
             'wird': 'DAILY WIRD',
             'personal': 'MY DUAS'
         };
-        
+
+       if(showSource){ 
+            const sd=document.createElement('div'); 
+            sd.className='dua-source-info'; 
+            sd.style.color = '#888';
+            sd.innerText=buildSourceInfo(fav); 
+            if(sd.innerText.trim()!=='') card.appendChild(sd); 
+        } 
         const catKey = fav.categoryLabel || fav.sub;
         const emoji = categoryEmojis[catKey] || '📌';
         const catName = categoryNames[catKey] || catKey.toUpperCase();
@@ -2576,13 +2583,7 @@ if(currentLang==='ar'){
         labelDiv.innerText = `${emoji} ${catName}`;
         card.appendChild(labelDiv);
         
-        if(showSource){ 
-            const sd=document.createElement('div'); 
-            sd.className='dua-source-info'; 
-            sd.style.color = '#888';
-            sd.innerText=buildSourceInfo(fav); 
-            if(sd.innerText.trim()!=='') card.appendChild(sd); 
-        }        card.addEventListener('click',()=>{
+                card.addEventListener('click',()=>{
             document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected'));
             card.classList.add('selected');
             openModalWithContext('favorites', idx, favoritesList);
