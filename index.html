@@ -2198,7 +2198,25 @@ document.getElementById('dailyMessageCard').addEventListener('click', handleMess
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
-function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); } }function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); }
+function addFavorite(sub,idx,dua){ 
+    if(!isFavorited(sub,idx)){ 
+        favoritesList.push({
+            sub, 
+            idx, 
+            ar:dua.ar, 
+            en:dua.en, 
+            translit:dua.translit, 
+            source:dua.source,
+            categoryLabel: sub === 'self' || sub === 'other' ? 'ruqyah' : sub
+        }); 
+        saveFavorites(); 
+        if(ruqyahActive) renderRuqyahDuas(); 
+        if(favoritesActive) renderFavorites(); 
+        if(sunnahActive) renderSunnahDuas(); 
+        if(quranicActive) renderQuranicDuas(); 
+        if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); 
+    } 
+}
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
@@ -2321,7 +2339,27 @@ if(currentLang==='ar'){
     if(showSecondaryLang) card.appendChild(arabic); 
 }
         if(showTranslit) card.appendChild(tl);
-        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(dua); if(sd.innerText.trim()!=='') card.appendChild(sd); }
+                if(showSource){ 
+            const sd=document.createElement('div'); 
+            sd.className='dua-source-info'; 
+            let sourceText = buildSourceInfo(fav);
+            // Add category label
+            const categoryNames = {
+                'ruqyah': currentLang === 'ar' ? 'الرقية الشرعية' : 'Ruqyah',
+                'sunnah': currentLang === 'ar' ? 'دعاء من السنة' : 'Sunnah Duas',
+                'quranic': currentLang === 'ar' ? 'دعاء من القرآن' : 'Quranic Duas',
+                'personal': currentLang === 'ar' ? 'أدعيتي' : 'My Duas'
+            };
+            const catLabel = fav.categoryLabel || fav.sub;
+            const catName = categoryNames[catLabel] || catLabel;
+            if (sourceText) {
+                sourceText = `🏷️ ${catName} | ${sourceText}`;
+            } else {
+                sourceText = `🏷️ ${catName}`;
+            }
+            sd.innerText = sourceText; 
+            if(sd.innerText.trim()!=='') card.appendChild(sd); 
+        }
         card.addEventListener('click',()=>{
             document.querySelectorAll('.dua-card').forEach(c=>c.classList.remove('selected'));
             card.classList.add('selected');
