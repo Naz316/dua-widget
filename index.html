@@ -2068,7 +2068,16 @@ const translations = {
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
-let showSecondaryLang = true;
+// Migrate old favorites to add categoryLabel
+favoritesList = favoritesList.map(fav => {
+    if (!fav.categoryLabel) {
+        let cat = fav.sub;
+        if (cat === 'self' || cat === 'other') cat = 'ruqyah';
+        fav.categoryLabel = cat;
+    }
+    return fav;
+});
+localStorage.setItem('dua_favorites', JSON.stringify(favoritesList));let showSecondaryLang = true;
 let isHorizontalMode = false; // global toggle for dua lists layout
 
 // Modal navigation state
@@ -2228,7 +2237,29 @@ document.getElementById('dailyMessageCard').addEventListener('click', handleMess
 
 function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
-function addFavorite(sub,idx,dua){ if(!isFavorited(sub,idx)){ favoritesList.push({sub,idx,ar:dua.ar,en:dua.en,translit:dua.translit,source:dua.source}); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); } }function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); }
+function addFavorite(sub,idx,dua){ 
+    if(!isFavorited(sub,idx)){ 
+        // Determine category for emoji label
+        let categoryLabel = sub;
+        if (sub === 'self' || sub === 'other') categoryLabel = 'ruqyah';
+        
+        favoritesList.push({
+            sub, 
+            idx, 
+            ar:dua.ar, 
+            en:dua.en, 
+            translit:dua.translit, 
+            source:dua.source,
+            categoryLabel: categoryLabel
+        }); 
+        saveFavorites(); 
+        if(ruqyahActive) renderRuqyahDuas(); 
+        if(favoritesActive) renderFavorites(); 
+        if(sunnahActive) renderSunnahDuas(); 
+        if(quranicActive) renderQuranicDuas(); 
+        if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); 
+    } 
+}function removeFavorite(sub,idx){ favoritesList=favoritesList.filter(f=>!(f.sub===sub && f.idx===idx)); saveFavorites(); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); }
 function getHeartStrokeColor(){ return isDarkMode ? 'white' : '#333333'; }
 function buildSourceInfo(dua){ let parts=[]; if(dua.source) parts.push(`📖 ${dua.source}`); return parts.join(' | '); }
 
@@ -2515,8 +2546,43 @@ if(currentLang==='ar'){
     if(showSecondaryLang) card.appendChild(arabic); 
 }
         if(showTranslit) card.appendChild(tl);
-        if(showSource){ const sd=document.createElement('div'); sd.className='dua-source-info'; sd.innerText=buildSourceInfo(fav); if(sd.innerText.trim()!=='') card.appendChild(sd); }
-        card.addEventListener('click',()=>{
+        // Category emoji label
+        const categoryEmojis = {
+            'quranic': '🧡ﷲ',
+            'sunnah': '💚ﷺ',
+            'ruqyah': '📿😵',
+            'wird': '📔🕋',
+            'personal': '📖🤲'
+        };
+        const categoryNames = {
+            'quranic': 'QURANIC DUAS',
+            'sunnah': 'SUNNAH DUAS', 
+            'ruqyah': 'Spiritual Ruqya',
+            'wird': 'DAILY WIRD',
+            'personal': 'MY DUAS'
+        };
+        
+        const catKey = fav.categoryLabel || fav.sub;
+        const emoji = categoryEmojis[catKey] || '📌';
+        const catName = categoryNames[catKey] || catKey.toUpperCase();
+        
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'dua-source-info';
+        labelDiv.style.marginTop = '8px';
+        labelDiv.style.paddingTop = '6px';
+        labelDiv.style.borderTop = '1px dotted var(--border-color)';
+        labelDiv.style.fontWeight = '600';
+        labelDiv.style.color = 'var(--accent)';
+        labelDiv.innerText = `${emoji} ${catName}`;
+        card.appendChild(labelDiv);
+        
+        if(showSource){ 
+            const sd=document.createElement('div'); 
+            sd.className='dua-source-info'; 
+            sd.style.color = '#888';
+            sd.innerText=buildSourceInfo(fav); 
+            if(sd.innerText.trim()!=='') card.appendChild(sd); 
+        }        card.addEventListener('click',()=>{
             document.querySelectorAll('#favoritesListContainer .dua-card').forEach(c=>c.classList.remove('selected'));
             card.classList.add('selected');
             openModalWithContext('favorites', idx, favoritesList);
