@@ -2200,7 +2200,7 @@ function applyLanguage(){
     document.getElementById('quranicWird1Btn').innerText=t.quranicWird1; document.getElementById('quranicWird2Btn').innerText=t.quranicWird2; document.getElementById('quranicWird3Btn').innerText=t.quranicWird3;
     document.getElementById('backText').innerText=t.back; document.getElementById('favBackText').innerText=t.back; document.getElementById('sunnahBackText').innerText=t.back; document.getElementById('quranicBackText').innerText=t.back;
     document.getElementById('personalBackText').innerText=t.back;document.getElementById('closeModalBtn').innerText=t.closeModal;
-    document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip); document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip); document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip);
+    document.getElementById('btnCopy').setAttribute('data-tooltip', t.copyTooltip); document.getElementById('btnShare').setAttribute('data-tooltip', t.shareTooltip); document.getElementById('btnRefresh').setAttribute('data-tooltip', t.refreshTooltip); document.getElementById('btnGrid')?.setAttribute('data-tooltip', t.gridTooltip);
     if(currentLang==='ar'){ document.body.classList.add('text-rtl'); document.body.classList.remove('text-ltr'); } else { document.body.classList.add('text-ltr'); document.body.classList.remove('text-rtl'); }
     if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView();
     updateGlobalFavIcon();
