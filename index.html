@@ -1715,9 +1715,7 @@ function openPersonalDuaModal(idx) {
     const lines = item.text.split('\n').filter(l => l.trim());
     let arabicText, englishText;
     
-    // Detect which line is Arabic (contains Arabic characters) and which is English
     if (lines.length >= 2) {
-        // Check if first line contains Arabic characters
         const hasArabic = /[\u0600-\u06FF]/.test(lines[0]);
         if (hasArabic) {
             arabicText = lines[0];
@@ -1727,7 +1725,6 @@ function openPersonalDuaModal(idx) {
             arabicText = lines.slice(1).join('\n');
         }
     } else {
-        // Single line - determine if Arabic or English
         const hasArabic = /[\u0600-\u06FF]/.test(item.text);
         if (hasArabic) {
             arabicText = item.text;
@@ -1738,8 +1735,17 @@ function openPersonalDuaModal(idx) {
         }
     }
 
-    // Language priority: Arabic mode = Arabic on top (accent), English below (dim)
-    // English mode = English on top (accent), Arabic below (dim)
+    // Build full copy text (everything)
+    let fullCopyText = '';
+    if (arabicText) fullCopyText += arabicText + '\n\n';
+    if (englishText) fullCopyText += englishText + '\n\n';
+    fullCopyText += '— ' + (currentLang === 'ar' ? 'أدعيتي' : 'My Duas');
+    
+    // Store for copy button
+    modalContent.dataset.fullCopyText = fullCopyText;
+    modalContent.dataset.duaAr = arabicText || '';
+    modalContent.dataset.duaEn = englishText || '';
+
     let firstText, secondText, firstIsArabic;
     if (currentLang === 'ar') {
         firstText = arabicText;
@@ -1753,10 +1759,24 @@ function openPersonalDuaModal(idx) {
 
     const mainColor = 'var(--accent)';
     const secondaryColor = 'var(--text-dim)';
+    
+    const modalTitle = currentLang === 'ar' ? 'أدعيتي' : 'My Duas';
 
-    // Build modal content with proper language priority like other blocks
     let contentHtml = `
-        <button class="modal-close-x" id="personalModalCloseX" onclick="document.getElementById('personalAddModal').style.display='none'" aria-label="Close">✕</button>
+        <!-- Blue header with title + copy + share buttons -->
+        <div class="modal-blue-header" style="justify-content: space-between; padding: 18px 20px; margin: -40px -25px 25px -25px;">
+            <div style="font-size:24px; cursor:pointer; width:38px; height:38px; display:flex; align-items:center; justify-content:center;" onclick="document.getElementById('personalAddModal').style.display='none'">✕</div>
+            <h3 style="margin:0; font-family:'Amiri',serif; font-size:1.4rem;">${modalTitle}</h3>
+            <div style="display:flex; gap:10px;">
+                <button class="share-circle-btn" id="personalModalCopyBtn" title="${t.copyTooltip}" style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                </button>
+                <button class="share-circle-btn" id="personalModalShareBtn" title="${t.shareTooltip}" style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/></svg>
+                </button>
+            </div>
+        </div>
+        
         <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
             <div class="dua-text" id="personalDuaText" style="text-align: ${currentLang === 'ar' ? 'right' : 'left'};">
                 <div style="font-weight: 700; color: ${mainColor}; margin-bottom: 15px; font-size: var(--dua-font-size); line-height: 1.8; ${firstIsArabic ? "font-family: 'Amiri', serif;" : "font-family: 'Inter', sans-serif;"}">${escapeHtml(firstText)}</div>
@@ -1780,6 +1800,37 @@ function openPersonalDuaModal(idx) {
     
     modalContent.innerHTML = contentHtml;
     modal.style.display = 'flex';
+    
+    // Wire up the new copy button (copies EVERYTHING)
+    document.getElementById('personalModalCopyBtn')?.addEventListener('click', function() {
+        const textToCopy = modalContent.dataset.fullCopyText || '';
+        if (!textToCopy) return;
+        
+        const btn = this;
+        const orig = btn.innerHTML;
+        
+        copyToClipboard(textToCopy).then(() => {
+            btn.innerHTML = '<span style="font-size:20px">✅</span>';
+            setTimeout(() => btn.innerHTML = orig, 2000);
+        }).catch((err) => {
+            const success = fallbackCopyTextToClipboard(textToCopy);
+            if (success) {
+                btn.innerHTML = '<span style="font-size:20px">✅</span>';
+            } else {
+                btn.innerHTML = '<span style="font-size:20px">❌</span>';
+                console.error('Copy failed:', err);
+            }
+            setTimeout(() => btn.innerHTML = orig, 2000);
+        });
+        playClickSound();
+    });
+    
+    // Wire up the new share button
+    document.getElementById('personalModalShareBtn')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleSharePopup();
+        playClickSound();
+    });
 }
 
 function navigatePersonalModal(currentIdx, direction) {
