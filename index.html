@@ -2740,7 +2740,19 @@ document.getElementById('btnCopy')?.addEventListener('click',()=>{
             const orig=btn.innerHTML; 
             btn.innerHTML='<span style="font-size:16px">✅</span>'; 
             setTimeout(()=>btn.innerHTML=orig,2000); 
-        }).catch(()=>alert(t.copyTooltip)); 
+        }).catch((err)=>{ 
+            // Fallback for sandboxed contexts like Notion embeds
+            const success = fallbackCopyTextToClipboard(text);
+            const btn=document.getElementById('btnCopy'); 
+            const orig=btn.innerHTML;
+            if(success){
+                btn.innerHTML='<span style="font-size:16px">✅</span>'; 
+            } else {
+                btn.innerHTML='<span style="font-size:16px">❌</span>';
+                console.error('Copy failed:', err);
+            }
+            setTimeout(()=>btn.innerHTML=orig,2000);
+        }); 
     } 
     playClickSound(); 
 });
