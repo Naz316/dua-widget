@@ -1074,15 +1074,6 @@ body.text-ltr .personal-card .personal-card-content {
     font-weight: 400;
 }
 
-/* When English/main language is active (LTR mode) - main text gets accent */
-body.text-ltr .personal-card .personal-card-content {
-    color: var(--accent) !important;
-    font-weight: 700;
-}
-body.text-rtl .personal-card .personal-card-content {
-    color: var(--text-dim) !important;
-    font-weight: 400;
-}
 .personal-card-actions {
     display: flex;
     justify-content: flex-end;
@@ -1530,8 +1521,7 @@ function copyToClipboard(text) {
         });
     }
 }
-let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
-
+let personalDuas = (() => { try { return JSON.parse(localStorage.getItem('personal_duas') || '[]'); } catch(e) { return []; } })();
 // Helper to escape HTML to prevent XSS
 function escapeHtml(text) {
     const div = document.createElement('div');
