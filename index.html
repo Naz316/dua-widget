@@ -306,11 +306,11 @@ body.text-ltr #openedMessageText {
         .grid-item.active img { filter: none !important; }
         .grid-item img { width: 70px; height: 70px; margin-bottom: 12px; object-fit: contain; }
         .grid-item span { font-weight: 700; font-size: 1rem; color: var(--text); }
-        .ruqyah-view, .favorites-view, .sunnah-view, .wird-view, .quranic-view, .personal-view {
-    display: none;
-    flex-direction: column;
-    padding: 0 20px 20px 20px;
-}
+        .ruqyah-view, .favorites-view, .sunnah-view, .quranic-view, .personal-view {
+            display: none;
+            flex-direction: column;
+            padding: 0 20px 20px 20px;
+        }
        .subcategory-buttons {
             display: flex;
             gap: 15px;
@@ -1365,7 +1365,7 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
         <div class="horizontal-pagination" id="favoritesPagination" style="display: none;"></div>
         <div class="dua-list-container" id="favoritesListContainer"></div>
     </div>
-   div class="sunnah-view" id="sunnahView">
+    <div class="sunnah-view" id="sunnahView">
         <div class="subcategory-buttons" id="sunnahSubButtons">
             <button class="subcategory-btn" data-wird="wird1" id="wird1Btn">الورد الأول</button>
             <button class="subcategory-btn" data-wird="wird2" id="wird2Btn">الورد الثاني</button>
@@ -1377,18 +1377,18 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
         <div class="horizontal-pagination" id="sunnahPagination" style="display: none;"></div>
         <div class="dua-list-container" id="sunnahListContainer"></div>
     </div>
-<div class="wird-view" id="wirdView">
-    <div class="subcategory-buttons" id="wirdSubButtons">
-        <button class="subcategory-btn" data-wird="wird1" id="wirdBtn1">الورد الأول</button>
-        <button class="subcategory-btn" data-wird="wird2" id="wirdBtn2">الورد الثاني</button>
-        <button class="subcategory-btn" data-wird="wird3" id="wirdBtn3">الورد الثالث</button>
-        <button class="subcategory-btn" data-wird="wird4" id="wirdBtn4">الورد الرابع</button>
-        <button class="subcategory-btn" data-wird="wird5" id="wirdBtn5">الورد الخامس</button>
+    <div class="wird-view" id="wirdView">
+        <div class="subcategory-buttons" id="wirdSubButtons">
+            <button class="subcategory-btn" data-wird="wird1" id="wird1Btn">الورد الأول</button>
+            <button class="subcategory-btn" data-wird="wird2" id="wird2Btn">الورد الثاني</button>
+            <button class="subcategory-btn" data-wird="wird3" id="wird3Btn">الورد الثالث</button>
+            <button class="subcategory-btn" data-wird="wird4" id="wird4Btn">الورد الرابع</button>
+            <button class="subcategory-btn" data-wird="wird5" id="wird5Btn">الورد الخامس</button>
+        </div>
+        <button class="back-button" id="backFromWird"><span>←</span> <span id="wirdBackText">رجوع</span></button>
+        <div class="horizontal-pagination" id="wirdPagination" style="display: none;"></div>
+        <div class="dua-list-container" id="wirdListContainer"></div>
     </div>
-    <button class="back-button" id="backFromWird"><span>←</span> <span id="wirdBackText">رجوع</span></button>
-    <div class="horizontal-pagination" id="wirdPagination" style="display: none;"></div>
-    <div class="dua-list-container" id="wirdListContainer"></div>
-</div>
     <div class="quranic-view" id="quranicView">
         <div class="subcategory-buttons" id="quranicSubButtons">
             <button class="subcategory-btn" data-wird="quranic1" id="quranicWird1Btn">الورد الأول</button>
@@ -2301,8 +2301,7 @@ function applyLanguage(){
     document.getElementById('labelRuqya').innerText=t.ruqya; document.getElementById('labelWird').innerText=t.wird; document.getElementById('labelQuranic').innerText=t.quranic; document.getElementById('labelPersonal').innerText=t.personal; document.getElementById('labelFavorites').innerText=t.favorites; document.getElementById('labelSunnah').innerText=t.sunnah;
     document.getElementById('menuTitleColors').innerText=t.menuColors; document.getElementById('menuTitleSettings').innerText=t.menuSettings;
     document.getElementById('set1').innerText=t.set1; document.getElementById('setLang').innerText=t.setLang; document.getElementById('set4').innerText=t.set4; document.getElementById('setTranslit').innerText=t.setTranslit; document.getElementById('setSource').innerText=t.setSource;
-    document.getElementById('shareTitle').innerText=t.shareTitle; document.getElementById('selfBtn').innerText=t.selfBtn; document.getElementById('otherBtn').innerText=t.otherBtn; document.getElementById('wird1Btn').innerText=t.wird1Btn; document.getElementById('wird2Btn').innerText=t.wird2Btn; document.getElementById('wird3Btn').innerText=t.wird3Btn; document.getElementById('wird4Btn').innerText=t.wird4Btn; document.getElementById('wird5Btn').innerText=t.wird5Btn;     // --- Texts for the new WIRD view buttons (step 10) ---
-    document.getElementById('wirdBtn1').innerText = t.wird1Btn; document.getElementById('wirdBtn2').innerText = t.wird2Btn; document.getElementById('wirdBtn3').innerText = t.wird3Btn; document.getElementById('wirdBtn4').innerText = t.wird4Btn; document.getElementById('wirdBtn5').innerText = t.wird5Btn; document.getElementById('wirdBackText').innerText = t.back;
+    document.getElementById('shareTitle').innerText=t.shareTitle; document.getElementById('selfBtn').innerText=t.selfBtn; document.getElementById('otherBtn').innerText=t.otherBtn; document.getElementById('wird1Btn').innerText=t.wird1Btn; document.getElementById('wird2Btn').innerText=t.wird2Btn; document.getElementById('wird3Btn').innerText=t.wird3Btn; document.getElementById('wird4Btn').innerText=t.wird4Btn; document.getElementById('wird5Btn').innerText=t.wird5Btn;
     document.getElementById('quranicWird1Btn').innerText=t.quranicWird1; document.getElementById('quranicWird2Btn').innerText=t.quranicWird2; document.getElementById('quranicWird3Btn').innerText=t.quranicWird3;
     document.getElementById('backText').innerText=t.back; document.getElementById('favBackText').innerText=t.back; document.getElementById('sunnahBackText').innerText=t.back; document.getElementById('quranicBackText').innerText=t.back;
     document.getElementById('personalBackText').innerText=t.back;document.getElementById('closeModalBtn').innerText=t.closeModal;
@@ -2491,7 +2490,6 @@ function updateModalContent() {
     let modalTitle = '';
     if (currentModalView === 'ruqyah') modalTitle = currentLang === 'ar' ? 'الرقية الشرعية' : 'Spiritual Ruqya';
     else if (currentModalView === 'sunnah') modalTitle = currentLang === 'ar' ? 'دعاء من السنة' : 'Sunnah Dua';
-    else if (currentModalView === 'wird') modalTitle = currentLang === 'ar' ? 'ورد الدعاء' : 'Daily Wird';    
     else if (currentModalView === 'quranic') modalTitle = currentLang === 'ar' ? 'دعاء من القرآن' : 'Quranic Dua';
     else if (currentModalView === 'favorites') modalTitle = currentLang === 'ar' ? 'المفضلة' : 'Favorites';
     else if (currentModalView === 'personal') modalTitle = currentLang === 'ar' ? 'أدعيتي' : 'My Duas';
@@ -2637,124 +2635,61 @@ if(currentLang==='ar'){
     updateMenuFavButton();
 }
 
-function renderSunnahDuas() {
-    let startIdx = 0, endIdx = 0;
-    // Sunnah has 75 duas, split into 5 parts of 15 each
-    switch (currentSunnahWird) {
-        case 'wird1': startIdx = 0; endIdx = 15; break;
-        case 'wird2': startIdx = 15; endIdx = 30; break;
-        case 'wird3': startIdx = 30; endIdx = 45; break;
-        case 'wird4': startIdx = 45; endIdx = 60; break;
-        default: startIdx = 60; endIdx = 75; break; // wird5
-    }
+function renderSunnahDuas(){
+    let startIdx=0, endIdx=0;
+    if(currentSunnahWird==='wird1'){ startIdx=0; endIdx=13; }
+    else if(currentSunnahWird==='wird2'){ startIdx=13; endIdx=28; }
+    else if(currentSunnahWird==='wird3'){ startIdx=28; endIdx=44; }
+    else if(currentSunnahWird==='wird4'){ startIdx=44; endIdx=59; }
+    else{ startIdx=59; endIdx=75; }
+    
     const data = sunnahDuas.slice(startIdx, endIdx);
     const container = document.getElementById('sunnahListContainer');
-    const paginationDiv = document.getElementById('sunnahPagination');
     container.innerHTML = '';
-    if (isHorizontalMode) {
-        container.classList.add('horizontal-mode');
-        paginationDiv.style.display = 'block';
-        paginationDiv.innerText = `1 / ${data.length}`;
-    } else {
-        container.classList.remove('horizontal-mode');
-        paginationDiv.style.display = 'none';
-    }
+    
     data.forEach((dua, localIdx) => {
-        // (the rest of the card creation code is identical – you can keep it)
-        // BUT note: the 'fav' logic must use 'sunnah' as the sub category.
         const globalIdx = startIdx + localIdx;
-        const fav = isFavorited('sunnah', globalIdx);
-        // ... [keep the same card building code as in your original renderSunnahDuas]
+        const card = document.createElement('div'); 
+        card.className = 'dua-card';
+        
+        // --- Add your existing card content logic here (the same as in renderRuqyahDuas) ---
+        // Just ensure the click event uses 'sunnah' as the category:
+        card.addEventListener('click', () => {
+            openModalWithContext('sunnah', localIdx, data);
+            playClickSound();
+        });
+        container.appendChild(card);
     });
-    if (isHorizontalMode) setupHorizontalScrollListener('sunnahListContainer', 'sunnahPagination');
     updateMenuFavButton();
 }
-function renderWirdDuas() {
-    let startIdx = 0, endIdx = 0;
-    switch (currentWird) {
-        case 'wird1': startIdx = 0; endIdx = 25; break;
-        case 'wird2': startIdx = 25; endIdx = 51; break;
-        case 'wird3': startIdx = 51; endIdx = 73; break;
-        case 'wird4': startIdx = 73; endIdx = 100; break;
-        default: startIdx = 100; endIdx = 124; break; // wird5
-    }
-    const data = wirdDuas.slice(startIdx, endIdx);
-    const container = document.getElementById('wirdListContainer');
+function renderWirdDuas(){
+    let startIdx=0, endIdx=0;
+    if(currentWird==='wird1'){ startIdx=0; endIdx=25; }
+    else if(currentWird==='wird2'){ startIdx=25; endIdx=51; }
+    else if(currentWird==='wird3'){ startIdx=51; endIdx=73; }
+    else if(currentWird==='wird4'){ startIdx=73; endIdx=100; }
+    else{ startIdx=100; endIdx=124; }
+    
+    const data=wirdDuas.slice(startIdx,endIdx);
+    const container=document.getElementById('wirdListContainer');
     const paginationDiv = document.getElementById('wirdPagination');
-    container.innerHTML = '';
-    if (isHorizontalMode) {
-        container.classList.add('horizontal-mode');
-        paginationDiv.style.display = 'block';
-        paginationDiv.innerText = `1 / ${data.length}`;
-    } else {
-        container.classList.remove('horizontal-mode');
-        paginationDiv.style.display = 'none';
-    }
-    data.forEach((dua, localIdx) => {
-        const card = document.createElement('div');
-        card.className = 'dua-card';
-        const header = document.createElement('div');
-        header.className = 'dua-header';
-        const num = document.createElement('div');
-        num.className = 'dua-number';
-        num.innerText = (localIdx + 1) + '.';
-        const globalIdx = startIdx + localIdx;
-        const fav = isFavorited('wird', globalIdx);
-        const favBtn = document.createElement('button');
-        favBtn.className = 'fav-btn-small';
-        const strokeColor = getHeartStrokeColor();
-        favBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${fav ? '#ff4444' : 'none'}" stroke="${fav ? '#ff4444' : strokeColor}" stroke-width="1.5"/></svg>`;
-        favBtn.onclick = (e) => {
-            e.stopPropagation();
-            if (fav) removeFavorite('wird', globalIdx);
-            else addFavorite('wird', globalIdx, dua);
-            playClickSound();
-        };
-        header.append(num, favBtn);
-        const arabic = document.createElement('div');
-        arabic.className = 'dua-arabic';
-        arabic.innerText = dua.ar;
-        const trans = document.createElement('div');
-        trans.className = 'dua-translation';
-        trans.innerText = dua.en;
-        const tl = document.createElement('div');
-        tl.className = 'dua-transliteration';
-        tl.innerText = dua.translit;
-        if (currentLang === 'ar') {
-            arabic.classList.add('dua-main-lang');
-            trans.classList.add('dua-secondary-lang');
-        } else {
-            trans.classList.add('dua-main-lang');
-            arabic.classList.add('dua-secondary-lang');
-        }
-        card.appendChild(header);
-        if (currentLang === 'ar') {
-            card.appendChild(arabic);
-            if (showSecondaryLang) card.appendChild(trans);
-        } else {
-            card.appendChild(trans);
-            if (showSecondaryLang) card.appendChild(arabic);
-        }
-        if (showTranslit) card.appendChild(tl);
-        if (showSource) {
-            const sd = document.createElement('div');
-            sd.className = 'dua-source-info';
-            sd.innerText = buildSourceInfo(dua);
-            if (sd.innerText.trim() !== '') card.appendChild(sd);
-        }
-        card.addEventListener('click', () => {
-            document.querySelectorAll('#wirdListContainer .dua-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
+    container.innerHTML='';
+    
+    // (Ensure you have the horizontal scroll logic here if using it)
+    data.forEach((dua,localIdx)=>{
+        const card=document.createElement('div'); card.className='dua-card';
+        // Card content logic (Copy the same inner structure used in renderSunnahDuas)
+        card.innerHTML = `<div class="dua-header"><div class="dua-number">${localIdx+1}.</div></div>
+                          <div class="dua-arabic">${dua.ar}</div>`;
+        
+        card.addEventListener('click',()=>{
             openModalWithContext('wird', localIdx, data);
             playClickSound();
         });
         container.appendChild(card);
     });
-    if (isHorizontalMode) {
-        setupHorizontalScrollListener('wirdListContainer', 'wirdPagination');
-    }
     updateMenuFavButton();
-}    
+}   
 function renderQuranicDuas(){
     let startIdx=0, endIdx=0;
     if(currentQuranicWird==='quranic1'){ startIdx=0; endIdx=7; }
@@ -2898,13 +2833,13 @@ if(currentLang==='ar'){
 
 function showRuqyah(){ ruqyahActive=true; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='flex'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderRuqyahDuas(); document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-sub')===currentRuqyahSub)); }
 function showFavorites(){ favoritesActive=true; ruqyahActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderFavorites(); }
-function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; wirdActive = false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('wirdView').style.display = 'none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; renderSunnahDuas(); }
-function showWird() { wirdActive = true; ruqyahActive = false; favoritesActive = false; sunnahActive = false; quranicActive = false; selectedDuaIndex = -1; document.getElementById('gridContainer').style.display = 'none'; document.getElementById('messageContainer').style.display = 'none'; document.getElementById('ruqyahView').style.display = 'none'; document.getElementById('favoritesView').style.display = 'none'; document.getElementById('sunnahView').style.display = 'none'; document.getElementById('wirdView').style.display = 'flex'; document.getElementById('quranicView').style.display = 'none'; document.getElementById('personalView').style.display = 'none'; renderWirdDuas(); }    
+function showSunnah(){ sunnahActive=true; ruqyahActive=false; favoritesActive=false; wirdActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='flex'; document.getElementById('wirdView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none';  currentSunnahWird='wird1';  renderSunnahDuas(); }
+ function showWird(){ wirdActive=true; sunnahActive=false; ruqyahActive=false; quranicActive=false; favoritesActive=false; document.getElementById('gridContainer').style.display='none'; document.getElementById('wirdView').style.display='flex'; document.getElementById('sunnahView').style.display='none'; currentWird='wird1'; renderWirdDuas(); }   
 function showQuranic(){ quranicActive=true; ruqyahActive=false; favoritesActive=false; sunnahActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='none'; document.getElementById('messageContainer').style.display='none'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none'; document.getElementById('sunnahView').style.display='none'; document.getElementById('quranicView').style.display='flex'; document.getElementById('personalView').style.display='none'; renderQuranicDuas(); }
-function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none';  document.getElementById('sunnahView').style.display='none'; document.getElementById('wirdView').style.display = 'none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; }
+function exitSubview(){ ruqyahActive=false; favoritesActive=false; sunnahActive=false; wirdActive=false; quranicActive=false; selectedDuaIndex=-1; document.getElementById('gridContainer').style.display='grid'; document.getElementById('messageContainer').style.display='block'; document.getElementById('ruqyahView').style.display='none'; document.getElementById('favoritesView').style.display='none';  document.getElementById('sunnahView').style.display='none'; document.getElementById('wirdView').style.display='none'; document.getElementById('quranicView').style.display='none'; document.getElementById('personalView').style.display='none'; }
 document.querySelector('.grid-item[data-category="ruqya"]')?.addEventListener('click',()=>{ showRuqyah(); playClickSound(); });
-document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });    
 document.querySelector('.grid-item[data-category="wird"]')?.addEventListener('click',()=>{ showWird(); playClickSound(); });
+document.querySelector('.grid-item[data-category="favorites"]')?.addEventListener('click',()=>{ showFavorites(); playClickSound(); });
 document.querySelector('.grid-item[data-category="sunnah"]')?.addEventListener('click',()=>{ showSunnah(); playClickSound(); });
 document.querySelector('.grid-item[data-category="quranic"]')?.addEventListener('click',()=>{ showQuranic(); playClickSound(); });
 // Personal Duas Event Listeners
@@ -2967,14 +2902,13 @@ document.addEventListener('click', (e) => {
 });
     
 document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentRuqyahSub=this.getAttribute('data-sub'); selectedDuaIndex=-1; document.querySelectorAll('#ruqyahView .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderRuqyahDuas(); playClickSound(); }); });
-document.querySelectorAll('#wirdSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#wirdSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderWirdDuas(); playClickSound(); }); });    
-document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentSunnahWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
+document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentWird=this.getAttribute('data-wird'); document.querySelectorAll('#sunnahSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderSunnahDuas(); playClickSound(); }); });
 document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>{ btn.addEventListener('click',function(){ currentQuranicWird=this.getAttribute('data-wird'); document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderQuranicDuas(); playClickSound(); }); });
 
 document.getElementById('backFromRuqyah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
-document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });   
-document.getElementById('backFromSunnah')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
-document.getElementById('backFromWird')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });    
+document.getElementById('backFromFavorites')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
+document.getElementById('backFromWird')?.addEventListener('click', () => { exitSubview(); playClickSound(); });
+document.getElementById('backFromSunnah')?.addEventListener('click', () => { exitSubview(); playClickSound(); });
 document.getElementById('backFromQuranic')?.addEventListener('click',()=>{ exitSubview(); playClickSound(); });
 
 document.getElementById('duaModal')?.addEventListener('click',function(e){ if(e.target === this) this.style.display='none'; });
