@@ -2082,7 +2082,7 @@ const translations = {
     en: { msgTitle:"Your Message Today", msgSub:"Your message today", msgText:"Behind this supplication there may be a message written for you, and today you need it most.", msgLink:"Click here to open it", ruqya:"Spiritual Ruqya", quranic:"Quranic Duas", personal:"My Duas", favorites:"Favorites", sunnah:"Sunnah Duas", menuColors:"Colors", menuSettings:"Settings", set1:"Click Sound", setLang:"Secondary Language", set4:"Font Size", setTranslit:"Transliteration", setSource:"Source", copyTooltip:"Copy Text", shareTooltip:"Share", favTooltipAdd:"Add to Favorites", favTooltipRemove:"Remove from Favorites", refreshTooltip:"Refresh", shareTitle:"Share Dua", closeModal:"Close", whatsapp:"WhatsApp", twitter:"Twitter", facebook:"Facebook", telegram:"Telegram", messenger:"Messenger", copyLink:"Copy Link", gridTooltip:"Grid Layout", selfBtn:"Heal Yourself", otherBtn:"Heal Others", back:"Back", noFavorites:"No favorite duas yet", wird1Btn:"First Wird", wird2Btn:"Second Wird", wird3Btn:"Third Wird", wird4Btn:"Fourth Wird", wird5Btn:"Fifth Wird", quranicWird1:"First Wird", quranicWird2:"Second Wird", quranicWird3:"Third Wird", personalEmptyText: "You haven't added any prayer requests yet", addDua: "Add a Dua", personalModalTitle: "Add New Dua", save: "Save", cancel: "Cancel", personalBackText: "Back", todayDua:"Your Dua Today", personalMainLang: "Main Text", personalSecondaryLang: "Secondary Text", tomorrowBanner:"A new message will be waiting for you here tomorrow", openedMessage:"Dua is a door of mercy, through it needs are raised and hearts find peace. It is worship that needs no place or time. It is enough to lift your heart before your hands, for Allah is near, responding to those who call Him ❤️" }
 };
 
-let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentQuranicWird='quranic1';
+let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWird='wird1', currentQuranicWird='quranic1';
 let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
 // Migrate old favorites to add categoryLabel
 favoritesList = favoritesList.map(fav => {
@@ -2483,11 +2483,11 @@ if(currentLang==='ar'){
 
 function renderSunnahDuas(){
     let startIdx=0, endIdx=0;
-    if(currentWird==='wird1'){ startIdx=0; endIdx=15; }
-    else if(currentWird==='wird2'){ startIdx=15; endIdx=30; }
-    else if(currentWird==='wird3'){ startIdx=30; endIdx=45; }
-    else if(currentWird==='wird4'){ startIdx=45; endIdx=60; }
-    else{ startIdx=60; endIdx=75; }
+    if(currentWird==='wird1'){ startIdx=0; endIdx=13; }
+    else if(currentWird==='wird2'){ startIdx=13; endIdx=28; }
+    else if(currentWird==='wird3'){ startIdx=28; endIdx=44; }
+    else if(currentWird==='wird4'){ startIdx=44; endIdx=59; }
+    else{ startIdx=59; endIdx=75; }
     const data=sunnahDuas.slice(startIdx,endIdx);
     const container=document.getElementById('sunnahListContainer');
     const paginationDiv = document.getElementById('sunnahPagination');
