@@ -2486,12 +2486,12 @@ if(currentLang==='ar'){
 }
 
 function renderSunnahDuas(){
-    let startIdx=0, endIdx=0;
-    if(currentWird==='wird1'){ startIdx=0; endIdx=25; }
-    else if(currentWird==='wird2'){ startIdx=25; endIdx=51; }
-    else if(currentWird==='wird3'){ startIdx=51; endIdx=73; }
-    else if(currentWird==='wird4'){ startIdx=73; endIdx=100; }
-    else{ startIdx=100; endIdx=124; }
+       let startIdx=0, endIdx=0;
+    if(currentWird==='wird1'){ startIdx=0; endIdx=15; }
+    else if(currentWird==='wird2'){ startIdx=15; endIdx=30; }
+    else if(currentWird==='wird3'){ startIdx=30; endIdx=45; }
+    else if(currentWird==='wird4'){ startIdx=45; endIdx=60; }
+    else{ startIdx=60; endIdx=75; }}
     const data=sunnahDuas.slice(startIdx,endIdx);
     const container=document.getElementById('sunnahListContainer');
     const paginationDiv = document.getElementById('sunnahPagination');
