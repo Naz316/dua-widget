@@ -1881,7 +1881,7 @@ function setupPersonalHorizontalScroll() {
         }
         paginationDiv.innerText = `${bestIndex+1} / ${cards.length}`;
     };
-    container.addEventListener('scroll', updateCounter);
+    container.addEventListener('scroll', updateCounter); 
     setTimeout(updateCounter, 50);
 }
 
@@ -1901,12 +1901,6 @@ function showPersonalView() {
     renderPersonalView();
 }
 
-function showPersonalView() {
-    document.getElementById('gridContainer').style.display = 'none';
-    document.getElementById('messageContainer').style.display = 'none';
-    document.getElementById('personalView').style.display = 'flex';
-    renderPersonalView();
-}
 const ruqyahSelf = [
     { ar: "أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَانِ الرَّجِيمِ مِنْ هَمْزِهِ، وَنَفْخِهِ، وَنَفْثِهِ. (مرة واحدة)", translit: "A‘ūdhu billāhi s-samī‘i l-‘alīmi mina sh-shayṭāni r-rajīmi min hamzihi, wa nafkhihi, wa nafthihi. (Marrah wāḥidah)", en: "I seek refuge in Allah, the All-Hearing, the All-Knowing, from the accursed Satan, from his evil whispers, his puffing up with pride, and his blowing (of evil poetry). (Once)", source: "Sunan Abī Dāwūd (775), ṣaḥīḥ isnād.", tafsir: "Hamzihi = what the devil casts into a person’s heart at the time of death. Nafkhihi = pride that the devil casts into a person’s soul. Nafthihi = blameworthy, forbidden poetry." },
     { ar: "{بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)} (سبع مرات)", translit: "Bismillāhi r-raḥmāni r-raḥīm. Alḥamdu lillāhi rabbi l-‘ālamīn. Ar-raḥmāni r-raḥīm. Māliki yawmi d-dīn. Iyyāka na‘budu wa iyyāka nasta‘īn. Ihdina ṣ-ṣirāṭa l-mustaqīm. Ṣirāṭa lladhīna an‘amta ‘alayhim ghayri l-maghḍūbi ‘alayhim wa la ḍ-ḍāllīn. (Sab‘a marrāt)", en: "In the name of Allah, the Most Gracious, the Most Merciful. All praise is due to Allah, Lord of the worlds. The Most Gracious, the Most Merciful. Master of the Day of Judgment. You alone we worship, and You alone we ask for help. Guide us to the straight path. The path of those upon whom You have bestowed favor, not of those who have evoked Your anger or of those who are astray. (7 times)", source: "Ṣaḥīḥ al-Bukhārī (5749), Ṣaḥīḥ Muslim (2201)." },
