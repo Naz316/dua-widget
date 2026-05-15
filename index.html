@@ -464,7 +464,7 @@ body.text-ltr #openedMessageText {
             margin-top: 4px; 
             transition: all 0.3s ease;
         }
-        .dua-source-info {
+       .dua-source-info {
     font-size: calc(var(--dua-font-size) * 0.65);
     color: #888;
     margin-top: 8px;
@@ -472,14 +472,6 @@ body.text-ltr #openedMessageText {
     border-top: 1px dotted var(--border-color);
     direction: ltr;
     text-align: left;
-}
-
-/* Hide empty source info */
-.dua-source-info:empty {
-    display: none;
-    margin: 0;
-    padding: 0;
-    border: none;
 }
         body.text-rtl .dua-source-info { text-align: right; }
         body.dark-mode .dua-source-info { color: #aaa; }
@@ -2947,18 +2939,15 @@ if(currentLang==='ar'){
             'personal': 'MY DUAS'
         };
 
-        const catKey = fav.categoryLabel || fav.sub;
+                const catKey = fav.categoryLabel || fav.sub;
         
-        // Only show source info for non-personal duas
-        if(showSource && catKey !== 'personal'){ 
-            const sourceText = buildSourceInfo(fav);
-            if(sourceText.trim()!=='') {
-                const sd=document.createElement('div'); 
-                sd.className='dua-source-info'; 
-                sd.style.color = '#888';
-                sd.innerText = sourceText;
-                card.appendChild(sd); 
-            }
+        // Show source info only for non-personal duas that have a source
+        if(showSource && catKey !== 'personal' && fav.source && fav.source.trim() !== ''){ 
+            const sd=document.createElement('div'); 
+            sd.className='dua-source-info'; 
+            sd.style.color = '#888';
+            sd.innerText = `📖 ${fav.source}`;
+            card.appendChild(sd); 
         }
         
         const emoji = categoryEmojis[catKey] || '📌';
