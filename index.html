@@ -465,14 +465,22 @@ body.text-ltr #openedMessageText {
             transition: all 0.3s ease;
         }
         .dua-source-info {
-            font-size: calc(var(--dua-font-size) * 0.65);
-            color: #888;
-            margin-top: 8px;
-            padding-top: 6px;
-            border-top: 1px dotted var(--border-color);
-            direction: ltr;
-            text-align: left;
-        }
+    font-size: calc(var(--dua-font-size) * 0.65);
+    color: #888;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dotted var(--border-color);
+    direction: ltr;
+    text-align: left;
+}
+
+/* Hide empty source info */
+.dua-source-info:empty {
+    display: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
         body.text-rtl .dua-source-info { text-align: right; }
         body.dark-mode .dua-source-info { color: #aaa; }
         .dua-main-lang { font-weight: 700; }
