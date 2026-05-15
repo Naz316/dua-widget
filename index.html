@@ -2939,14 +2939,16 @@ if(currentLang==='ar'){
             'personal': 'MY DUAS'
         };
 
-       if(showSource){ 
+               // Only show source info for non-personal duas
+        const catKey = fav.categoryLabel || fav.sub;
+        if(showSource && catKey !== 'personal'){ 
             const sd=document.createElement('div'); 
             sd.className='dua-source-info'; 
             sd.style.color = '#888';
             sd.innerText=buildSourceInfo(fav); 
             if(sd.innerText.trim()!=='') card.appendChild(sd); 
         } 
-        const catKey = fav.categoryLabel || fav.sub;
+        
         const emoji = categoryEmojis[catKey] || '📌';
         const catName = categoryNames[catKey] || catKey.toUpperCase();
         
