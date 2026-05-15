@@ -1085,11 +1085,13 @@ body.text-rtl .personal-card .personal-card-content {
 }
 .personal-card-actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px dashed var(--border-color);
+    width: 100%;
 }
  /* Edit Button Styles */
 .personal-edit-btn {
@@ -1733,8 +1735,8 @@ if (currentLang === 'ar') {
                 playClickSound();
             };
             
-            actions.appendChild(editBtn);
             actions.appendChild(delBtn);
+            actions.appendChild(editBtn);
             
             card.appendChild(header);
             card.appendChild(content);
