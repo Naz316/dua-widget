@@ -2493,15 +2493,22 @@ function addFavorite(sub,idx,dua){
         if (sub === 'self' || sub === 'other') categoryLabel = 'ruqyah';
         if (sub === 'wird1' || sub === 'wird2' || sub === 'wird3' || sub === 'wird4' || sub === 'wird5') categoryLabel = 'wird';
         
-        favoritesList.push({
-            sub, 
-            idx, 
-            ar:dua.ar, 
-            en:dua.en, 
-            translit:dua.translit, 
-            source:dua.source,
-            categoryLabel: categoryLabel
-        }); 
+            // Build favorite object - exclude source for personal duas
+    const favObj = {
+        sub,
+        idx,
+        ar:dua.ar,
+        en:dua.en,
+        translit:dua.translit,
+        categoryLabel: categoryLabel
+    };
+    
+    // Only add source for non-personal duas
+    if (categoryLabel !== 'personal' && dua.source) {
+        favObj.source = dua.source;
+    }
+    
+    favoritesList.push(favObj);
         saveFavorites(); 
         if(ruqyahActive) renderRuqyahDuas(); 
         if(favoritesActive) renderFavorites(); 
