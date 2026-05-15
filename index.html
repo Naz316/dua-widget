@@ -1091,6 +1091,34 @@ body.text-rtl .personal-card .personal-card-content {
     padding-top: 10px;
     border-top: 1px dashed var(--border-color);
 }
+ /* Edit Button Styles */
+.personal-edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    color: var(--text-dim);
+}
+
+.personal-edit-btn:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    transform: scale(1.05);
+}
+
+.personal-edit-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+}       
 .personal-delete-btn {
     background: none;
     border: none;
@@ -1683,6 +1711,17 @@ if (currentLang === 'ar') {
             const actions = document.createElement('div');
             actions.className = 'personal-card-actions';
             
+                       // EDIT BUTTON (Pen Icon)
+            const editBtn = document.createElement('button'); 
+            editBtn.className = 'personal-edit-btn';
+            editBtn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+            editBtn.onclick = (e) => { 
+                e.stopPropagation();
+                openEditPersonalModal(idx);
+                playClickSound();
+            };
+            
+            // DELETE BUTTON (Trash Icon)
             const delBtn = document.createElement('button'); 
             delBtn.className = 'personal-delete-btn';
             delBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
@@ -1694,6 +1733,7 @@ if (currentLang === 'ar') {
                 playClickSound();
             };
             
+            actions.appendChild(editBtn);
             actions.appendChild(delBtn);
             
             card.appendChild(header);
@@ -1845,6 +1885,45 @@ function openPersonalDuaModal(idx) {
     });
 }
 
+ function openEditPersonalModal(idx) {
+    const item = personalDuas[idx];
+    const modal = document.getElementById('personalAddModal');
+    const modalContent = modal.querySelector('.modal-content');
+    const t = translations[currentLang];
+    
+    // Build edit modal content
+    modalContent.innerHTML = `
+        <button class="modal-close-x" id="personalModalCloseX" aria-label="Close">✕</button>
+        <div class="scrollable-text-wrapper" id="personalScrollableWrapper">
+            <h3 id="personalModalTitle" style="margin-bottom: 15px; color: var(--text);">${currentLang === 'ar' ? 'تعديل الدعاء' : 'Edit Dua'}</h3>
+            <textarea id="personalDuaInput" rows="6" style="width: 100%; min-height: 120px; padding: 14px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--widget-bg); color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 16px; resize: vertical; margin-bottom: 15px;">${escapeHtml(item.text)}</textarea>
+        </div>
+        <div class="personal-modal-actions" style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+            <button id="personalSaveDuaBtn" class="personal-save-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--accent); color: white; transition: 0.2s;">${t.save}</button>
+            <button id="personalCancelModalBtn" class="personal-cancel-btn" style="padding: 12px 28px; border-radius: 40px; border: none; font-weight: bold; cursor: pointer; background: var(--text-dim); color: white; opacity: 0.8; transition: 0.2s;">${t.cancel}</button>
+        </div>
+    `;
+    
+    // Re-attach event listeners for SAVE (edit mode)
+    document.getElementById('personalSaveDuaBtn')?.addEventListener('click', () => {
+        const newText = document.getElementById('personalDuaInput').value.trim();
+        if (newText) { 
+            personalDuas[idx].text = newText; 
+            localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+            renderPersonalView();
+            playClickSound();
+            modal.style.display = 'none'; 
+        }
+    });
+    
+    // Cancel button
+    document.getElementById('personalCancelModalBtn')?.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    modal.style.display = 'flex';
+}
+    
 function navigatePersonalModal(currentIdx, direction) {
     let newIdx;
     if (isHorizontalMode) {
