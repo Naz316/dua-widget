@@ -475,6 +475,17 @@ body.text-ltr #openedMessageText {
 }
         body.text-rtl .dua-source-info { text-align: right; }
         body.dark-mode .dua-source-info { color: #aaa; }
+                .fav-category-label {
+            font-size: calc(var(--dua-font-size) * 0.65);
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px dotted var(--border-color);
+            font-weight: 600;
+            color: var(--accent);
+            direction: ltr;
+            text-align: left;
+        }
+        body.text-rtl .fav-category-label { text-align: right; }
         .dua-main-lang { font-weight: 700; }
         .dua-secondary-lang { font-weight: 400; color: var(--text-dim) !important; }
         .dua-transliteration { color: var(--text-dim) !important; }
@@ -2961,12 +2972,7 @@ if(currentLang==='ar'){
         const catName = categoryNames[catKey] || catKey.toUpperCase();
         
         const labelDiv = document.createElement('div');
-        labelDiv.className = 'dua-source-info';
-        labelDiv.style.marginTop = '8px';
-        labelDiv.style.paddingTop = '6px';
-        labelDiv.style.borderTop = '1px dotted var(--border-color)';
-        labelDiv.style.fontWeight = '600';
-        labelDiv.style.color = 'var(--accent)';
+        labelDiv.className = 'fav-category-label';
         labelDiv.innerText = `${emoji} ${catName}`;
         card.appendChild(labelDiv);
         
