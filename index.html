@@ -2517,7 +2517,7 @@ function showVideoDuaModal(dua) {
 
 document.getElementById('dailyMessageCard').addEventListener('click', handleMessageClick);
 
-function saveFavorites(){ localStorage.setItem('dua_favorites', JSON.stringify(favoritesList)); }
+function saveFavorites(){ setStorage('dua_favorites', JSON.stringify(favoritesList)); }
 function isFavorited(sub,idx){ return favoritesList.some(f=>f.sub===sub && f.idx===idx); }
 function addFavorite(sub,idx,dua){ 
     if(!isFavorited(sub,idx)){ 
