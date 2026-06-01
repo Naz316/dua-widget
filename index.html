@@ -76,7 +76,7 @@ body.text-ltr #openedMessageText {
         body.dark-mode .fav-btn-small svg path { stroke: var(--heart-stroke-dark) !important; }
         .app-container {
             width: 100%;
-            max-width: 100%;
+            max-width: 800px;
             background-color: var(--widget-bg);
             min-height: 100vh;
             display: flex;
@@ -279,6 +279,7 @@ body.text-ltr #openedMessageText {
             gap: 15px;
             padding: 10px 20px 40px 20px;
             direction: ltr !important;
+			overflow-x: hidden;
         }
         .grid-container.grid-3cols { grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .grid-item {
