@@ -1538,6 +1538,19 @@ body.dark-mode .personal-modal .scrollable-text-wrapper::-webkit-scrollbar-butto
         </div>
     </div>
 </div>
+// === FORCE RELOAD SETTINGS FROM ISOLATED STORAGE ===
+const freshAccent = getStorage('dua_accent');
+const freshDark = getStorage('dua_darkMode');
+if (freshAccent) currentAccent = freshAccent;
+if (freshDark !== null) isDarkMode = freshDark === 'true';
+updateFullTheme();
+
+const freshFont = getStorage('dua_font_size');
+if (freshFont) setDuaFontSize(parseInt(freshFont));
+
+const freshShowSource = getStorage('dua_showSource');
+if (freshShowSource !== null) showSource = freshShowSource === 'true';
+document.getElementById('chkSource').checked = showSource;    
 <script>
 // =============================== RUQYAH DATA (24 self + 24 others) ===============================
 // Add these variables at the top of your <script> section
@@ -1571,7 +1584,29 @@ function copyToClipboard(text) {
         });
     }
 }
-let personalDuas = JSON.parse(localStorage.getItem('personal_duas') || '[]');
+// ===== INSTANCE ISOLATION =====
+function getInstanceId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let id = urlParams.get('id');
+    if (!id) {
+        id = 'default_' + Math.random().toString(36).substr(2, 8);
+    }
+    return id;
+}
+const INSTANCE_ID = getInstanceId();
+
+function prefixedKey(key) {
+    return INSTANCE_ID + '_' + key;
+}
+
+function getStorage(key) {
+    return localStorage.getItem(prefixedKey(key));
+}
+
+function setStorage(key, value) {
+    localStorage.setItem(prefixedKey(key), value);
+}    
+let personalDuas = JSON.parse(	getStorage('personal_duas') || '[]');
 
 // Helper to escape HTML to prevent XSS
 function escapeHtml(text) {
@@ -1741,7 +1776,7 @@ if (currentLang === 'ar') {
             delBtn.onclick = (e) => { 
                 e.stopPropagation();
                 personalDuas.splice(idx, 1); 
-                localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+                setStorage('personal_duas', JSON.stringify(personalDuas));
                 renderPersonalView();
                 playClickSound();
             };
@@ -1922,7 +1957,7 @@ function openPersonalDuaModal(idx) {
         const newText = document.getElementById('personalDuaInput').value.trim();
         if (newText) { 
             personalDuas[idx].text = newText; 
-            localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+            setStorage('personal_duas', JSON.stringify(personalDuas)); 
             renderPersonalView();
             playClickSound();
             modal.style.display = 'none'; 
@@ -2324,7 +2359,7 @@ const translations = {
 };
 
 let currentLang='ar', isDarkMode=false, currentAccent='#cc0000', audioCtx=null, showTranslit=true, showSource=true, ruqyahActive=false,  wirdActive=false, favoritesActive=false, sunnahActive=false, quranicActive=false, currentRuqyahSub='self', selectedDuaIndex=-1, currentWirdSub='wird1', currentWird='wird1', currentQuranicWird='quranic1';
-let favoritesList = JSON.parse(localStorage.getItem('dua_favorites') || '[]');
+let favoritesList = JSON.parse(getStorage('dua_favorites') || '[]');
 // Migrate old favorites to add categoryLabel
 favoritesList = favoritesList.map(fav => {
     if (!fav.categoryLabel) {
@@ -2334,7 +2369,7 @@ favoritesList = favoritesList.map(fav => {
     }
     return fav;
 });
-localStorage.setItem('dua_favorites', JSON.stringify(favoritesList));let showSecondaryLang = true;
+	setStorage('dua_favorites', JSON.stringify(favoritesList));let showSecondaryLang = true;
 let isHorizontalMode = false; // global toggle for dua lists layout
 
 // Modal navigation state
@@ -2367,8 +2402,8 @@ function updateFullTheme(){
     const sun = document.getElementById('sunIcon'), moon = document.getElementById('moonIcon');
     if(isDarkMode){ sun?.classList.remove('active'); moon?.classList.add('active'); }
     else { sun?.classList.add('active'); moon?.classList.remove('active'); }
-    localStorage.setItem('dua_accent', currentAccent);
-    localStorage.setItem('dua_darkMode', isDarkMode);
+    setStorage('dua_accent', currentAccent);
+    setStorage('dua_darkMode', isDarkMode);
     if(ruqyahActive) renderRuqyahDuas();
    if(favoritesActive) renderFavorites();
    if(sunnahActive) renderSunnahDuas();
@@ -2406,7 +2441,7 @@ function applyLanguage(){
 
 function checkDailyStatus() {
     const today = new Date().toDateString();
-    const lastOpenedDate = localStorage.getItem('dua_last_opened_date');
+    const lastOpenedDate = getStorage('dua_last_opened_date');
     if (lastOpenedDate === today) {
         showDailyMessageOpened();
     }
@@ -2426,7 +2461,7 @@ function showDailyMessageOpened() {
 
 function handleMessageClick() {
     const today = new Date().toDateString();
-   if (localStorage.getItem('dua_last_opened_date') === today) return;
+   if (getStorage('dua_last_opened_date') === today) return;
 
     playClickSound();
 
@@ -2449,7 +2484,7 @@ function handleMessageClick() {
             
             document.getElementById('msgStateLoading').style.display = 'none';
             showDailyMessageOpened();
-            localStorage.setItem('dua_last_opened_date', today);
+            setStorage('dua_last_opened_date', today);
         }, 1800); 
     }, 600);
 }
@@ -3037,7 +3072,7 @@ function addPersonalDuaFromInput() {
     const text = document.getElementById('personalDuaInput').value.trim();
     if (text) { 
         personalDuas.push({ id: Date.now(), text }); 
-        localStorage.setItem('personal_duas', JSON.stringify(personalDuas)); 
+        setStorage('personal_duas', JSON.stringify(personalDuas)); 
         renderPersonalView();
         playClickSound();
         document.getElementById('personalAddModal').style.display = 'none'; 
@@ -3101,19 +3136,19 @@ const colorArray=[{acc:'#cc0000',nAr:'أحمر',nEn:'Red'},{acc:'#800080',nAr:'�
 const colorMenuDiv=document.getElementById('colorMenu');
 colorArray.forEach(c=>{ const dot=document.createElement('div'); dot.className='color-dot'; dot.style.backgroundColor=c.acc; dot.setAttribute('data-ar',c.nAr); dot.setAttribute('data-en',c.nEn); dot.title=currentLang==='ar'?c.nAr:c.nEn; dot.onclick=()=>{ setAccent(c.acc,dot); playClickSound(); }; colorMenuDiv.appendChild(dot); });
 function updateColorTooltips(){ document.querySelectorAll('.color-dot').forEach(dot=>{ dot.title=currentLang==='ar'?dot.getAttribute('data-ar'):dot.getAttribute('data-en'); }); }
-const savedAccent=localStorage.getItem('dua_accent'), savedDark=localStorage.getItem('dua_darkMode'); if(savedAccent) currentAccent=savedAccent; if(savedDark!==null) isDarkMode=savedDark==='true'; updateFullTheme(); document.querySelectorAll('.color-dot').forEach(dot=>{ const dc=dot.style.backgroundColor||dot.style.background; if(dc&&(dc===currentAccent||rgbToHex(dc)===currentAccent)) dot.classList.add('active'); }); document.getElementById('themeToggle').checked=isDarkMode;
+const savedAccent=	getStorage('dua_accent'), savedDark=getStorage('dua_darkMode'); if(savedAccent) currentAccent=savedAccent; if(savedDark!==null) isDarkMode=savedDark==='true'; updateFullTheme(); document.querySelectorAll('.color-dot').forEach(dot=>{ const dc=dot.style.backgroundColor||dot.style.background; if(dc&&(dc===currentAccent||rgbToHex(dc)===currentAccent)) dot.classList.add('active'); }); document.getElementById('themeToggle').checked=isDarkMode;
 function rgbToHex(rgb){ if(!rgb) return ''; const res=rgb.match(/\d+/g); if(!res) return ''; return '#'+res.slice(0,3).map(x=>parseInt(x).toString(16).padStart(2,'0')).join(''); }
 
 const fontSlider=document.getElementById('fontSlider');
-function setDuaFontSize(val){ document.documentElement.style.setProperty('--dua-font-size',val+'px'); localStorage.setItem('dua_font_size',val); }
+function setDuaFontSize(val){ document.documentElement.style.setProperty('--dua-font-size',val+'px'); setStorage('dua_font_size', val); }
 fontSlider?.addEventListener('input',e=>setDuaFontSize(e.target.value));
-const savedFont=localStorage.getItem('dua_font_size'); if(savedFont) setDuaFontSize(parseInt(savedFont)); else setDuaFontSize(22); fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
+const savedFont=getStorage('dua_font_size'); if(savedFont) setDuaFontSize(parseInt(savedFont)); else setDuaFontSize(22); fontSlider.value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dua-font-size'))||22;
 
 document.getElementById('chkTranslit')?.addEventListener('change',e=>{ showTranslit=e.target.checked; if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
 document.getElementById('chkLang')?.addEventListener('change',e=>{ showSecondaryLang=e.target.checked;     if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); if(wirdActive) renderWirdDuas(); if(document.getElementById('personalView').style.display === 'flex') renderPersonalView(); playClickSound(); });
-if(localStorage.getItem('dua_showSource')!==null) showSource=localStorage.getItem('dua_showSource')==='true';
+if(getStorage('dua_showSource')!==null) showSource=getStorage('dua_showSource')==='true';
 document.getElementById('chkSource').checked=showSource;
-document.getElementById('chkSource').addEventListener('change',e=>{ showSource=e.target.checked; localStorage.setItem('dua_showSource',showSource); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
+document.getElementById('chkSource').addEventListener('change',e=>{ showSource=e.target.checked; setStorage('dua_showSource', showSource); if(ruqyahActive) renderRuqyahDuas(); if(favoritesActive) renderFavorites(); if(sunnahActive) renderSunnahDuas(); if(quranicActive) renderQuranicDuas(); });
 
 document.getElementById('btnCopy')?.addEventListener('click',()=>{ 
     const t=translations[currentLang]; 
