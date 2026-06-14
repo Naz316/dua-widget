@@ -3096,10 +3096,11 @@ document.getElementById('backFromWird')?.addEventListener('click',()=>{ exitSubv
 
 document.getElementById('duaModal')?.addEventListener('click',function(e){ if(e.target === this) this.style.display='none'; });
 
-let is3Cols=false;
+let is3Cols = getStorage('grid_3cols') === 'true';
 document.getElementById('btnGrid')?.addEventListener('click',()=>{
     // toggle main menu grid
     is3Cols=!is3Cols;
+	setStorage('grid_3cols', is3Cols);
     document.getElementById('gridContainer').classList.toggle('grid-3cols',is3Cols);
     // toggle horizontal mode for dua lists
     isHorizontalMode = !isHorizontalMode;
@@ -3246,6 +3247,7 @@ document.querySelectorAll('#quranicSubButtons .subcategory-btn').forEach(btn=>bt
 if(currentLang==='ar') document.body.classList.add('text-rtl'); else document.body.classList.add('text-ltr');
 
 applyLanguage();
+if (is3Cols) document.getElementById('gridContainer').classList.add('grid-3cols');	
 checkDailyStatus();
 updateGlobalFavIcon();
 updateMenuFavButton();
